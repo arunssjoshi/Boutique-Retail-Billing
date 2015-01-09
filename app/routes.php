@@ -13,5 +13,14 @@
 
 Route::get('/', function()
 {
+	
+	if (Auth::check())
+	{
+	    // The user is logged in...
+	} else {
+		return Redirect::to('login');
+	}
 	return View::make('hello');
 });
+
+Route::any('login', array( 'uses' => 'UserController@login'));

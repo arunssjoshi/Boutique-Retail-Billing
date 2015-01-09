@@ -7,7 +7,8 @@
 
     # Redirect Trailing Slashes...
     RewriteRule ^(.*)/$ /$1 [L,R=301]
-
+    SetEnvIf Host ^localhost$ WORK_ENVIRONMENT=development
+    SetEnvIf Host ^billing.lh$ WORK_ENVIRONMENT=development
     # Handle Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
