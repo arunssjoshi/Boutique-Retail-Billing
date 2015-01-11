@@ -24,3 +24,4 @@ Route::get('/', function()
 });
 
 Route::any('login', array( 'uses' => 'UserController@login'));
+Route::any('admin/dashboard', array( 'uses' => 'DashboardController@dashboard'));

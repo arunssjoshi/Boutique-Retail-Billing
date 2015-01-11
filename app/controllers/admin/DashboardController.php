@@ -1,6 +1,6 @@
 <?php
 
-class UserController extends BaseController {
+class DashboardController extends BaseController {
 
 	/*
 	|--------------------------------------------------------------------------
@@ -15,21 +15,9 @@ class UserController extends BaseController {
 	|
 	*/
 
-	public function login()
-	{	
-		//echo Hash::make('admin123');
-		echo Input::get('userid');
-		if (Auth::attempt(array('email' => Input::get('userid'), 'password' => Input::get('password'), 'status'=>'Active')))
-		{
-		    if (Auth::user()->role == 'Admin' ) {
-		    	return Redirect::to('admin/dashboard');
-		    } else {
-		    	return Redirect::to('dashboard');
-		    }
-		} else {
-
-		}
-		return View::make('user.login');
+	public function dashboard()
+	{
+		return View::make('admin.dashboard.dashboard');
 	}
 
 }
