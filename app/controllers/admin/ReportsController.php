@@ -1,6 +1,6 @@
 <?php
 
-class admin/ReportsController extends \BaseController {
+class ReportsController extends BaseController {
 
 	/**
 	 * Display a listing of the resource.
@@ -9,7 +9,7 @@ class admin/ReportsController extends \BaseController {
 	 */
 	public function index()
 	{
-		//
+		return View::make('admin.dashboard.dashboard');
 	}
 
 

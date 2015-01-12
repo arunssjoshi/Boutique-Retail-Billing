@@ -9,20 +9,11 @@ class CategoryController extends \BaseController {
 	 */
 	public function index()
 	{
-		//
+		return View::make('admin.dashboard.dashboard');
 	}
 
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
+	
 
 
 }

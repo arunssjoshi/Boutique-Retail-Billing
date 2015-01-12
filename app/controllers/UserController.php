@@ -17,19 +17,37 @@ class UserController extends BaseController {
 
 	public function login()
 	{	
-		//echo Hash::make('admin123');
-		echo Input::get('userid');
-		if (Auth::attempt(array('email' => Input::get('userid'), 'password' => Input::get('password'), 'status'=>'Active')))
+		if (Auth::check())
 		{
 		    if (Auth::user()->role == 'Admin' ) {
-		    	return Redirect::to('admin/dashboard');
-		    } else {
-		    	return Redirect::to('dashboard');
-		    }
-		} else {
+			    return Redirect::to('admin/dashboard');
+			} else {
+			    return Redirect::to('dashboard');
+			}
 
+		} else {
+			$rememberMe = null !==Input::get('remember_me');
+
+			//echo Hash::make('admin123');
+			if (Auth::attempt(array('email' => Input::get('userid'), 'password' => Input::get('password'), 'status'=>'Active'),$rememberMe))
+			{
+			    if (Auth::user()->role == 'Admin' ) {
+			    	return Redirect::to('admin/dashboard');
+			    } else {
+			    	return Redirect::to('dashboard');
+			    }
+			} else {
+
+			}
+			return View::make('user.login');
 		}
-		return View::make('user.login');
 	}
+
+	public function logout()
+	{
+		Auth::logout();
+		return Redirect::to('login');
+	}
+
 
 }

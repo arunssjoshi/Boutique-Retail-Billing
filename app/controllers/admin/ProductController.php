@@ -9,7 +9,7 @@ class ProductController extends \BaseController {
 	 */
 	public function index()
 	{
-		//
+		return View::make('admin.dashboard.dashboard');
 	}
 
 

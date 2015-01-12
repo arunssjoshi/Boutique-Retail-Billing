@@ -44,7 +44,7 @@
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="glyphicon glyphicon-user"></i>
-                                <span>Jane Doe <i class="caret"></i></span>
+                                <span><?php echo Auth::user()->first_name.' '.Auth::user()->last_name;?> <i class="caret"></i></span>
                             </a>
                             <ul class="dropdown-menu">
                                
@@ -54,7 +54,7 @@
                                         <a href="#" class="btn btn-default btn-flat">Profile</a>
                                     </div>
                                     <div class="pull-right">
-                                        <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                        <a href="<?php echo base_url();?>/logout" class="btn btn-default btn-flat">Sign out</a>
                                     </div>
                                 </li>
                             </ul>
@@ -74,45 +74,45 @@
                             <img src="<?php echo URL::to('/');?>/images/daavani-girl.jpg" class="img-circle" alt="User Image" />
                         </div>
                         <div class="pull-left info">
-                            <p>Hello, Jane</p>
+                            <p>Hello, <?php echo Auth::user()->first_name.' '.Auth::user()->last_name;?></p>
 
                         </div>
                     </div>
-
+                    <?php $menu = isset($menu)?$menu:''; ?>
                     <!-- sidebar menu: : style can be found in sidebar.less -->
                     <ul class="sidebar-menu">
                         <li>
-                            <a href="../../index.html">
+                            <a href="<?php echo base_url();?>/admin/dashboard">
                                 <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                             </a>
                         </li>
                         <li>
-                            <a href="../widgets.html">
+                            <a href="<?php echo base_url();?>/admin/products">
                                 <i class="fa fa-barcode"></i> <span>Products</span> 
                             </a>
                         </li>
                         <li>
-                            <a href="../widgets.html">
+                            <a href="<?php echo base_url();?>/admin/categories">
                                 <i class="fa fa-toggle-down"></i> <span>Categories</span> 
                             </a>
                         </li>
-                        <li>
-                            <a href="../widgets.html">
+                        <li class='<?php echo ($menu == 'properties')?" active":"";?>' >
+                            <a href="<?php echo base_url();?>/admin/properties">
                                 <i class="fa fa-check-circle"></i> <span>Properties</span> 
                             </a>
                         </li>
                         <li>
-                            <a href="../widgets.html">
+                            <a href="<?php echo base_url();?>/admin/batch">
                                 <i class="fa fa-group"></i> <span>Batch</span> 
                             </a>
                         </li>
                         <li>
-                            <a href="../widgets.html">
+                            <a href="<?php echo base_url();?>/admin/shops">
                                 <i class="fa fa-shopping-cart"></i> <span>Shops</span> 
                             </a>
                         </li>
                         <li>
-                            <a href="../widgets.html">
+                            <a href="<?php echo base_url();?>/admin/reports">
                                 <i class="fa fa-info"></i> <span>Reports</span> 
                             </a>
                         </li>
@@ -131,6 +131,7 @@
         <script src="<?php echo URL::to('/');?>/assets/jquery/jquery-2.1.3.min.js"></script>
         <script src="<?php echo URL::to('/');?>/assets/bootsrap/js/bootstrap.min.js" type="text/javascript"></script>
         <script src="<?php echo URL::to('/');?>/assets/AdminLTE/app.js" type="text/javascript"></script>
+        <script src="<?php echo URL::to('/');?>/assets/dataTables/js/jquery.dataTables.min.js" type="text/javascript"></script>
 
     </body>
 </html>
