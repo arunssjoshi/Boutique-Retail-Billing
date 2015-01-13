@@ -450,3 +450,13 @@
                 </section><!-- /.content -->
                 
  @stop        
+
+@section('ScriptIncludes')
+    <script type="text/javascript" src="<?php echo base_url();?>/scripts/properties.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>/assets/dataTables/bootstrap/3/dataTables.bootstrap.js"></script>
+@stop
+
+@section('StyleIncludes')
+    <link href="<?php echo URL::to('/');?>/assets/dataTables/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo URL::to('/');?>/assets/dataTables/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+@stop

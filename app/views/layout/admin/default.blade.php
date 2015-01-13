@@ -4,12 +4,15 @@
         <meta charset="UTF-8">
         <title>Daavani Dashboard</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+        <?php /*<link href="<?php echo URL::to('/');?>/assets/iconic/css/ionic.min.css" rel="stylesheet" type="text/css" />*/?>
         <link href="<?php echo URL::to('/');?>/assets/bootsrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo URL::to('/');?>/assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
         <!-- Ionicons -->
-        <link href="<?php echo URL::to('/');?>/assets/iconic/css/ionic.min.css" rel="stylesheet" type="text/css" />
+        
         <!-- Theme style -->
         <link href="<?php echo URL::to('/');?>/styles/AdminLTE.css" rel="stylesheet" type="text/css" />
+        @yield('StyleIncludes')
+        <link href="<?php echo URL::to('/');?>/styles/style.css" rel="stylesheet" type="text/css" />
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -132,6 +135,6 @@
         <script src="<?php echo URL::to('/');?>/assets/bootsrap/js/bootstrap.min.js" type="text/javascript"></script>
         <script src="<?php echo URL::to('/');?>/assets/AdminLTE/app.js" type="text/javascript"></script>
         <script src="<?php echo URL::to('/');?>/assets/dataTables/js/jquery.dataTables.min.js" type="text/javascript"></script>
-
+        @yield('ScriptIncludes')
     </body>
 </html>
