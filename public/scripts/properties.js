@@ -5,9 +5,17 @@ var employee = function () {
         },
 
         initPropertiesDataTable: function() {
-           $('#example1').dataTable({
-			
-			}); 
+           $('#tblProperties').dataTable( {
+		        "ajax": {
+		        	"url": baseUrl+'/admin/properties/properties.json',
+		        	"type": "POST"
+		        },
+        		"serverSide": true,
+        		
+		        "columnDefs": [
+				    { "orderable": false, "targets": [0] }
+				  ]
+		    } );
         }
     };
 }();

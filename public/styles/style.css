@@ -4,3 +4,4 @@
 	border-right:1px solid  #ddd !important;
 	border-bottom:1px solid  #ddd !important;
 }
+table.dataTable.no-footer{border-bottom: 0;}

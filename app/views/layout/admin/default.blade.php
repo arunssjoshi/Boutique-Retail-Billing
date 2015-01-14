@@ -2,7 +2,10 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Daavani Dashboard</title>
+        <title> 
+            <?php echo Config::get('billing.site_name');?> 
+            <?php echo  !empty($title)?" - ".$title:'';?>
+        </title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <?php /*<link href="<?php echo URL::to('/');?>/assets/iconic/css/ionic.min.css" rel="stylesheet" type="text/css" />*/?>
         <link href="<?php echo URL::to('/');?>/assets/bootsrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -11,6 +14,8 @@
         
         <!-- Theme style -->
         <link href="<?php echo URL::to('/');?>/styles/AdminLTE.css" rel="stylesheet" type="text/css" />
+        <link href="<?php echo URL::to('/');?>/assets/dataTables/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
+        <link href="<?php echo URL::to('/');?>/assets/dataTables/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
         @yield('StyleIncludes')
         <link href="<?php echo URL::to('/');?>/styles/style.css" rel="stylesheet" type="text/css" />
 
@@ -130,11 +135,13 @@
               @yield('content')
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
-
+        <script type="text/javascript">var baseUrl = '<?php echo base_url();?>';</script>
         <script src="<?php echo URL::to('/');?>/assets/jquery/jquery-2.1.3.min.js"></script>
         <script src="<?php echo URL::to('/');?>/assets/bootsrap/js/bootstrap.min.js" type="text/javascript"></script>
         <script src="<?php echo URL::to('/');?>/assets/AdminLTE/app.js" type="text/javascript"></script>
         <script src="<?php echo URL::to('/');?>/assets/dataTables/js/jquery.dataTables.min.js" type="text/javascript"></script>
+
         @yield('ScriptIncludes')
+        <script type="text/javascript" src="<?php echo base_url();?>/assets/dataTables/bootstrap/3/dataTables.bootstrap.js"></script>
     </body>
 </html>

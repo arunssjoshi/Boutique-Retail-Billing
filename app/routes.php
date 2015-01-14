@@ -36,7 +36,11 @@ Route::group(array('before' => 'auth'), function()
     	Route::any('admin/dashboard', array( 'uses' => 'DashboardController@dashboard'));
     	Route::any('admin/products', array( 'uses' => 'ProductController@index'));
     	Route::any('admin/categories', array( 'uses' => 'CategoryController@index'));
+    	#------------------------------BEGIN PROPERTIES-----------------------------------#
     	Route::any('admin/properties', array( 'uses' => 'PropertiesController@index'));
+    	Route::any('admin/properties/properties.json', array( 'uses' => 'PropertiesController@getPropertiesJson'));
+    	#------------------------------END PROPERTIES--------------------------------#
+
     	Route::any('admin/batch', array( 'uses' => 'BatchController@index'));
     	Route::any('admin/shops', array( 'uses' => 'ShopsController@index'));
     	Route::any('admin/reports', array( 'uses' => 'ReportsController@index'));
