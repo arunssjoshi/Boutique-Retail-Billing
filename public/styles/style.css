@@ -5,3 +5,5 @@
 	border-bottom:1px solid  #ddd !important;
 }
 table.dataTable.no-footer{border-bottom: 0;}
+#cboxOverlay{background: none;}
+.billingModal #cboxContent{/*border: 1px solid;*/}

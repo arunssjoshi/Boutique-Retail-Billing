@@ -16,7 +16,14 @@
         <link href="<?php echo URL::to('/');?>/styles/AdminLTE.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo URL::to('/');?>/assets/dataTables/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo URL::to('/');?>/assets/dataTables/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
-        @yield('StyleIncludes')
+        <?php 
+            if(isset($cssIncludes)) {
+                foreach($cssIncludes as $style){
+                    $fileInfo = Config::Get('Includes.styles.'.$style);
+                    echo '<link href="'.$fileInfo['file'].'" rel="stylesheet" type="text/css" />';
+                }
+            }
+        ?>
         <link href="<?php echo URL::to('/');?>/styles/style.css" rel="stylesheet" type="text/css" />
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -140,8 +147,16 @@
         <script src="<?php echo URL::to('/');?>/assets/bootsrap/js/bootstrap.min.js" type="text/javascript"></script>
         <script src="<?php echo URL::to('/');?>/assets/AdminLTE/app.js" type="text/javascript"></script>
         <script src="<?php echo URL::to('/');?>/assets/dataTables/js/jquery.dataTables.min.js" type="text/javascript"></script>
-
-        @yield('ScriptIncludes')
+        
+        <?php 
+            if(isset($scriptIncludes)) {
+                foreach($scriptIncludes as $script){
+                    $fileInfo = Config::Get('Includes.scripts.'.$script);
+                    echo '<script src="'.$fileInfo['file'].'"  type="text/javascript"></script>';
+                }
+            }
+        ?>
         <script type="text/javascript" src="<?php echo base_url();?>/assets/dataTables/bootstrap/3/dataTables.bootstrap.js"></script>
+        
     </body>
 </html>

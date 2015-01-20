@@ -18,6 +18,10 @@
                     <div class="box">
                                 
                         <div class="box-body table-responsive">
+                            <h3>
+                                <button class="btn btn-primary btn-sm" id="btnNewProperty"> + New Property</button>
+                            </h3>
+                            <div class="clear"></div>
                             <table id="tblProperties" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
@@ -35,11 +39,6 @@
                 </section><!-- /.content -->
                 
  @stop        
-
-@section('ScriptIncludes')
-    <script type="text/javascript" src="<?php echo base_url();?>/scripts/properties.js"></script>
-    
-@stop
 
 @section('StyleIncludes')
     
