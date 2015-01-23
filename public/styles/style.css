@@ -7,3 +7,13 @@
 table.dataTable.no-footer{border-bottom: 0;}
 #cboxOverlay{background: none;}
 .billingModal #cboxContent{/*border: 1px solid;*/}
+
+#cboxLoadedContent{margin-top:28px;margin-bottom:0;}
+.billingDefault .box.box-primary{border-top: none !important;}
+.billingDefault #cboxTopCenter, .billingDefault #cboxBottomCenter, .billingDefault #cboxMiddleLeft, .billingDefault #cboxMiddleRight,
+.billingDefault #cboxTopLeft, .billingDefault #cboxTopRight, .billingDefault #cboxBottomLeft, .billingDefault #cboxBottomRight{background: none;}
+
+.billingDefault #cboxContent{border: 4px solid #3c8dbc !important; border-radius: 5px; overflow: visible;}
+.billingDefault#colorbox  #cboxClose{top:0; right:0}
+#cboxOverlay{background-color: #333333;}
+.optionRow{margin-bottom: 7px;}

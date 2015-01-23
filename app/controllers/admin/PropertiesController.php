@@ -15,7 +15,6 @@ class PropertiesController extends \BaseController {
 		$this->data['title'] = 'properties';
 		$this->data['scriptIncludes'] = array('colorbox','properties');
 		$this->data['cssIncludes'] = array('colorbox');
-		$includes =	array('properties','colorbox');
 		return View::make('admin.properties.properties',$this->data);
 	}
 
@@ -39,6 +38,11 @@ class PropertiesController extends \BaseController {
 		
 		echo json_encode($dtData);
 		exit;
-		
+	}
+
+	public function createNewProperty()
+	{
+		$this->data['scriptIncludes'] = array('add_property');
+		return View::make('admin.properties.new_property',$this->data);
 	}
 }
