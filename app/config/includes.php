@@ -3,6 +3,8 @@
 return array(
         'scripts'=>array('colorbox'		=>
         							array('file'=>base_url().'/assets/colorbox/jquery.colorbox-min.js'),
+        				 'validator'		=>
+        							array('file'=>base_url().'/assets/validator/jquery.validate.min.js'),
         				 'properties'	=>
         				 			array('file'=>base_url().'/scripts/properties/properties.js'),
         				 'add_property'	=>

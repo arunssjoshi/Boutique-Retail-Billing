@@ -42,7 +42,11 @@ class PropertiesController extends \BaseController {
 
 	public function createNewProperty()
 	{
-		$this->data['scriptIncludes'] = array('add_property');
+		$this->data['scriptIncludes'] = array('validator', 'add_property');
 		return View::make('admin.properties.new_property',$this->data);
+	}
+
+	public function saveNewProperty(){
+		var_dump($_POST);
 	}
 }

@@ -12,8 +12,9 @@ var properties = function () {
         },
         registerEvents: function(){
         	$('#btnNewProperty').colorbox({iframe:true,className:'billingDefault',href:function(){return $(this).attr('rel');},
-                                           innerWidth:500,innerHeight:355,
-                                           onComplete:function(){parent.$.fn.colorbox.resize({innerHeight:$('.content').height()+60});}});
+                                           innerWidth:500,innerHeight:355, trapFocus:true,
+                                           onComplete:function(){parent.$.fn.colorbox.resize({innerHeight:$('.content').height()+60});
+                                                                $('#property').focus();}});
         	
         }
     };

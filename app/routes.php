@@ -40,6 +40,7 @@ Route::group(array('before' => 'auth'), function()
     	Route::any('admin/properties', array( 'uses' => 'PropertiesController@index'));
     	Route::any('admin/properties/properties.json', array( 'uses' => 'PropertiesController@getPropertiesJson'));
     	Route::any('admin/properties/new', array( 'uses' => 'PropertiesController@createNewProperty'));
+    	Route::any('admin/properties/save_new_property', array( 'uses' => 'PropertiesController@saveNewProperty'));
     	#------------------------------END PROPERTIES--------------------------------#
 
     	Route::any('admin/batch', array( 'uses' => 'BatchController@index'));
