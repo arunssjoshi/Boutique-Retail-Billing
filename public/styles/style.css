@@ -18,3 +18,6 @@ table.dataTable.no-footer{border-bottom: 0;}
 #cboxOverlay{background-color: #333333;}
 .optionRow{margin-bottom: 7px;}
 label.error{color:red; font-weight: normal;}
+.clear{clear:both !important;}
+.softHide{display: none;}
+.noMarginBottom{margin-bottom: 0;}

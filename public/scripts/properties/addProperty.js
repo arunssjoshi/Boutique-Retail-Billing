@@ -13,7 +13,7 @@ var addProperty = function () {
                 }).length;
                 if(totalUnfilledRowsCount == 0) {
                     $('#optionWrap').append($('#optionHtml').html());
-                    parent.$.fn.colorbox.resize({innerHeight:$('.content').height()+60});
+                    parent.$.fn.colorbox.resize({innerHeight:$('.content').height()+40});
                 }
             });
 
@@ -35,14 +35,22 @@ var addProperty = function () {
                         required: "Property required",
                     }
                 },
+                invalidHandler: function(form, validator){
+                    parent.$.fn.colorbox.resize({innerHeight:$('.content').height()+80});
+                },
                 submitHandler: function(form) {
-                    $.post( baseUrl+'/admin/properties/save_new_property', 
-                        $("#frmNewProperty").serialize())
-                        .done(function( data ) {
-                        alert( "Data Loaded: " + data );
-                    });
+                    $('#btnPropertySave-error').html('').hide()
+                    $.post( baseUrl+'/admin/properties/new', $("#frmNewProperty").serialize(), function( response ) {
+                        if(response.status) {
+                            parent.properties.updateDT();
+                            parent.$.fn.colorbox.close();
+                        } else {
+                            $('#btnPropertySave-error').html(response.message).show();
+                        }
+                    }, "json");
                 }
             });
+
             $.validator.messages.required = 'Option required';
             jQuery.validator.addClassRules( {
                 txtPropertyOption:{

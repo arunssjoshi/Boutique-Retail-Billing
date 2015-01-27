@@ -18,4 +18,9 @@ function getdataTableFilter()
 	$dtInput['limit']			= 	isset($post['length'])?$post['length']:Config::get('billing.page_limit');
 	return $dtInput;
 }
+
+function getNow()
+{
+	return date('Y-m-d h:i:s');
+}
 ?>

@@ -1,7 +1,7 @@
 @extends('layout.admin.default')
 @section('content')
                 <!-- Content Header (Page header) -->
-                <section class="content-header">
+                <section class="content-header"><button id="btnTEzxt"> ddd</button>
                     <h1>
                         Properties
                     </h1>

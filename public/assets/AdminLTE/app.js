@@ -685,6 +685,7 @@ $(window).load(function() {
  * http://benalman.com/about/license/
  */
 (function($, h, c) {
+    return;
     var a = $([]), e = $.resize = $.extend($.resize, {}), i, k = "setTimeout", j = "resize", d = j + "-special-event", b = "delay", f = "throttleWindow";
     e[b] = 250;
     e[f] = true;

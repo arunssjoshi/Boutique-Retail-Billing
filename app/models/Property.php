@@ -11,10 +11,10 @@ class Property extends Eloquent
         //$subQuery .=   ($notification_id != 0 )? " AND n.id='$notification_id'":""
         $sortField   = $sortColumns[$dtFilter['sortField']];
         $sortDir     = $dtFilter['sortDir'];
-        $query =    "SELECT SQL_CALC_FOUND_ROWS   p.id AS property_id, p.property, GROUP_CONCAT(pv.value ORDER BY pv.id SEPARATOR ', ') AS property_options
+        $query =    "SELECT SQL_CALC_FOUND_ROWS   p.id AS property_id, p.property, GROUP_CONCAT(po.option ORDER BY po.id SEPARATOR ', ') AS property_options
                     FROM property p 
-                    LEFT JOIN property_value pv ON p.id=pv.property_id 
-                    WHERE p.status='Active' AND pv.status='Active'
+                    LEFT JOIN property_option po ON p.id=po.property_id 
+                    WHERE p.status='Active' AND po.status='Active'
                     GROUP BY p.id
                     ORDER BY $sortField  $sortDir " ;
                     //die($query);
@@ -28,5 +28,20 @@ class Property extends Eloquent
 
         return $result;
 
+    }
+
+    public function createProperty($propertyInput)
+    {
+        return DB::table('property')->insertGetId(
+            $propertyInput
+        );
+    }
+
+    public function createPropertyOptions($propertyOptionsInput)
+    {
+        
+        DB::table('property_option')->insert(
+            $propertyOptionsInput
+        );
     }
 }
