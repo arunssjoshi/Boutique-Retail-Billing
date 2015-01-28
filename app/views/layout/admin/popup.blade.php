@@ -11,7 +11,7 @@
         <link href="<?php echo URL::to('/');?>/assets/bootsrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo URL::to('/');?>/assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
         <!-- Ionicons -->
-        
+        <script src="<?php echo URL::to('/');?>/assets/jquery/jquery-2.1.3.min.js"></script>
         <!-- Theme style -->
         <link href="<?php echo URL::to('/');?>/styles/AdminLTE.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo URL::to('/');?>/assets/dataTables/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
@@ -36,7 +36,7 @@
     <body class="skin-blue">
         @yield('content')
         <script type="text/javascript">var baseUrl = '<?php echo base_url();?>';</script>
-        <script src="<?php echo URL::to('/');?>/assets/jquery/jquery-2.1.3.min.js"></script>
+        
         <script src="<?php echo URL::to('/');?>/assets/bootsrap/js/bootstrap.min.js" type="text/javascript"></script>
         <script src="<?php echo URL::to('/');?>/assets/AdminLTE/app.js" type="text/javascript"></script>
         <script src="<?php echo URL::to('/');?>/assets/dataTables/js/jquery.dataTables.min.js" type="text/javascript"></script>
