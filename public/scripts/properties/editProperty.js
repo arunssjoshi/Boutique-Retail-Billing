@@ -4,6 +4,7 @@ var editProperty = function () {
         init: function () {
             this.registerEvents();
             this.initValidation();
+            parent.$.fn.colorbox.resize({innerHeight:parseInt($('#hdntotalOptions').val())*35+295});
         },
         registerEvents: function(){
             $('#optionWrap').append($('#optionHtml').html());
@@ -17,14 +18,16 @@ var editProperty = function () {
                 }
             });
 
-            $(document).on('click','.btnDeleteOption',function(){
+            $(document).on('click','.btnDeleteOption',function(e){
+                e.preventDefault();
                 if ($('#optionWrap .optionRow').length > 1) {
-                    $(this).parents('#optionWrap .optionRow').remove();
+                    $(this).parents('#optionWrap .optionRow').find('.txtPropertyOption').val('');
+                    $(this).parents('#optionWrap .optionRow').hide();
                 }
             });
         },
         initValidation: function(){
-            var newPropertyValidator = $("#frmNewProperty").validate({
+            var newPropertyValidator = $("#frmEditProperty").validate({
                 rules: {
                     property: {
                         required: true
@@ -40,20 +43,43 @@ var editProperty = function () {
                 },
                 submitHandler: function(form) {
                     $('#btnPropertySave-error').html('').hide()
-                    $.post( baseUrl+'/admin/properties/new', $("#frmNewProperty").serialize(), function( response ) {
-                        if(response.status) {
-                            parent.properties.updateDT();
-                            parent.$.fn.colorbox.close();
-                        } else {
-                            $('#btnPropertySave-error').html(response.message).show();
+                    var propertyoptionId;
+                    var propertyOptions =   [];
+                    var newOptions      =   [];
+                    $('.existingOption').each(function(){
+                        if( $.trim($(this).attr('rel'))!='' ){
+                            propertyoptionId = $(this).attr('rel');
                         }
-                    }, "json");
-                }
+                        propertyOptions.push({
+                                            propertyoptionId:propertyoptionId,
+                                            value:$(this).val()
+                                        });
+                    });
+                    $('.newOption').each(function(){
+                        if( $.trim($(this).val())!='' ){
+                            newOptions.push({ value:$(this).val() });
+                        }
+                    });
+
+
+                    console.log(propertyOptions);
+                    console.log(newOptions);
+                    $.post( baseUrl+'/admin/properties/edit/'+$('#hdnPropertyId').val(), 
+                        {existingOptions:JSON.stringify(propertyOptions), newOptions:JSON.stringify(newOptions),property:$('#property').val()}, 
+                        function( response ) {
+                            if(response.status) {
+                                parent.properties.updateDT();
+                                parent.$.fn.colorbox.close();
+                            } else {
+                                $('#btnPropertySave-error').html(response.message).show();
+                            }
+                        }, "json");
+                    }
             });
 
             $.validator.messages.required = 'Option required';
             jQuery.validator.addClassRules( {
-                txtPropertyOption:{
+                txtPropertyOptiond:{
                     required: true,
                     minlength: 1,
                 }   

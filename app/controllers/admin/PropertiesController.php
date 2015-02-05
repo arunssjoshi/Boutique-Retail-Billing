@@ -3,7 +3,7 @@
  * @Author: Arun S S <arunssjoshi@gmail.com>
  * @Date:   2015-01-11 10:15:15
  * @Last Modified by:   Arun S S <arunssjoshi@gmail.com>
- * @Last Modified time: 2015-01-28 10:49:31
+ * @Last Modified time: 2015-02-05 10:19:30
  */
 
 class PropertiesController extends \BaseController {
@@ -40,7 +40,8 @@ class PropertiesController extends \BaseController {
 			foreach($properties['properties'] as $property){
 				$dtData['data'][] = array($property->property,
 										  $property->property_options,
-										  '<a href="javascript:void(0);" class="lnkPropertyEdit" rel="'.admin_url().'/properties/edit/'.$property->property_id.'"><small class="badge  bg-aqua"><i class="fa fa-pencil"></i> Edit</small></a>');
+										  '<a href="javascript:void(0);" class="lnkPropertyEdit" rel="'.admin_url().'/properties/edit/'.$property->property_id.'"><small class="badge  bg-aqua"><i class="fa fa-pencil"></i> Edit</small></a> 
+										   <a href="javascript:void(0);" class="lnkPropertyDelete" rel="'.admin_url().'/properties/delete/'.$property->property_id.'"><small class="badge  bg-aqua"><i class="fa fa-trash"></i> Delete</small></a>');
 			}
 		}
 		
@@ -105,47 +106,75 @@ class PropertiesController extends \BaseController {
 	public function editProperty($propertyId=0){
 
 		$propertyObj =	new Property();
-		return formatMessage('Invalid Request', 'danger', array('resize_popup'=>true));
+		
 		
 		if (empty($propertyId))
-			die("Invalid Request");
+			return formatMessage('Invalid Request', 'danger', array('resize_popup'=>true));
 
 		$properties  	= 	$propertyObj->getPropertiesDetails(array('propertyId'=>$propertyId));
 		if($properties['total_rows']==0)
-			die("Property not found");
+			return formatMessage('Property not found', 'danger', array('resize_popup'=>true));
+		$this->data['property_info'] = $properties['properties'][0];
+		$this->data['property_options'] = $propertyObj->getPropertyOptions($propertyId);
+		
 		if (Request::ajax() && Request::isMethod('post'))
 		{
-
 			$property = Input::get('property');
 			
-			$propertyOptions = Input::get('option');
-			if ($property == '' && sizeof($propertyOptions)<1) {
+			$existingOptions 	= json_decode(Input::get('existingOptions'),true);
+			$newOptions 		= json_decode(Input::get('newOptions'),true);
+			if ($property == '' && sizeof($propertyOptions)<1  && sizeof($newOptions)<1) {
 				echo json_encode(array('status'=>false,'message'=>'Please enter the required fields.'));
 				exit;
 			}
-			$propertyInput['property']	=	$property;
-			$propertyInput['status']	=	'Active';
-			$propertyInput['sort_order']	=	1;
-			$propertyInput['created_by']	=	Auth::user()->id;
-			$propertyInput['created_at']	=	getNow();
+			$propertyData				=	Property::find($propertyId);
+			if ($propertyData->id){
+				$propertyData->property		=	$property;
+				$propertyData->updated_by	=	Auth::user()->id;
+				$propertyData->updated_at	=	getNow();
 
-			$newPropertyId = $propertyObj->createProperty($propertyInput);
+				$propertyData->save();
+			}
+			if(!empty($propertyData->id)) {
 
-			if($newPropertyId > 0) {
-				$propertyOptionsInput = array();
-				foreach ($propertyOptions as $option){
-					if(trim($option)=='') {
-						continue;
+				if(sizeof($newOptions) > 0) {
+					//$newOptions array will contain new options to be inserted.
+					$propertyOptionsInput = array();
+					foreach ($newOptions as $option){
+						if(trim($option['value'])=='') {
+							continue;
+						}
+						$optionInput['property_id']	=	$propertyData->id;
+						$optionInput['option']		=	$option['value'];
+						$optionInput['status']		=	'Active';
+						$optionInput['created_by']	=	Auth::user()->id;
+						$optionInput['created_at']	=	getNow();
+						$propertyOptionsInput[] = $optionInput;
 					}
-
-					$optionInput['property_id']	=	$newPropertyId;
-					$optionInput['option']		=	$option;
-					$optionInput['status']		=	'Active';
-					$optionInput['created_by']	=	Auth::user()->id;
-					$optionInput['created_at']	=	getNow();
-					$propertyOptionsInput[] = $optionInput;
+					$propertyObj->createPropertyOptions($propertyOptionsInput);
 				}
-				$propertyObj->createPropertyOptions($propertyOptionsInput);
+				//$existingOptions array will contains the existing array of values. Now check each value in the $existingOptions array and
+				//check the value is null, if null delete that row else update the same row
+				foreach ($existingOptions as $option){
+
+					$propertyOptionId 	=	$option['propertyoptionId'];
+					$propertyOptionObj = 	PropertyOption::find($propertyOptionId);
+
+					if(!empty($propertyOptionObj->id)) {
+						$propertyOptionObj->updated_by	=	Auth::user()->id;
+						$propertyOptionObj->updated_at	=	getNow();
+						if(trim($option['value'])=='') {
+							$propertyOptionObj->delete();
+							continue;
+						} else {
+							
+							$propertyOptionObj->option		=	$option['value'];
+							$propertyOptionObj->save();
+						}
+					}
+					
+				}
+
 				echo json_encode(array('status'=>true,'message'=>''));
 				exit;
 			}	else {
