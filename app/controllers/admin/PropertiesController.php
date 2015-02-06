@@ -3,7 +3,7 @@
  * @Author: Arun S S <arunssjoshi@gmail.com>
  * @Date:   2015-01-11 10:15:15
  * @Last Modified by:   Arun S S <arunssjoshi@gmail.com>
- * @Last Modified time: 2015-02-05 10:19:30
+ * @Last Modified time: 2015-02-06 10:45:48
  */
 
 class PropertiesController extends \BaseController {
@@ -178,12 +178,49 @@ class PropertiesController extends \BaseController {
 				echo json_encode(array('status'=>true,'message'=>''));
 				exit;
 			}	else {
-				echo json_encode(array('status'=>false,'message'=>'Cannot save your data now.'));
+				echo json_encode(array('status'=>false,'message'=>'Invalid Property'));
 				exit;
 			}
 			exit;
 		}
 		$this->data['scriptIncludes'] = array('validator', 'edit_property');
 		return View::make('admin.properties.edit_property',$this->data);
+	}
+
+	function deleteProperty($propertyId=0){
+
+		$propertyObj =	new Property();
+		
+		
+		if (empty($propertyId))
+			return formatMessage('Invalid Request', 'danger', array('resize_popup'=>true));
+
+		$properties  	= 	$propertyObj->getPropertiesDetails(array('propertyId'=>$propertyId));
+		if($properties['total_rows']==0)
+			return formatMessage('Property not found', 'danger', array('resize_popup'=>true));
+		$this->data['property_info'] = $properties['properties'][0];
+		$this->data['propertyId'] 		=	 $propertyId;
+		if (Request::ajax() && Request::isMethod('post'))
+		{
+			
+			$propertyData				=	Property::find($propertyId);
+			if ($propertyData->id){
+				$propertyData->status		=	'Deleted';
+				$propertyData->updated_by	=	Auth::user()->id;
+				$propertyData->updated_at	=	getNow();
+
+				$propertyData->save();
+			}
+			if(!empty($propertyData->id)) {
+				echo json_encode(array('status'=>true,'message'=>''));
+				exit;
+			}	else {
+				echo json_encode(array('status'=>false,'message'=>'Invalild Property'));
+				exit;
+			}
+			exit;
+		}
+		$this->data['scriptIncludes'] = array( 'colorbox','properties');
+		return View::make('admin.properties.delete_property',$this->data);
 	}
 }

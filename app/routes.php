@@ -41,6 +41,7 @@ Route::group(array('before' => 'auth'), function()
     	Route::any('admin/properties/properties.json', array( 'uses' => 'PropertiesController@getPropertiesJson'));
     	Route::any('admin/properties/new', array( 'uses' => 'PropertiesController@createNewProperty'));
     	Route::any('admin/properties/edit/{id}', array( 'uses' => 'PropertiesController@editProperty'));
+    	Route::any('admin/properties/delete/{id}', array( 'uses' => 'PropertiesController@deleteProperty'));
     	#------------------------------END PROPERTIES--------------------------------#
 
     	Route::any('admin/batch', array( 'uses' => 'BatchController@index'));

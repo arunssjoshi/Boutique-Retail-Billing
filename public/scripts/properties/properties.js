@@ -22,16 +22,30 @@ var properties = function () {
           dtProperties.fnDraw();
         },
 
+        deleteProperty: function() {
+            $.post( baseUrl+'/admin/properties/delete/'+$('#hdnPropertyId').val(), 
+                {}, 
+                function( response ) {
+                    if(response.status) {
+                        parent.properties.updateDT();
+                        parent.$.fn.colorbox.close();
+                    } else {
+                        $('#btnPropertySave-error').html(response.message).show();
+                    }
+                }, "json");
+        },
         registerDtLoadedEvents: function() {
             $('.lnkPropertyEdit').colorbox({iframe:true,className:'billingDefault',href:function(){return $(this).attr('rel');},
                                            innerWidth:500,innerHeight:370, trapFocus:true, 
                                            onComplete:function(){
                                                                 $('#property').focus();}});
             $('.lnkPropertyDelete').colorbox({iframe:true,className:'billingDefault',href:function(){return $(this).attr('rel');},
-                                           innerWidth:500,innerHeight:370, trapFocus:true,
-                                           onComplete:function(){parent.$.fn.colorbox.resize({innerHeight:270});
-                                                                $('#property').focus();}}
+                                           innerWidth:500,innerHeight:205, 
+                                           onComplete:function(){
+                                           
+                                           }}
                                             );
+            
 
         },
         registerEvents: function(){
@@ -49,4 +63,3 @@ var properties = function () {
     };
 }();
 properties.init();
-//innerHeight:$('.content .row').height()+75
