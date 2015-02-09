@@ -3,7 +3,7 @@
  * @Author: Arun S S <arunssjoshi@gmail.com>
  * @Date:   2015-01-11 10:15:15
  * @Last Modified by:   Arun S S <arunssjoshi@gmail.com>
- * @Last Modified time: 2015-02-06 10:45:48
+ * @Last Modified time: 2015-02-09 10:07:18
  */
 
 class PropertiesController extends \BaseController {
@@ -164,7 +164,8 @@ class PropertiesController extends \BaseController {
 						$propertyOptionObj->updated_by	=	Auth::user()->id;
 						$propertyOptionObj->updated_at	=	getNow();
 						if(trim($option['value'])=='') {
-							$propertyOptionObj->delete();
+							$propertyOptionObj->status = 'Deleted';
+							$propertyOptionObj->save();
 							continue;
 						} else {
 							
