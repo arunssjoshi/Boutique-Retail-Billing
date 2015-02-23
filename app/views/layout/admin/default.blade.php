@@ -121,7 +121,7 @@
                                 <i class="fa fa-group"></i> <span>Batch</span> 
                             </a>
                         </li>
-                        <li>
+                        <li class='<?php echo ($menu == 'shops')?" active":"";?>' >
                             <a href="<?php echo base_url();?>/admin/shops">
                                 <i class="fa fa-shopping-cart"></i> <span>Shops</span> 
                             </a>

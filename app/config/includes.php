@@ -11,6 +11,10 @@ return array(
         				 			array('file'=>base_url().'/scripts/properties/addProperty.js'),
         				 'edit_property'	=>
         				 			array('file'=>base_url().'/scripts/properties/editProperty.js'),
+                         'shops'   =>
+                                    array('file'=>base_url().'/scripts/shops/shops.js'),    
+                         'add_shop' =>
+                                    array('file'=>base_url().'/scripts/shops/addShop.js'),                  
         				 ),
         'styles'=>array('colorbox'		=>
         							array('file'=>base_url().'/assets/colorbox/colorbox.css','type'=>'media'),

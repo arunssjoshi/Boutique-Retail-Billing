@@ -36,7 +36,8 @@ Route::group(array('before' => 'auth'), function()
     	Route::any('admin/dashboard', array( 'uses' => 'DashboardController@dashboard'));
     	Route::any('admin/products', array( 'uses' => 'ProductController@index'));
     	Route::any('admin/categories', array( 'uses' => 'CategoryController@index'));
-    	#------------------------------BEGIN PROPERTIES-----------------------------------#
+    	
+        #------------------------------BEGIN PROPERTIES-----------------------------------#
     	Route::any('admin/properties', array( 'uses' => 'PropertiesController@index'));
     	Route::any('admin/properties/properties.json', array( 'uses' => 'PropertiesController@getPropertiesJson'));
     	Route::any('admin/properties/new', array( 'uses' => 'PropertiesController@createNewProperty'));
@@ -44,8 +45,16 @@ Route::group(array('before' => 'auth'), function()
     	Route::any('admin/properties/delete/{id}', array( 'uses' => 'PropertiesController@deleteProperty'));
     	#------------------------------END PROPERTIES--------------------------------#
 
+        #------------------------------BEGIN PROPERTIES-----------------------------------#
+        Route::any('admin/shops', array( 'uses' => 'ShopsController@index'));
+        Route::any('admin/shops/shops.json', array( 'uses' => 'ShopsController@getShopsJson'));
+        Route::any('admin/shops/new', array( 'uses' => 'ShopsController@createNewShop'));
+        Route::any('admin/shops/edit/{id}', array( 'uses' => 'ShopsController@editShop'));
+        Route::any('admin/shops/delete/{id}', array( 'uses' => 'ShopsController@deleteShop'));
+        #------------------------------END PROPERTIES--------------------------------#
+
     	Route::any('admin/batch', array( 'uses' => 'BatchController@index'));
-    	Route::any('admin/shops', array( 'uses' => 'ShopsController@index'));
+    	
     	Route::any('admin/reports', array( 'uses' => 'ReportsController@index'));
     } else {
    		return Redirect::to('login');
