@@ -51,6 +51,7 @@ Route::group(array('before' => 'auth'), function()
         Route::any('admin/shops/new', array( 'uses' => 'ShopsController@createNewShop'));
         Route::any('admin/shops/edit/{id}', array( 'uses' => 'ShopsController@editShop'));
         Route::any('admin/shops/delete/{id}', array( 'uses' => 'ShopsController@deleteShop'));
+        Route::any('admin/shops/citysuggestions/{query}', array( 'uses' => 'ShopsController@getCitySuggestions'));
         #------------------------------END PROPERTIES--------------------------------#
 
     	Route::any('admin/batch', array( 'uses' => 'BatchController@index'));

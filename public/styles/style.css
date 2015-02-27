@@ -22,3 +22,24 @@ label.error{color:red; font-weight: normal;}
 .softHide{display: none;}
 .noMarginBottom{margin-bottom: 0;}
 .marginBottom10{margin-bottom: 10px;}
+
+.twitter-typeahead{width: 100%;}
+#city, .tt-hint {
+	font-size: 14px;
+	height: 45px;
+	line-height: 30px;
+	outline: medium none;
+	padding: 8px 12px;
+}
+
+.tt-dropdown-menu {
+	width: 400px;
+	margin-top: 5px;
+	padding: 8px 12px;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	font-size: 14px;
+	color: #111;
+	background-color: #F1F1F1;
+}

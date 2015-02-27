@@ -9,9 +9,9 @@ class Shop extends Eloquent
 
         $sortColumns =   array('0'=>'s.shop', '1'=>'s.city');
 
-        $subQuery    =   (isset($filter['propertyId'] ) && $filter['propertyId'] > 0)? " AND property_id = ".$filter['propertyId']:"";
-        $subQuery    .=   ((isset($filter['search']) && $filter['search']!='' ))? " AND (p.property LIKE '".$filter['search']."%' OR 
-                                                            po.option LIKE '".$filter['search']."%')":"";
+        $subQuery    =   (isset($filter['shopId'] ) && $filter['shopId'] > 0)? " AND id = ".$filter['shopId']:"";
+        $subQuery    .=   ((isset($filter['search']) && $filter['search']!='' ))? " AND (s.shop LIKE '".$filter['search']."%' OR 
+                                                            s.city LIKE '".$filter['search']."%')":"";
 
         $filter['sortField']    =   isset($filter['sortField'])?$filter['sortField']:0;
 
@@ -37,6 +37,13 @@ class Shop extends Eloquent
     }
 
     public function createShop($shopInput)
+    {
+        return DB::table('shop')->insertGetId(
+            $shopInput
+        );
+    }
+
+    public function updateShop($shopInput)
     {
         return DB::table('shop')->insertGetId(
             $shopInput
@@ -69,10 +76,9 @@ class Shop extends Eloquent
 
     }
 
-    public function createPropertyOptions($propertyOptionsInput)
+
+    public function getCitySuggestions($city='')
     {
-        DB::table('property_option')->insert(
-            $propertyOptionsInput
-        );
+        return DB::table('shop')->distinct('city')->where('city','like',$city.'%')->get();
     }
 }

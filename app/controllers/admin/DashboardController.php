@@ -1,7 +1,10 @@
 <?php
 
 class DashboardController extends BaseController {
-
+	function __construct()
+	{
+		$this->data['menu'] = 'dashboard';
+	}
 	/*
 	|--------------------------------------------------------------------------
 	| Default Home Controller
@@ -17,7 +20,7 @@ class DashboardController extends BaseController {
 
 	public function dashboard()
 	{
-		return View::make('admin.dashboard.dashboard');
+		return View::make('admin.dashboard.dashboard',$this->data);
 	}
 
 }

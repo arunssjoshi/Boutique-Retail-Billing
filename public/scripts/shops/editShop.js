@@ -1,17 +1,18 @@
-var addShop = function () {
+var editShop = function () {
     return {
         init: function () {
             this.registerEvents();
             this.initValidation();
         },
         registerEvents: function(){
+            
             $('#city').typeahead({
                 name: 'city',
                 remote : baseUrl+'/admin/shops/citysuggestions/%QUERY'
             });
         },
         initValidation: function(){
-            var newPropertyValidator = $("#frmNewShop").validate({
+            var newPropertyValidator = $("#frmEditShop").validate({
                 rules: {
                     shop: {
                         required: true
@@ -32,8 +33,8 @@ var addShop = function () {
                     
                 },
                 submitHandler: function(form) {
-                    $('#btnPropertySave-error').html('').hide()
-                    $.post( baseUrl+'/admin/shops/new', $("#frmNewShop").serialize(), function( response ) {
+                    
+                    $.post( baseUrl+'/admin/shops/edit/'+$('#hdnShopId').val(), $("#frmEditShop").serialize(), function( response ) {
                         if(response.status) {
                             parent.shops.updateDT();
                             parent.$.fn.colorbox.close();
@@ -46,4 +47,4 @@ var addShop = function () {
         }
     };
 }();
-addShop.init();
+editShop.init();

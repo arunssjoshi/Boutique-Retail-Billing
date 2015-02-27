@@ -96,7 +96,7 @@
                     <?php $menu = isset($menu)?$menu:''; ?>
                     <!-- sidebar menu: : style can be found in sidebar.less -->
                     <ul class="sidebar-menu">
-                        <li>
+                        <li class='<?php echo ($menu == 'dashboard')?" active":"";?>' >
                             <a href="<?php echo base_url();?>/admin/dashboard">
                                 <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                             </a>

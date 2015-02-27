@@ -3,7 +3,7 @@
  * @Author: Arun S S <arunssjoshi@gmail.com>
  * @Date:   2015-01-11 10:15:15
  * @Last Modified by:   Arun S S <arunssjoshi@gmail.com>
- * @Last Modified time: 2015-02-09 10:07:18
+ * @Last Modified time: 2015-02-27 09:50:26
  */
 
 class PropertiesController extends \BaseController {
@@ -19,7 +19,7 @@ class PropertiesController extends \BaseController {
 	public function index()
 	{
 		$this->data['title'] = 'properties';
-		$this->data['scriptIncludes'] = array('colorbox','properties');
+		$this->data['scriptIncludes'] = array('colorbox','properties_js');
 		$this->data['cssIncludes'] = array('colorbox');
 		return View::make('admin.properties.properties',$this->data);
 	}
@@ -96,7 +96,7 @@ class PropertiesController extends \BaseController {
 			}
 			exit;
 		}
-		$this->data['scriptIncludes'] = array('validator', 'add_property');
+		$this->data['scriptIncludes'] = array('validator', 'add_property_js');
 		return View::make('admin.properties.new_property',$this->data);
 	}
 
@@ -184,7 +184,7 @@ class PropertiesController extends \BaseController {
 			}
 			exit;
 		}
-		$this->data['scriptIncludes'] = array('validator', 'edit_property');
+		$this->data['scriptIncludes'] = array('validator', 'edit_property_js');
 		return View::make('admin.properties.edit_property',$this->data);
 	}
 
@@ -221,7 +221,7 @@ class PropertiesController extends \BaseController {
 			}
 			exit;
 		}
-		$this->data['scriptIncludes'] = array( 'colorbox','properties');
+		$this->data['scriptIncludes'] = array( 'colorbox','properties_js');
 		return View::make('admin.properties.delete_property',$this->data);
 	}
 }

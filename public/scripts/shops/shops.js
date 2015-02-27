@@ -22,21 +22,21 @@ var shops = function () {
           dtShops.fnDraw();
         },
 
-        deleteProperty: function() {
-            $.post( baseUrl+'/admin/properties/delete/'+$('#hdnPropertyId').val(), 
+        deleteShop: function() {
+            $.post( baseUrl+'/admin/shops/delete/'+$('#hdnShopId').val(), 
                 {}, 
                 function( response ) {
                     if(response.status) {
-                        parent.properties.updateDT();
+                        parent.shops.updateDT();
                         parent.$.fn.colorbox.close();
                     } else {
-                        $('#btnPropertySave-error').html(response.message).show();
+                        $('#btnShopSave-error').html(response.message).show();
                     }
                 }, "json");
         },
         registerDtLoadedEvents: function() {
             $('.lnkPropertyEdit').colorbox({iframe:true,className:'billingDefault',href:function(){return $(this).attr('rel');},
-                                           innerWidth:500,innerHeight:370, trapFocus:true, 
+                                           innerWidth:500,innerHeight:240, 
                                            onComplete:function(){
                                                                 $('#property').focus();}});
             $('.lnkPropertyDelete').colorbox({iframe:true,className:'billingDefault',href:function(){return $(this).attr('rel');},

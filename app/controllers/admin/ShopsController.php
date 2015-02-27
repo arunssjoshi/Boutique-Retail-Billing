@@ -13,7 +13,7 @@ class ShopsController extends \BaseController {
 	public function index()
 	{
 		$this->data['title'] = 'Shops';
-		$this->data['scriptIncludes'] = array('colorbox','shops');
+		$this->data['scriptIncludes'] = array('colorbox','shops_js');
 		$this->data['cssIncludes'] = array('colorbox');
 		return View::make('admin.shops.shops',$this->data);
 	}
@@ -77,7 +77,98 @@ class ShopsController extends \BaseController {
 			}
 			exit;
 		}
-		$this->data['scriptIncludes'] = array('validator','typeahead', 'add_shop');
+		$this->data['scriptIncludes'] = array('validator','typehead', 'add_shop_js');
 		return View::make('admin.shops.new_shop',$this->data);
+	}
+
+	/**
+	 * Editing a shop. This page will be called through ajax on edit submit.
+	 */
+	public function editShop($shopId=0){
+
+		$shopObj =	new Shop();
+		
+		
+		if (empty($shopId))
+			return formatMessage('Invalid Request', 'danger', array('resize_popup'=>true));
+
+		$shops  	= 	$shopObj->getShopsDetails(array('shopId'=>$shopId));
+		if($shops['total_rows']==0)
+			return formatMessage('Shop not found', 'danger', array('resize_popup'=>true));
+		$this->data['shop_info'] = $shops['shops'][0];
+		//var_dump($this->data['shop_info']);
+		if (Request::ajax() && Request::isMethod('post'))
+		{
+			$shopData				=	Shop::find($shopId);
+
+			$shop = Input::get('shop');
+			$city = Input::get('city');
+			
+			if ($shop == '' || $city == '' ) {
+				echo json_encode(array('status'=>false,'message'=>'Please enter the required fields.'));
+				exit;
+			}
+
+			$shopData['shop']			=	$shop;
+			$shopData['city']			=	$city;
+			$shopData['updated_by']	=	Auth::user()->id;
+			$shopData['updated_at']	=	getNow();
+
+			$shopData->save();
+			echo json_encode(array('status'=>true,'message'=>''));
+			exit;
+		}
+		$this->data['scriptIncludes'] = array('validator', 'typehead', 'edit_shop_js');
+		return View::make('admin.shops.edit_shop',$this->data);
+	}
+
+
+	/**
+	 * Delete a shop. This page will be called through ajax.
+	 */
+	public function deleteShop($shopId=0){
+
+		$shopObj =	new Shop();
+		
+		
+		if (empty($shopId))
+			return formatMessage('Invalid Request', 'danger', array('resize_popup'=>true));
+
+		$shops  	= 	$shopObj->getShopsDetails(array('shopId'=>$shopId));
+		if($shops['total_rows']==0)
+			return formatMessage('Shop not found', 'danger', array('resize_popup'=>true));
+		$this->data['shop_info'] = $shops['shops'][0];
+		//var_dump($this->data['shop_info']);
+		if (Request::ajax() && Request::isMethod('post'))
+		{
+			$shopData				=	Shop::find($shopId);
+
+
+			$shopData['status']			=	'Deleted';
+			$shopData['updated_by']	=	Auth::user()->id;
+			$shopData['updated_at']	=	getNow();
+
+			$shopData->save();
+			echo json_encode(array('status'=>true,'message'=>''));
+			exit;
+		}
+		$this->data['scriptIncludes'] = array('colorbox', 'validator', 'typehead', 'edit_shop_js','shops_js');
+		return View::make('admin.shops.delete_shop',$this->data);
+	}
+
+	public function getCitySuggestions($city='')
+	{
+		
+		$shopObj =	new Shop();
+		$shops	=	$shopObj->getCitySuggestions($city);
+
+		if($shops) {
+			$city_json = array();
+			foreach($shops as $shop) {
+				$city_json[] = $shop->city;
+			}
+			echo json_encode($city_json);
+		}
+
 	}
 }
