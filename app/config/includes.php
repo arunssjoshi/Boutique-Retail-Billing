@@ -22,7 +22,14 @@ return array(
                          'add_shop_js' =>
                                     array('file'=>base_url().'/scripts/shops/addShop.js'),     
                          'edit_shop_js' =>
-                                    array('file'=>base_url().'/scripts/shops/editShop.js'),             
+                                    array('file'=>base_url().'/scripts/shops/editShop.js'),  
+
+                         'batch_js'   =>
+                                    array('file'=>base_url().'/scripts/batch/batch.js'),    
+                         'add_batch_js' =>
+                                    array('file'=>base_url().'/scripts/batch/addBatch.js'),     
+                         'edit_batch_js' =>
+                                    array('file'=>base_url().'/scripts/batch/editBatch.js'),              
         				 ),
         'styles'=>array('colorbox'		=>
         							array('file'=>base_url().'/assets/colorbox/colorbox.css','type'=>'media'),

@@ -54,7 +54,14 @@ Route::group(array('before' => 'auth'), function()
         Route::any('admin/shops/citysuggestions/{query}', array( 'uses' => 'ShopsController@getCitySuggestions'));
         #------------------------------END PROPERTIES--------------------------------#
 
+        #------------------------------BEGIN BATCH-----------------------------------#
     	Route::any('admin/batch', array( 'uses' => 'BatchController@index'));
+        Route::any('admin/batch/shops.json', array( 'uses' => 'BatchController@getBatchJson'));
+        Route::any('admin/batch/new', array( 'uses' => 'BatchController@createNewBatch'));
+        Route::any('admin/batch/edit/{id}', array( 'uses' => 'BatchController@editBatch'));
+        Route::any('admin/batch/delete/{id}', array( 'uses' => 'BatchController@deleteBatch'));
+        Route::any('admin/batch/citysuggestions/{query}', array( 'uses' => 'BatchController@getCitySuggestions'));
+        #------------------------------END BATCH-----------------------------------#
     	
     	Route::any('admin/reports', array( 'uses' => 'ReportsController@index'));
     } else {

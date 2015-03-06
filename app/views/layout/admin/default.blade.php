@@ -116,9 +116,9 @@
                                 <i class="fa fa-check-circle"></i> <span>Properties</span> 
                             </a>
                         </li>
-                        <li>
+                        <li class='<?php echo ($menu == 'batch')?" active":"";?>' >
                             <a href="<?php echo base_url();?>/admin/batch">
-                                <i class="fa fa-group"></i> <span>Batch</span> 
+                                <i class="fa fa-group"></i> <span>Batches</span> 
                             </a>
                         </li>
                         <li class='<?php echo ($menu == 'shops')?" active":"";?>' >
