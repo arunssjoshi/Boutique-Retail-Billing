@@ -7,7 +7,10 @@ return array(
         							array('file'=>base_url().'/assets/validator/jquery.validate.min.js'),
                          'typehead'     =>
                                     array('file'=>base_url().'/assets/bootsrap/js/typeahead.min.js'),
-
+                         'moment_js'     =>
+                                    array('file'=>base_url().'/assets/common/moment.min.js'),
+                         'datepicker_js'     =>
+                                    array('file'=>base_url().'/assets/datepicker/bootstrap-datetimepicker.js'),
 
 
         				 'properties_js'	=>
@@ -33,6 +36,8 @@ return array(
         				 ),
         'styles'=>array('colorbox'		=>
         							array('file'=>base_url().'/assets/colorbox/colorbox.css','type'=>'media'),
+                        'datepicker_css'     =>
+                                    array('file'=>base_url().'/assets/datepicker/bootstrap-datetimepicker.min.css','type'=>'media'),           
         				'properties'	=>
         							array('file'=>base_url().'/scripts/properties.js')),
 

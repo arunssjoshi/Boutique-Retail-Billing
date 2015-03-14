@@ -1,5 +1,5 @@
 var dtShops;
-var shops = function () {
+var batch = function () {
 
     return {
         init: function () {
@@ -11,7 +11,7 @@ var shops = function () {
         	dtShops = $('#tblShops').dataTable( {
                 "serverSide": true,
 		        "ajax": {
-                    url:baseUrl+'/admin/shops/shops.json',
+                    url:baseUrl+'/admin/batch/batch.json',
                     type:'POST'
                 },
                 "fnDrawCallback":this.registerDtLoadedEvents 
@@ -23,11 +23,11 @@ var shops = function () {
         },
 
         deleteShop: function() {
-            $.post( baseUrl+'/admin/shops/delete/'+$('#hdnShopId').val(), 
+            $.post( baseUrl+'/admin/batch/delete/'+$('#hdnShopId').val(), 
                 {}, 
                 function( response ) {
                     if(response.status) {
-                        parent.shops.updateDT();
+                        parent.batch.updateDT();
                         parent.$.fn.colorbox.close();
                     } else {
                         $('#btnShopSave-error').html(response.message).show();
@@ -49,14 +49,14 @@ var shops = function () {
 
         },
         registerEvents: function(){
-        	$('#btnNewShop').colorbox({iframe:true,className:'billingDefault',href:function(){return $(this).attr('rel');},
-                                           innerWidth:500,innerHeight:245, trapFocus:true,
+        	$('#btnNewBatch').colorbox({iframe:true,className:'billingDefault',href:function(){return $(this).attr('rel');},
+                                           innerWidth:500,innerHeight:400, trapFocus:true,
                                            }
-                                            );
+                                      );
 
             
            
         }
     };
 }();
-shops.init();
+batch.init();

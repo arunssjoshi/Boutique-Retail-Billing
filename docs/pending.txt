@@ -1,0 +1,2 @@
+1. New/Edit Batch page, validation for shop
+2. Remove unwanted sort fields in data tables

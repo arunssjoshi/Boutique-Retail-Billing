@@ -19,14 +19,16 @@
                                 
                         <div class="box-body table-responsive">
                             <h3>
-                                <button rel="<?php echo base_url();?>/admin/batch/new" class="btn btn-primary btn-sm" id="btnNewShop"> + New Batch</button>
+                                <button rel="<?php echo base_url();?>/admin/batch/new" class="btn btn-primary btn-sm" id="btnNewBatch"> + New Batch</button>
                             </h3>
                             <div class="clear"></div>
                             <table id="tblShops" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
+                                        <th>Batch</th>
                                         <th>Shop</th>
                                         <th>City</th>
+                                        <th>Purchase Date</th>
                                         <th>Manage</th>
                                     </tr>
                                 </thead>

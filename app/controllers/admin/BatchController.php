@@ -14,7 +14,7 @@ class BatchController extends \BaseController {
 	public function index()
 	{
 		$this->data['title'] = 'Batches';
-		$this->data['scriptIncludes'] = array('colorbox','shops_js');
+		$this->data['scriptIncludes'] = array('colorbox','batch_js');
 		$this->data['cssIncludes'] = array('colorbox');
 		return View::make('admin.batch.batch',$this->data);
 	}
@@ -22,21 +22,23 @@ class BatchController extends \BaseController {
 	/**
 	 * Get shops as a json object. This page will be called through ajax for datatable.
 	 */
-	public function getShopsJson()
+	public function getBatchJson()
 	{
 		
 		$dtFilter		=	getdataTableFilter();
 		
-		$shopObj =	new Shop();
-		$shops  	= 	$shopObj->getShopsDetails($dtFilter);
-		$dtData 		= 	array( 'recordsTotal'=>$shops['total_rows'], 'recordsFiltered'=>$shops['total_rows'], 'data'=>array());
+		$batchObj =	new Batch();
+		$batches  	= 	$batchObj->getBatchDetails($dtFilter);
+		$dtData 		= 	array( 'recordsTotal'=>$batches['total_rows'], 'recordsFiltered'=>$batches['total_rows'], 'data'=>array());
 		
-		if($shops['total_rows'] > 0){
-			foreach($shops['shops'] as $shop){
-				$dtData['data'][] = array($shop->shop,
-										  $shop->city,
-										  '<a href="javascript:void(0);" class="lnkPropertyEdit" rel="'.admin_url().'/shops/edit/'.$shop->id.'"><small class="badge  bg-aqua"><i class="fa fa-pencil"></i> Edit</small></a> 
-										   <a href="javascript:void(0);" class="lnkPropertyDelete" rel="'.admin_url().'/shops/delete/'.$shop->id.'"><small class="badge  bg-aqua"><i class="fa fa-trash"></i> Delete</small></a>');
+		if($batches['total_rows'] > 0){
+			foreach($batches['batches'] as $batch){
+				$dtData['data'][] = array($batch->batch,
+										$batch->shops,
+										$batch->city,
+										date('l, jS F Y',strtotime($batch->purchased_on)),
+										'<a href="javascript:void(0);" class="lnkPropertyEdit" rel="'.admin_url().'/batch/edit/'.$batch->id.'"><small class="badge  bg-aqua"><i class="fa fa-pencil"></i> Edit</small></a> 
+										 <a href="javascript:void(0);" class="lnkPropertyDelete" rel="'.admin_url().'/batch/delete/'.$batch->id.'"><small class="badge  bg-aqua"><i class="fa fa-trash"></i> Delete</small></a>');
 			}
 		}
 		
@@ -49,27 +51,37 @@ class BatchController extends \BaseController {
 	 */
 	public function createNewBatch()
 	{	
-		$shopObj =	new Shop();
+		$dtFilter		=	getdataTableFilter();
+		$batchObj =	new Batch();
+		$this->data['cities']  = Shop::where('status', '=', 'Active')->select('city')->distinct()->get();
 		if (Request::ajax() && Request::isMethod('post'))
 		{
 
-			$shop = Input::get('shop');
-			$city = Input::get('city');
-			
-			if ($shop == '' || $city == '' ) {
+			$batchInput['batch'] = Input::get('batch');
+			if ($batchInput['batch'] == ''  ) {
 				echo json_encode(array('status'=>false,'message'=>'Please enter the required fields.'));
 				exit;
 			}
-			$shopInput['shop']			=	$shop;
-			$shopInput['city']			=	$city;
-			$shopInput['status']		=	'Active';
-			$shopInput['sort_order']	=	1;
-			$shopInput['created_by']	=	Auth::user()->id;
-			$shopInput['created_at']	=	getNow();
+			
+			$batchInput['description']	=	Input::get('summary');
+			$batchInput['purchased_on']	=	Input::get('purchaseDate');
+			$batchInput['status']		=	'Active';
+			$batchInput['sort_order']	=	1;
+			$batchInput['created_by']	=	Auth::user()->id;
+			$batchInput['created_at']	=	getNow();
 
-			$newShopId = $shopObj->createShop($shopInput);
+			$batchShops =	Input::get('chkShop');
 
-			if($newShopId > 0) {
+			$newBatchId = $batchObj->createBatch($batchInput);
+			
+			if($newBatchId > 0) {
+				if(!empty($batchShops)) {
+					$batchShopInput = array();
+					foreach ($batchShops as $key => $shop) {
+						$batchShopInput[] = array('batch_id'=>$newBatchId, 'shop_id'=>$shop);
+					}
+					$batchObj->createBatchShop($batchShopInput);
+				}
 				echo json_encode(array('status'=>true,'message'=>''));
 				exit;
 			}	else {
@@ -78,7 +90,8 @@ class BatchController extends \BaseController {
 			}
 			exit;
 		}
-		$this->data['scriptIncludes'] = array('validator', 'add_batch_js');
+		$this->data['scriptIncludes'] = array('validator','moment_js','datepicker_js', 'add_batch_js');
+		$this->data['cssIncludes'] = array('datepicker_css');
 		return View::make('admin.batch.new_batch',$this->data);
 	}
 
@@ -173,5 +186,11 @@ class BatchController extends \BaseController {
 
 	}
 
-
+	public function getShopJson()
+	{
+		$city = Input::get('city');
+		$shops  = Shop::where('city', '=', $city)->select('id','shop')->get();
+		echo json_encode($shops);exit;
+		
+	}
 }

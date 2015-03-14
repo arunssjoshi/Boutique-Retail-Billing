@@ -56,7 +56,8 @@ Route::group(array('before' => 'auth'), function()
 
         #------------------------------BEGIN BATCH-----------------------------------#
     	Route::any('admin/batch', array( 'uses' => 'BatchController@index'));
-        Route::any('admin/batch/shops.json', array( 'uses' => 'BatchController@getBatchJson'));
+        Route::any('admin/batch/batch.json', array( 'uses' => 'BatchController@getBatchJson'));
+        Route::any('admin/batch/shops.json', array( 'uses' => 'BatchController@getShopJson'));
         Route::any('admin/batch/new', array( 'uses' => 'BatchController@createNewBatch'));
         Route::any('admin/batch/edit/{id}', array( 'uses' => 'BatchController@editBatch'));
         Route::any('admin/batch/delete/{id}', array( 'uses' => 'BatchController@deleteBatch'));

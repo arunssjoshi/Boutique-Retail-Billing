@@ -43,3 +43,5 @@ label.error{color:red; font-weight: normal;}
 	color: #111;
 	background-color: #F1F1F1;
 }
+.fullWidth{width: 100% !important;}
+.chkVList{ margin-right: 10px; float: left; margin-top: 10px;}
