@@ -6,7 +6,7 @@ var addShop = function () {
         },
         registerEvents: function(){
             $('#purchaseDate').datetimepicker({
-            format: 'YYYY-MM-DD'
+                format: 'YYYY-MM-DD'
             });
             $('#ddCity').change(function(){
                 $.post( baseUrl+'/admin/batch/shops.json', {city:$(this).val()}, function( shops ) {

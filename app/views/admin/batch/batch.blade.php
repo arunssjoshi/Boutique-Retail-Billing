@@ -40,8 +40,5 @@
                 
                 </section><!-- /.content -->
                 
- @stop        
 
-@section('StyleIncludes')
-    
 @stop

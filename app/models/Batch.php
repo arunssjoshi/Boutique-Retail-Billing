@@ -9,7 +9,7 @@ class Batch extends Eloquent
 
         $sortColumns =   array('0'=>'b.batch','1'=>'s.shop', '2'=>'s.city', '3'=>'b.purchased_on');
 
-        $subQuery    =   (isset($filter['batchId'] ) && $filter['batchId'] > 0)? " AND id = ".$filter['batchId']:"";
+        $subQuery    =   (isset($filter['batchId'] ) && $filter['batchId'] > 0)? " AND b.id = ".$filter['batchId']:"";
         $subQuery    .=   ((isset($filter['search']) && $filter['search']!='' ))? " AND (b.batch LIKE '".$filter['search']."%' OR 
                                                             s.city LIKE '".$filter['search']."%' OR s.shop LIKE '".$filter['search']."%')":"";
 
@@ -63,5 +63,23 @@ class Batch extends Eloquent
         DB::table('batch_shops')->insert( 
             $batchshops
         );
+    }
+
+    public function getBatchShopDetails ($batchId)
+    {
+        $query = "SELECT s.shop, s.city, bs.id
+                    FROM batch_shops bs
+                    LEFT JOIN shop s  ON s.id=bs.shop_id 
+                    WHERE bs.batch_id='$batchId'";
+        return $result['shops']    =   DB::select(DB::raw($query ));
+    }
+
+    public function getShopsByCity ($city,$batchId=0)
+    {
+        $query = "SELECT s.shop, s.city, bs.id  AS batch_shop_id
+                FROM shop s 
+                LEFT JOIN batch_shops bs ON s.id=bs.shop_id AND bs.batch_id='$batchId'
+                WHERE s.city = '$city'";
+        return $result['shops']    =   DB::select(DB::raw($query ));
     }
 }

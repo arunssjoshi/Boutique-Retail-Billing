@@ -1,2 +1,33 @@
 1. New/Edit Batch page, validation for shop
 2. Remove unwanted sort fields in data tables
+3. Search in group concat shop items
+4. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SELECT s.shop, s.city, bs.id
+FROM shop s 
+LEFT JOIN batch_shops bs ON s.id=bs.shop_id AND bs.batch_id=14
+
+WHERE s.city = 
+(SELECT shop.city FROM shop JOIN batch_shops ON shop.id = batch_shops.shop_id WHERE batch_shops.batch_id=14 LIMIT 1)

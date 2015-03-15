@@ -35,7 +35,7 @@ var batch = function () {
                 }, "json");
         },
         registerDtLoadedEvents: function() {
-            $('.lnkPropertyEdit').colorbox({iframe:true,className:'billingDefault',href:function(){return $(this).attr('rel');},
+            $('.lnkBatchEdit').colorbox({iframe:true,className:'billingDefault',href:function(){return $(this).attr('rel');},
                                            innerWidth:500,innerHeight:240, 
                                            onComplete:function(){
                                                                 $('#property').focus();}});

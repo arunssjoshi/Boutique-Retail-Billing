@@ -37,7 +37,7 @@ class BatchController extends \BaseController {
 										$batch->shops,
 										$batch->city,
 										date('l, jS F Y',strtotime($batch->purchased_on)),
-										'<a href="javascript:void(0);" class="lnkPropertyEdit" rel="'.admin_url().'/batch/edit/'.$batch->id.'"><small class="badge  bg-aqua"><i class="fa fa-pencil"></i> Edit</small></a> 
+										'<a href="javascript:void(0);" class="lnkBatchEdit" rel="'.admin_url().'/batch/edit/'.$batch->id.'"><small class="badge  bg-aqua"><i class="fa fa-pencil"></i> Edit</small></a> 
 										 <a href="javascript:void(0);" class="lnkPropertyDelete" rel="'.admin_url().'/batch/delete/'.$batch->id.'"><small class="badge  bg-aqua"><i class="fa fa-trash"></i> Delete</small></a>');
 			}
 		}
@@ -98,19 +98,20 @@ class BatchController extends \BaseController {
 	/**
 	 * Editing a shop. This page will be called through ajax on edit submit.
 	 */
-	public function editShop($shopId=0){
+	public function editBatch($batchId=0){
 
-		$shopObj =	new Shop();
+		$batchObj =	new Batch();
 		
 		
-		if (empty($shopId))
+		if (empty($batchId))
 			return formatMessage('Invalid Request', 'danger', array('resize_popup'=>true));
 
-		$shops  	= 	$shopObj->getShopsDetails(array('shopId'=>$shopId));
-		if($shops['total_rows']==0)
+		$batches  	= 	$batchObj->getBatchDetails(array('batchId'=>$batchId));
+		if($batches['total_rows']==0)
 			return formatMessage('Shop not found', 'danger', array('resize_popup'=>true));
-		$this->data['shop_info'] = $shops['shops'][0];
-		//var_dump($this->data['shop_info']);
+		$this->data['batch_info'] = $batches['batches'][0];
+		$this->data['cities']  = Shop::where('status', '=', 'Active')->select('city')->distinct()->get();
+		$this->data['shops']	=	$batchObj->getBatchShopDetails($batchId);
 		if (Request::ajax() && Request::isMethod('post'))
 		{
 			$shopData				=	Shop::find($shopId);
@@ -132,8 +133,8 @@ class BatchController extends \BaseController {
 			echo json_encode(array('status'=>true,'message'=>''));
 			exit;
 		}
-		$this->data['scriptIncludes'] = array('validator', 'typehead', 'edit_shop_js');
-		return View::make('admin.shops.edit_shop',$this->data);
+		$this->data['scriptIncludes'] = array('validator', 'moment_js','datepicker_js', 'edit_batch_js');
+		return View::make('admin.batch.edit_batch',$this->data);
 	}
 
 
@@ -189,7 +190,8 @@ class BatchController extends \BaseController {
 	public function getShopJson()
 	{
 		$city = Input::get('city');
-		$shops  = Shop::where('city', '=', $city)->select('id','shop')->get();
+		$batchObj =	new Batch();
+		$shops	=	$batchObj->getShopsByCity($city);
 		echo json_encode($shops);exit;
 		
 	}

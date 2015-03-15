@@ -1,15 +1,26 @@
-var editShop = function () {
+var editBatch = function () {
     return {
         init: function () {
             this.registerEvents();
             this.initValidation();
         },
         registerEvents: function(){
-            
-            $('#city').typeahead({
-                name: 'city',
-                remote : baseUrl+'/admin/shops/citysuggestions/%QUERY'
+           $('#purchaseDate').datetimepicker({
+                format: 'YYYY-MM-DD'
             });
+            $('#ddCity').change(function(){
+                $.post( baseUrl+'/admin/batch/shops.json', {city:$(this).val()}, function( shops ) {
+                    if(shops) {
+                       $('#shopWrap').html('');
+                       $.each(shops,function(key, shop) {
+                            $('#shopWrap').append('<div class="col chkVList">  <input name="chkShop[]" type="checkbox" value="'+shop.id+'"> '+shop.shop+'</div>');
+                       });
+                       parent.$.fn.colorbox.resize({innerHeight:$('.content').height()+20});
+                    } else {
+                       
+                    }
+                }, "json");
+            })
         },
         initValidation: function(){
             var newPropertyValidator = $("#frmEditShop").validate({
@@ -47,4 +58,4 @@ var editShop = function () {
         }
     };
 }();
-editShop.init();
+editBatch.init();
