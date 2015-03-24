@@ -3,27 +3,18 @@ var editBatch = function () {
         init: function () {
             this.registerEvents();
             this.initValidation();
+            this.loadShops();
         },
         registerEvents: function(){
            $('#purchaseDate').datetimepicker({
                 format: 'YYYY-MM-DD'
             });
             $('#ddCity').change(function(){
-                $.post( baseUrl+'/admin/batch/shops.json', {city:$(this).val()}, function( shops ) {
-                    if(shops) {
-                       $('#shopWrap').html('');
-                       $.each(shops,function(key, shop) {
-                            $('#shopWrap').append('<div class="col chkVList">  <input name="chkShop[]" type="checkbox" value="'+shop.id+'"> '+shop.shop+'</div>');
-                       });
-                       parent.$.fn.colorbox.resize({innerHeight:$('.content').height()+20});
-                    } else {
-                       
-                    }
-                }, "json");
+                editBatch.loadShops();
             })
         },
         initValidation: function(){
-            var newPropertyValidator = $("#frmEditShop").validate({
+            var newPropertyValidator = $("#frmEditBatch").validate({
                 rules: {
                     shop: {
                         required: true
@@ -45,16 +36,33 @@ var editBatch = function () {
                 },
                 submitHandler: function(form) {
                     
-                    $.post( baseUrl+'/admin/shops/edit/'+$('#hdnShopId').val(), $("#frmEditShop").serialize(), function( response ) {
+                    $.post( baseUrl+'/admin/batch/edit/'+$('#hdnBatchId').val(), $("#frmEditBatch").serialize(), function( response ) {
                         if(response.status) {
-                            parent.shops.updateDT();
+                            parent.batch.updateDT();
                             parent.$.fn.colorbox.close();
                         } else {
-                            $('#btnShopSave-error').html(response.message).show();
+                            $('#btnBatchSave-error').html(response.message).show();
                         }
                     }, "json");
                 }
             });
+        },
+        loadShops: function(){
+                
+                $.post( baseUrl+'/admin/batch/shops.json', {city:$('#ddCity').val(), batchId: $('#hdnBatchId').val()}, function( shops ) {
+                        if(shops) {
+                           var chkSelect;
+                           $('#shopWrap').html('');
+                           $.each(shops,function(key, shop) {
+                                chkSelect = (shop.batch_shop_id!=null)?"checked='checked'":"";
+                                $('#shopWrap').append('<div class="col chkVList">  <input name="chkShop[]" '+chkSelect+' type="checkbox" value="'+shop.id+'"> '+shop.shop+'</div>');
+                           });
+                           parent.$.fn.colorbox.resize({innerHeight:$('.content').height()+20});
+                        } else {
+                           
+                        }
+                }, "json");
+                
         }
     };
 }();

@@ -22,8 +22,8 @@ var batch = function () {
           dtShops.fnDraw();
         },
 
-        deleteShop: function() {
-            $.post( baseUrl+'/admin/batch/delete/'+$('#hdnShopId').val(), 
+        deleteBatch: function() {
+            $.post( baseUrl+'/admin/batch/delete/'+$('#hdnBatchId').val(), 
                 {}, 
                 function( response ) {
                     if(response.status) {
@@ -39,7 +39,7 @@ var batch = function () {
                                            innerWidth:500,innerHeight:240, 
                                            onComplete:function(){
                                                                 $('#property').focus();}});
-            $('.lnkPropertyDelete').colorbox({iframe:true,className:'billingDefault',href:function(){return $(this).attr('rel');},
+            $('.lnkBatchDelete').colorbox({iframe:true,className:'billingDefault',href:function(){return $(this).attr('rel');},
                                            innerWidth:500,innerHeight:205, 
                                            onComplete:function(){
                                            

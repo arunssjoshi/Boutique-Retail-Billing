@@ -2,7 +2,7 @@
 class Batch extends Eloquent
 {
 
-    protected $table = 'shop';
+    protected $table = 'batch';
 
     public function getBatchDetails($filter=array())
     {
@@ -67,7 +67,7 @@ class Batch extends Eloquent
 
     public function getBatchShopDetails ($batchId)
     {
-        $query = "SELECT s.shop, s.city, bs.id
+        $query = "SELECT s.id as shop_id, s.shop, s.city, bs.id as batch_shop_id
                     FROM batch_shops bs
                     LEFT JOIN shop s  ON s.id=bs.shop_id 
                     WHERE bs.batch_id='$batchId'";
@@ -76,10 +76,18 @@ class Batch extends Eloquent
 
     public function getShopsByCity ($city,$batchId=0)
     {
-        $query = "SELECT s.shop, s.city, bs.id  AS batch_shop_id
+        $query = "SELECT s.id, s.shop, s.city, bs.id  AS batch_shop_id
                 FROM shop s 
                 LEFT JOIN batch_shops bs ON s.id=bs.shop_id AND bs.batch_id='$batchId'
                 WHERE s.city = '$city'";
         return $result['shops']    =   DB::select(DB::raw($query ));
+    }
+
+    public function deleteBatchShops($batchId, $shopsToDelete)
+    {
+        foreach($shopsToDelete as $shopId) {
+            $query = "DELETE FROM batch_shops WHERE batch_id=$batchId AND shop_id=$shopId";
+            DB::select(DB::raw($query ));
+        }
     }
 }

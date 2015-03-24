@@ -38,7 +38,7 @@ class BatchController extends \BaseController {
 										$batch->city,
 										date('l, jS F Y',strtotime($batch->purchased_on)),
 										'<a href="javascript:void(0);" class="lnkBatchEdit" rel="'.admin_url().'/batch/edit/'.$batch->id.'"><small class="badge  bg-aqua"><i class="fa fa-pencil"></i> Edit</small></a> 
-										 <a href="javascript:void(0);" class="lnkPropertyDelete" rel="'.admin_url().'/batch/delete/'.$batch->id.'"><small class="badge  bg-aqua"><i class="fa fa-trash"></i> Delete</small></a>');
+										 <a href="javascript:void(0);" class="lnkBatchDelete" rel="'.admin_url().'/batch/delete/'.$batch->id.'"><small class="badge  bg-aqua"><i class="fa fa-trash"></i> Delete</small></a>');
 			}
 		}
 		
@@ -111,28 +111,50 @@ class BatchController extends \BaseController {
 			return formatMessage('Shop not found', 'danger', array('resize_popup'=>true));
 		$this->data['batch_info'] = $batches['batches'][0];
 		$this->data['cities']  = Shop::where('status', '=', 'Active')->select('city')->distinct()->get();
-		$this->data['shops']	=	$batchObj->getBatchShopDetails($batchId);
+		$this->data['shops']   = 	$batchObj->getBatchShopDetails($batchId);
+
+		$batchData = Batch::find($batchId);
+
 		if (Request::ajax() && Request::isMethod('post'))
 		{
-			$shopData				=	Shop::find($shopId);
-
-			$shop = Input::get('shop');
-			$city = Input::get('city');
-			
-			if ($shop == '' || $city == '' ) {
+			$batchData->batch = Input::get('batch');
+			if ($batchData->batch == ''  ) {
 				echo json_encode(array('status'=>false,'message'=>'Please enter the required fields.'));
 				exit;
 			}
+			$batchData->description	=	Input::get('summary');
+			$batchData->purchased_on	=	Input::get('purchaseDate');
+			$batchData->updated_by	=	Auth::user()->id;
+			$batchData->updated_at	=	getNow();
 
-			$shopData['shop']			=	$shop;
-			$shopData['city']			=	$city;
-			$shopData['updated_by']	=	Auth::user()->id;
-			$shopData['updated_at']	=	getNow();
+			$batchData->save();
 
-			$shopData->save();
+			$formBatchShops =	Input::get('chkShop');
+			$dbBatchShops   =   array();
+
+			foreach ($this->data['shops'] as $shop) {
+				$dbBatchShops[] = $shop->shop_id;
+			}
+			$formBatchShops = (!$formBatchShops)?array():$formBatchShops;
+			$shopsToInsert = array_diff($formBatchShops, $dbBatchShops);
+			$shopsToDelete = array_diff($dbBatchShops, $formBatchShops);
+
+			if (sizeof($shopsToInsert) > 0) {
+				$batchShopInput = array();
+				foreach ($shopsToInsert as  $shopId) {
+					$batchShopInput[] = array('batch_id'=>$batchId, 'shop_id'=>$shopId);
+				}
+				$batchObj->createBatchShop($batchShopInput);
+			}
+
+			if (sizeof($shopsToDelete) > 0) {
+				$batchObj->deleteBatchShops($batchId, $shopsToDelete);
+			}
+			
 			echo json_encode(array('status'=>true,'message'=>''));
 			exit;
 		}
+
 		$this->data['scriptIncludes'] = array('validator', 'moment_js','datepicker_js', 'edit_batch_js');
 		return View::make('admin.batch.edit_batch',$this->data);
 	}
@@ -141,34 +163,34 @@ class BatchController extends \BaseController {
 	/**
 	 * Delete a shop. This page will be called through ajax.
 	 */
-	public function deleteShop($shopId=0){
+	public function deleteBatch($batchId=0){
 
-		$shopObj =	new Shop();
+		$batchObj =	new Batch();
 		
 		
-		if (empty($shopId))
+		if (empty($batchId))
 			return formatMessage('Invalid Request', 'danger', array('resize_popup'=>true));
 
-		$shops  	= 	$shopObj->getShopsDetails(array('shopId'=>$shopId));
-		if($shops['total_rows']==0)
+		$batches  	= 	$batchObj->getBatchDetails(array('batchId'=>$batchId));
+		if($batches['total_rows']==0)
 			return formatMessage('Shop not found', 'danger', array('resize_popup'=>true));
-		$this->data['shop_info'] = $shops['shops'][0];
+		$this->data['batch_info'] = $batches['batches'][0];
 		//var_dump($this->data['shop_info']);
 		if (Request::ajax() && Request::isMethod('post'))
 		{
-			$shopData				=	Shop::find($shopId);
+			$batchData				=	Batch::find($batchId);
 
 
-			$shopData['status']			=	'Deleted';
-			$shopData['updated_by']	=	Auth::user()->id;
-			$shopData['updated_at']	=	getNow();
+			$batchData['status']			=	'Deleted';
+			$batchData['updated_by']	=	Auth::user()->id;
+			$batchData['updated_at']	=	getNow();
 
-			$shopData->save();
+			$batchData->save();
 			echo json_encode(array('status'=>true,'message'=>''));
 			exit;
 		}
-		$this->data['scriptIncludes'] = array('colorbox', 'validator', 'typehead', 'edit_shop_js','shops_js');
-		return View::make('admin.shops.delete_shop',$this->data);
+		$this->data['scriptIncludes'] = array('colorbox', 'batch_js');
+		return View::make('admin.batch.delete_batch',$this->data);
 	}
 
 	public function getCitySuggestions($city='')
@@ -190,8 +212,9 @@ class BatchController extends \BaseController {
 	public function getShopJson()
 	{
 		$city = Input::get('city');
+		$batchId = Input::get('batchId');
 		$batchObj =	new Batch();
-		$shops	=	$batchObj->getShopsByCity($city);
+		$shops	=	$batchObj->getShopsByCity($city,  $batchId);
 		echo json_encode($shops);exit;
 		
 	}

@@ -56,8 +56,8 @@
                             <div class="form-group" style="overflow:hidden;">
                                 <div class="box-footer">
                                     <input type="hidden" name="hdnBatchId" id="hdnBatchId" value="<?php echo $batch_info->id;?>">
-                                    <button id="btnShopSave" class="btn btn-primary  pull-right" type="submit">Save</button>
-                                    <label for="btnShopSave" class="error" id="btnShopSave-error"></label>
+                                    <button id="btnBatchSave" class="btn btn-primary  pull-right" type="submit">Save</button>
+                                    <label for="btnBatchSave" class="error" id="btnBatchSave-error"></label>
                                 </div>
                             </div>
                         </div><!-- /.tab-pane -->
