@@ -35,7 +35,7 @@ Route::group(array('before' => 'auth'), function()
     if(Auth::check() && Auth::user()->role == 'Admin') {
     	Route::any('admin/dashboard', array( 'uses' => 'DashboardController@dashboard'));
     	Route::any('admin/products', array( 'uses' => 'ProductController@index'));
-    	Route::any('admin/categories', array( 'uses' => 'CategoryController@index'));
+    	
     	
         #------------------------------BEGIN PROPERTIES-----------------------------------#
     	Route::any('admin/properties', array( 'uses' => 'PropertiesController@index'));
@@ -63,7 +63,13 @@ Route::group(array('before' => 'auth'), function()
         Route::any('admin/batch/delete/{id}', array( 'uses' => 'BatchController@deleteBatch'));
         Route::any('admin/batch/citysuggestions/{query}', array( 'uses' => 'BatchController@getCitySuggestions'));
         #------------------------------END BATCH-----------------------------------#
-    	
+
+        #------------------------------BEGIN BATCH-----------------------------------#
+        Route::any('admin/categories', array( 'uses' => 'CategoryController@index'));
+        Route::any('admin/categories/new', array( 'uses' => 'CategoryController@newCategory'));
+        #------------------------------END BATCH-----------------------------------#
+
+
     	Route::any('admin/reports', array( 'uses' => 'ReportsController@index'));
     } else {
    		return Redirect::to('login');

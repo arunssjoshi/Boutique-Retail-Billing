@@ -32,7 +32,13 @@ return array(
                          'add_batch_js' =>
                                     array('file'=>base_url().'/scripts/batch/addBatch.js'),     
                          'edit_batch_js' =>
-                                    array('file'=>base_url().'/scripts/batch/editBatch.js'),              
+                                    array('file'=>base_url().'/scripts/batch/editBatch.js'),     
+
+                         'category_js'   =>
+                                    array('file'=>base_url().'/scripts/category/category.js'),    
+                         'add_category_js' =>
+                                    array('file'=>base_url().'/scripts/category/addCategory.js'),
+
         				 ),
         'styles'=>array('colorbox'		=>
         							array('file'=>base_url().'/assets/colorbox/colorbox.css','type'=>'media'),

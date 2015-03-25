@@ -106,7 +106,7 @@
                                 <i class="fa fa-barcode"></i> <span>Products</span> 
                             </a>
                         </li>
-                        <li>
+                        <li class="<?php echo ($menu == 'category')?" active":"";?>">
                             <a href="<?php echo base_url();?>/admin/categories">
                                 <i class="fa fa-toggle-down"></i> <span>Categories</span> 
                             </a>
