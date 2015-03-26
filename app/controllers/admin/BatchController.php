@@ -108,7 +108,7 @@ class BatchController extends \BaseController {
 
 		$batches  	= 	$batchObj->getBatchDetails(array('batchId'=>$batchId));
 		if($batches['total_rows']==0)
-			return formatMessage('Shop not found', 'danger', array('resize_popup'=>true));
+			return formatMessage('Batch not found', 'danger', array('resize_popup'=>true));
 		$this->data['batch_info'] = $batches['batches'][0];
 		$this->data['cities']  = Shop::where('status', '=', 'Active')->select('city')->distinct()->get();
 		$this->data['shops']   = 	$batchObj->getBatchShopDetails($batchId);

@@ -38,6 +38,8 @@ return array(
                                     array('file'=>base_url().'/scripts/category/category.js'),    
                          'add_category_js' =>
                                     array('file'=>base_url().'/scripts/category/addCategory.js'),
+                         'edit_category_js' =>
+                                    array('file'=>base_url().'/scripts/category/editCategory.js'), 
 
         				 ),
         'styles'=>array('colorbox'		=>

@@ -1,4 +1,4 @@
-var dtProperties;
+var dtCategories;
 var categories = function () {
 
     return {
@@ -8,10 +8,10 @@ var categories = function () {
         },
 
         initPropertiesDataTable: function() {
-        	dtProperties = $('#tblProperties').dataTable( {
+        	dtCategories = $('#tblCategories').dataTable( {
                 "serverSide": true,
 		        "ajax": {
-                    url:baseUrl+'/admin/categories/categories.json',
+                    url:baseUrl+'/admin/categories/category.json',
                     type:'POST'
                 },
                 "fnDrawCallback":this.registerDtLoadedEvents 
@@ -19,7 +19,7 @@ var categories = function () {
         },
 
         updateDT: function() {
-          dtProperties.fnDraw();
+          dtCategories.fnDraw();
         },
 
         deleteProperty: function() {
@@ -35,18 +35,7 @@ var categories = function () {
                 }, "json");
         },
         registerDtLoadedEvents: function() {
-            $('.lnkPropertyEdit').colorbox({iframe:true,className:'billingDefault',href:function(){return $(this).attr('rel');},
-                                           innerWidth:500,innerHeight:370, trapFocus:true, 
-                                           onComplete:function(){
-                                                                $('#property').focus();}});
-            $('.lnkPropertyDelete').colorbox({iframe:true,className:'billingDefault',href:function(){return $(this).attr('rel');},
-                                           innerWidth:500,innerHeight:205, 
-                                           onComplete:function(){
-                                           
-                                           }}
-                                            );
             
-
         },
         registerEvents: function(){
         	$("input[type='checkbox']:not(.simple), input[type='radio']:not(.simple)").iCheck({

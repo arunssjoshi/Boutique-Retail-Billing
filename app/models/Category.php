@@ -9,29 +9,23 @@ class Category extends Eloquent
         DB::table('category_property')->insert( 
             $categoryPropertyInput
         );
-    }
-
-    /**********************************************************************************************/
-    public function getBatchDetails($filter=array())
+    } 
+    public function getCategoryDetails($filter=array())
     {
 
-        $sortColumns =   array('0'=>'b.batch','1'=>'s.shop', '2'=>'s.city', '3'=>'b.purchased_on');
+        $sortColumns =   array('0'=>'c.category','1'=>'c.tax', '2'=>'c.category', '3'=>'c.category');
 
-        $subQuery    =   (isset($filter['batchId'] ) && $filter['batchId'] > 0)? " AND b.id = ".$filter['batchId']:"";
-        $subQuery    .=   ((isset($filter['search']) && $filter['search']!='' ))? " AND (b.batch LIKE '".$filter['search']."%' OR 
-                                                            s.city LIKE '".$filter['search']."%' OR s.shop LIKE '".$filter['search']."%')":"";
+        $subQuery    =   (isset($filter['categoryId'] ) && $filter['categoryId'] > 0)? " AND c.id = ".$filter['categoryId']:"";
+        $subQuery    .=   ((isset($filter['search']) && $filter['search']!='' ))? " AND (c.category LIKE '".$filter['search']."%' )":"";
 
         $filter['sortField']    =   isset($filter['sortField'])?$filter['sortField']:0;
 
         $sortField   =   $sortColumns[$filter['sortField']];
         $sortDir     =   isset($filter['sortDir'])?$filter['sortDir']:' ASC';
 
-        $query =    "SELECT SQL_CALC_FOUND_ROWS  b.id, b.batch, b.purchased_on, b.description, GROUP_CONCAT(s.shop SEPARATOR ', ') AS shops, s.city
-                    FROM batch b
-                    LEFT JOIN batch_shops bs ON b.id=bs.batch_id 
-                    LEFT JOIN shop s ON bs.shop_id=s.id 
-                    WHERE b.status='Active' $subQuery 
-                    GROUP BY b.id
+        $query =    "SELECT SQL_CALC_FOUND_ROWS  c.id AS category_id, c.category, c.tax AS tax, c.description, c.unit, FLOOR(RAND() * 401) + 100 AS total_product, FLOOR(RAND() * 401) + 10000 AS total_price 
+                    FROM category c 
+                    WHERE c.status='Active' $subQuery 
                     ORDER BY $sortField  $sortDir " ;
 
                     //die($query);
@@ -39,13 +33,42 @@ class Category extends Eloquent
             $query .= " LIMIT ".$filter['offset']." , ".$filter['limit'];
         }
 
-        $result['batches']    =   DB::select(DB::raw($query ));
+        $result['categories']    =   DB::select(DB::raw($query ));
         $result['total_rows']   =    DB::select(DB::raw("SELECT FOUND_ROWS()  as total_rows"));
         $result['total_rows']   =  $result['total_rows'][0]->total_rows;
 
         return $result;
 
     }
+
+    public function getCategoryProperties($categoryId)
+    {
+        $query =    "SELECT SQL_CALC_FOUND_ROWS
+                      p.id       AS property_id,  p.property,
+                      GROUP_CONCAT(po.option ORDER BY po.id SEPARATOR ', ') AS property_options, cp.id AS category_property_id
+                    FROM property p
+                    LEFT JOIN property_option po ON p.id = po.property_id 
+                    LEFT JOIN category_property cp ON p.id=cp.property_id AND cp.category_id='$categoryId'
+                    WHERE p.status = 'Active' AND IF(po.id IS NOT NULL, po.status = 'Active',1)
+                    GROUP BY p.id
+                    ORDER BY p.property ASC";
+        $result['properties']  =  DB::select(DB::raw($query ));
+        $result['total_rows']   =  DB::select(DB::raw("SELECT FOUND_ROWS()  as total_rows"));
+        $result['total_rows']   =  $result['total_rows'][0]->total_rows;
+
+        return $result;
+    }
+
+    public function deleteCategoryProperties($categoryId, $propertiesToDelete)
+    {
+        foreach($propertiesToDelete as $propertyID) {
+            $query = "DELETE FROM category_property WHERE category_id=$categoryId AND property_id=$propertyID";
+            DB::select(DB::raw($query ));
+        }
+    }
+
+    /**********************************************************************************************/
+    
 
     
     public function updateShop($shopInput)
@@ -80,11 +103,5 @@ class Category extends Eloquent
         return $result['shops']    =   DB::select(DB::raw($query ));
     }
 
-    public function deleteBatchShops($batchId, $shopsToDelete)
-    {
-        foreach($shopsToDelete as $shopId) {
-            $query = "DELETE FROM batch_shops WHERE batch_id=$batchId AND shop_id=$shopId";
-            DB::select(DB::raw($query ));
-        }
-    }
+    
 }

@@ -1,4 +1,4 @@
-var addCategory = function () {
+var editCategory = function () {
     var totalUnfilledRowsCount
     return {
         init: function () {
@@ -6,9 +6,10 @@ var addCategory = function () {
             this.initValidation();
         },
         registerEvents: function(){
+           
         },
         initValidation: function(){
-            var newPropertyValidator = $("#frmNewCategory").validate({
+            var newPropertyValidator = $("#frmEditCategory").validate({
                 rules: {
                     category: {
                         required: true
@@ -27,7 +28,7 @@ var addCategory = function () {
                     var checkedValues = $('input:checkbox:checked').map(function() {
                             return this.value;
                         }).get();
-                    $.post( baseUrl+'/admin/categories/new', $("#frmNewCategory").serialize()+'&properties='+checkedValues, function( response ) {
+                    $.post( baseUrl+'/admin/categories/edit/'+$('#hdnCategoryId').val(), $("#frmEditCategory").serialize()+'&properties='+checkedValues, function( response ) {
                         if(response.status) {
                             location.href=baseUrl+'/admin/categories';
                         } else {
@@ -36,7 +37,9 @@ var addCategory = function () {
                     }, "json");
                 }
             });
+
+            
         }
     };
 }();
-addCategory.init();
+editCategory.init();

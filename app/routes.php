@@ -64,10 +64,12 @@ Route::group(array('before' => 'auth'), function()
         Route::any('admin/batch/citysuggestions/{query}', array( 'uses' => 'BatchController@getCitySuggestions'));
         #------------------------------END BATCH-----------------------------------#
 
-        #------------------------------BEGIN BATCH-----------------------------------#
+        #------------------------------BEGIN CAGEGORY-----------------------------------#
         Route::any('admin/categories', array( 'uses' => 'CategoryController@index'));
+        Route::any('admin/categories/category.json', array( 'uses' => 'CategoryController@getCategoryJson'));
         Route::any('admin/categories/new', array( 'uses' => 'CategoryController@newCategory'));
-        #------------------------------END BATCH-----------------------------------#
+        Route::any('admin/categories/edit/{id}', array( 'uses' => 'CategoryController@editCategory'));
+        #------------------------------END CAGEGORY-----------------------------------#
 
 
     	Route::any('admin/reports', array( 'uses' => 'ReportsController@index'));

@@ -22,13 +22,13 @@
                                 <a href="<?php echo base_url();?>/admin/categories/new" class="btn btn-primary btn-sm" id="btnNewCategory"> + New Category</a>
                             </h3>
                             <div class="clear"></div>
-                            <table id="tblShops" class="table table-bordered table-striped">
+                            <table id="tblCategories" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Batch</th>
-                                        <th>Shop</th>
-                                        <th>City</th>
-                                        <th>Purchase Date</th>
+                                        <th>Category</th>
+                                        <th>Tax</th>
+                                        <th>Total Products</th>
+                                        <th>Total Price</th>
                                         <th>Manage</th>
                                     </tr>
                                 </thead>
