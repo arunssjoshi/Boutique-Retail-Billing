@@ -69,6 +69,7 @@ Route::group(array('before' => 'auth'), function()
         Route::any('admin/categories/category.json', array( 'uses' => 'CategoryController@getCategoryJson'));
         Route::any('admin/categories/new', array( 'uses' => 'CategoryController@newCategory'));
         Route::any('admin/categories/edit/{id}', array( 'uses' => 'CategoryController@editCategory'));
+        Route::any('admin/categories/delete/{id}', array( 'uses' => 'CategoryController@deleteCategory'));
         #------------------------------END CAGEGORY-----------------------------------#
 
 

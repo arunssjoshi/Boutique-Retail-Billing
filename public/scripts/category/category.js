@@ -22,20 +22,25 @@ var categories = function () {
           dtCategories.fnDraw();
         },
 
-        deleteProperty: function() {
-            $.post( baseUrl+'/admin/categories/delete/'+$('#hdnPropertyId').val(), 
+        deleteCategory: function() {
+            $.post( baseUrl+'/admin/categories/delete/'+$('#hdnCategoryId').val(), 
                 {}, 
                 function( response ) {
                     if(response.status) {
                         parent.categories.updateDT();
                         parent.$.fn.colorbox.close();
                     } else {
-                        $('#btnPropertySave-error').html(response.message).show();
+                        $('#btnCategorySave-error').html(response.message).show();
                     }
                 }, "json");
         },
         registerDtLoadedEvents: function() {
-            
+            $('.lnkCategoryDelete').colorbox({iframe:true,className:'billingDefault',href:function(){return $(this).attr('rel');},
+               innerWidth:500,innerHeight:205, 
+               onComplete:function(){
+               
+               }}
+            );
         },
         registerEvents: function(){
         	$("input[type='checkbox']:not(.simple), input[type='radio']:not(.simple)").iCheck({

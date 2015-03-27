@@ -10,7 +10,7 @@ class CategoryController extends \BaseController {
 	public function index()
 	{
 		$this->data['title'] = 'Categories';
-		$this->data['scriptIncludes'] = array('category_js');
+		$this->data['scriptIncludes'] = array('colorbox','category_js');
 		$this->data['cssIncludes'] = array('colorbox');
 		return View::make('admin.category.category',$this->data);
 	}
@@ -31,7 +31,7 @@ class CategoryController extends \BaseController {
 										$category->total_product,
 										$category->total_price,
 										'<a  class="lnkBatchEdit" href="'.admin_url().'/categories/edit/'.$category->category_id.'"><small class="badge  bg-aqua"><i class="fa fa-pencil"></i> Edit</small></a> 
-										 <a href="javascript:void(0);" class="lnkBatchDelete" rel="'.admin_url().'/category/delete/'.$category->category_id.'"><small class="badge  bg-aqua"><i class="fa fa-trash"></i> Delete</small></a>');
+										 <a href="javascript:void(0);" class="lnkCategoryDelete" rel="'.admin_url().'/categories/delete/'.$category->category_id.'"><small class="badge  bg-aqua"><i class="fa fa-trash"></i> Delete</small></a>');
 			}
 		}
 		
@@ -162,5 +162,37 @@ class CategoryController extends \BaseController {
 		return View::make('admin.category.edit_category',$this->data);
 	}
 
+	/**
+	 * Delete a category. This page will be called through ajax.
+	 */
+	public function deleteCategory($categoryId=0){
+
+		$categoryObj 	= 	new Category();
+		
+		
+		if (empty($categoryId))
+			return formatMessage('Invalid Request', 'danger', array('resize_popup'=>true));
+
+		$categories  	= 	$categoryObj->getCategoryDetails(array('categoryId'=>$categoryId));
+		if($categories['total_rows']==0)
+			return formatMessage('Category not found', 'danger', array('resize_popup'=>true));
+		$this->data['category_info'] = $categories['categories'][0];
+		//var_dump($this->data['category_info']);exit;
+		if (Request::ajax() && Request::isMethod('post'))
+		{
+			$categoryData				=	Category::find($categoryId);
+
+
+			$categoryData['status']			=	'Deleted';
+			$categoryData['updated_by']	=	Auth::user()->id;
+			$categoryData['updated_at']	=	getNow();
+
+			$categoryData->save();
+			echo json_encode(array('status'=>true,'message'=>''));
+			exit;
+		}
+		$this->data['scriptIncludes'] = array('colorbox', 'category_js');
+		return View::make('admin.category.delete_category',$this->data);
+	}
 
 }
