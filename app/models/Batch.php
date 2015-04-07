@@ -70,7 +70,8 @@ class Batch extends Eloquent
         $query = "SELECT s.id as shop_id, s.shop, s.city, bs.id as batch_shop_id
                     FROM batch_shops bs
                     LEFT JOIN shop s  ON s.id=bs.shop_id 
-                    WHERE bs.batch_id='$batchId'";
+                    WHERE bs.batch_id='$batchId' 
+                    ORDER BY s.shop";
         return $result['shops']    =   DB::select(DB::raw($query ));
     }
 

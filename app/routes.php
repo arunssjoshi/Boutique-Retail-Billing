@@ -34,7 +34,6 @@ Route::group(array('before' => 'auth'), function()
 {
     if(Auth::check() && Auth::user()->role == 'Admin') {
     	Route::any('admin/dashboard', array( 'uses' => 'DashboardController@dashboard'));
-    	Route::any('admin/products', array( 'uses' => 'ProductController@index'));
     	
     	
         #------------------------------BEGIN PROPERTIES-----------------------------------#
@@ -72,6 +71,13 @@ Route::group(array('before' => 'auth'), function()
         Route::any('admin/categories/delete/{id}', array( 'uses' => 'CategoryController@deleteCategory'));
         #------------------------------END CAGEGORY-----------------------------------#
 
+        #------------------------------BEGIN PRODUCT-----------------------------------#
+        Route::any('admin/products', array( 'uses' => 'ProductController@index'));
+        Route::any('admin/products/category.json', array( 'uses' => 'ProductController@getCategoryJson'));
+        Route::any('admin/products/new', array( 'uses' => 'ProductController@newProduct'));
+        Route::any('admin/products/edit/{id}', array( 'uses' => 'ProductController@editCategory'));
+        Route::any('admin/products/delete/{id}', array( 'uses' => 'ProductController@deleteCategory'));
+        #------------------------------END PRODUCT-----------------------------------#
 
     	Route::any('admin/reports', array( 'uses' => 'ReportsController@index'));
     } else {
