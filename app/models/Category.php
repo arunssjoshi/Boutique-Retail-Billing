@@ -23,9 +23,13 @@ class Category extends Eloquent
         $sortField   =   $sortColumns[$filter['sortField']];
         $sortDir     =   isset($filter['sortDir'])?$filter['sortDir']:' ASC';
 
-        $query =    "SELECT SQL_CALC_FOUND_ROWS  c.id AS category_id, c.category, c.tax AS tax, c.description, c.unit, FLOOR(RAND() * 401) + 100 AS total_product, FLOOR(RAND() * 401) + 10000 AS total_price 
+        $query =    "SELECT SQL_CALC_FOUND_ROWS  c.id AS category_id, c.category, c.tax AS tax, c.description, c.unit, 
+                    SUM(p.quantity) AS total_product, 
+                    SUM(p.quantity*p.selling_price) AS total_price 
                     FROM category c 
-                    WHERE c.status='Active' $subQuery 
+                    LEFT JOIN product p ON c.id=p.category_id
+                    WHERE c.status='Active'
+                    GROUP BY c.id $subQuery 
                     ORDER BY $sortField  $sortDir " ;
 
                     //die($query);

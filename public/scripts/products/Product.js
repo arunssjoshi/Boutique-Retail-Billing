@@ -1,5 +1,5 @@
-var dtCategories;
-var categories = function () {
+var ddProducts;
+var products = function () {
 
     return {
         init: function () {
@@ -8,10 +8,10 @@ var categories = function () {
         },
 
         initPropertiesDataTable: function() {
-        	dtCategories = $('#tblCategories').dataTable( {
+        	ddProducts = $('#tblProducts').dataTable( {
                 "serverSide": true,
 		        "ajax": {
-                    url:baseUrl+'/admin/categories/category.json',
+                    url:baseUrl+'/admin/products/product.json',
                     type:'POST'
                 },
                 "fnDrawCallback":this.registerDtLoadedEvents 
@@ -19,15 +19,15 @@ var categories = function () {
         },
 
         updateDT: function() {
-          dtCategories.fnDraw();
+          ddProducts.fnDraw();
         },
 
         deleteCategory: function() {
-            $.post( baseUrl+'/admin/categories/delete/'+$('#hdnCategoryId').val(), 
+            $.post( baseUrl+'/admin/products/delete/'+$('#hdnCategoryId').val(), 
                 {}, 
                 function( response ) {
                     if(response.status) {
-                        parent.categories.updateDT();
+                        parent.products.updateDT();
                         parent.$.fn.colorbox.close();
                     } else {
                         $('#btnCategorySave-error').html(response.message).show();
@@ -50,4 +50,4 @@ var categories = function () {
         }
     };
 }();
-categories.init();
+products.init();

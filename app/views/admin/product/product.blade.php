@@ -22,13 +22,16 @@
                                 <a href="<?php echo base_url();?>/admin/products/new" class="btn btn-primary btn-sm" id="btnNewProduct"> + New Product</a>
                             </h3>
                             <div class="clear"></div>
-                            <table id="tblCategories" class="table table-bordered table-striped">
+                            <table id="tblProducts" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
+                                        <th>Product ID</th>
+                                        
+                                        <th>Product</th>
+                                        <th>Group</th>
                                         <th>Category</th>
-                                        <th>Tax</th>
-                                        <th>Total Products</th>
-                                        <th>Total Price</th>
+                                        <th>Quantity</th>
+                                        <th>Selling Price</th>
                                         <th>Manage</th>
                                     </tr>
                                 </thead>

@@ -218,4 +218,13 @@ class BatchController extends \BaseController {
 		echo json_encode($shops);exit;
 		
 	}
+
+	public function getBatchShopJson($batchId)
+	{
+		$batchObj =	new Batch();
+		$shops	=	$batchObj->getBatchShopDetails($batchId);
+		echo json_encode($shops);exit;
+		
+	}
+
 }

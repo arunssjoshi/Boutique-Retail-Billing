@@ -12,7 +12,13 @@
         
     </ol>
 </section>
+<?php 
+    $last_batch_shop_id = ($last_product['total_rows'] > 0)?$last_product['products'][0]->batch_shop_id:0;
+    $last_product_name = ($last_product['total_rows'] > 0)?$last_product['products'][0]->product:'';
+    $last_company_id = ($last_product['total_rows'] > 0)?$last_product['products'][0]->company_id:0;
 
+   //var_dump($last_product);
+?>
 <!-- Main content -->
 <section class="content">
 <!-- box start -->
@@ -23,14 +29,21 @@
                 <div class="col-md-4">
                     <div class="input-group">
                         <span class="input-group-addon">Product</span>
-                        <input type="text" id="product" name="product" tabindex="1"   class="form-control">
+                        <input type="text" id="product" value="<?php echo $last_product_name;?>" name="product" tabindex="1"   class="form-control">
                     </div>
                     <label id="lbl-product" class="error softHide" style="" for="product"></label>
                 </div>
                 <div class="col-md-4">
                     <div class="input-group">
-                        <span class="input-group-addon">Company</span>
-                        <input type="text" id="company" name="company" tabindex="2"   class="form-control">
+                        <span class="input-group-addon">Company&nbsp;&nbsp;&nbsp;</span>
+                        <select id="ddCompany" name="ddCompany"    class="form-control"  tabindex="2" >
+                            <?php if($companies):?>
+                                    <option value=""></option>
+                                <?php foreach($companies as $company):?>
+                                    <option  <?php echo ($last_company_id == $company->id)?"selected='selected'":""; ?>  value="<?php echo $company->id;?>"><?php echo $company->company;?></option>
+                                <?php endforeach;?>
+                            <?php endif;?>
+                         </select>
                     </div>
                 </div>
             </div>
@@ -53,16 +66,20 @@
                     <div class="input-group">
                         <span class="input-group-addon">Batch&nbsp;&nbsp;&nbsp;</span>
                         <select id="ddBatch" name="ddBatch"    class="form-control"  tabindex="5" >
-                            <option value="1">Eranakulam</option>
-                        </select>
+                            <?php if($batches['total_rows'] > 0):?>
+                                <?php foreach($batches['batches'] as $batch):?>
+                                    <option value="<?php echo $batch->id;?>"><?php echo $batch->batch;?></option>
+                                <?php endforeach;?>
+                            <?php endif;?>
+                         </select>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="input-group">
                         <span class="input-group-addon">Shop&nbsp;&nbsp;&nbsp;</span>
                         <select id="ddBatchShop" name="ddBatchShop"    class="form-control"  tabindex="6" >
-                        <?php foreach($shops as $shop):?>
-                            <option value="<?php echo $shop->batch_shop_id;?>"><?php echo $shop->shop;?></option>
+                        <?php foreach($shops as $shop): ?>
+                            <option <?php echo ($last_batch_shop_id == $shop->batch_shop_id)?"selected='selected'":""; ?> value="<?php echo $shop->batch_shop_id;?>"><?php echo $shop->shop;?></option>
                         <?php endforeach;?>
                                                         
                         </select>

@@ -18,7 +18,7 @@ class Batch extends Eloquent
         $sortField   =   $sortColumns[$filter['sortField']];
         $sortDir     =   isset($filter['sortDir'])?$filter['sortDir']:' ASC';
 
-        $query =    "SELECT SQL_CALC_FOUND_ROWS  b.id, b.batch, b.purchased_on, b.description, GROUP_CONCAT(s.shop SEPARATOR ', ') AS shops, s.city
+        $query =    "SELECT SQL_CALC_FOUND_ROWS  b.id, b.batch, b.purchased_on, b.description, GROUP_CONCAT(DISTINCT s.shop SEPARATOR ', ') AS shops, s.city
                     FROM batch b
                     LEFT JOIN batch_shops bs ON b.id=bs.batch_id 
                     LEFT JOIN shop s ON bs.shop_id=s.id 
@@ -70,7 +70,7 @@ class Batch extends Eloquent
         $query = "SELECT s.id as shop_id, s.shop, s.city, bs.id as batch_shop_id
                     FROM batch_shops bs
                     LEFT JOIN shop s  ON s.id=bs.shop_id 
-                    WHERE bs.batch_id='$batchId' 
+                    WHERE bs.batch_id='$batchId' and s.status='Active'
                     ORDER BY s.shop";
         return $result['shops']    =   DB::select(DB::raw($query ));
     }

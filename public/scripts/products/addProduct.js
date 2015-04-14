@@ -7,6 +7,35 @@ var addProduct = function () {
         },
         registerEvents: function(){
             $('#product').focus();
+
+            $('#purchase_price').keyup(function(){
+                sellingPrice = parseInt($(this).val()) + parseInt($(this).val()) * parseInt($('#profit_margin').val())/100;
+                $('#customer_price').val(sellingPrice);
+            })
+
+            $('#customer_price').keyup(function(){
+                sellingPrice = ( (parseInt($(this).val()) - parseInt($('#purchase_price').val())) / parseInt($('#purchase_price').val()) ) * 100  ;
+                $('#profit_margin').val(sellingPrice);
+            })
+
+            
+            $('#profit_margin').keyup(function(){
+                sellingPrice = parseInt($('#purchase_price').val()) + parseInt($('#purchase_price').val()) * parseInt($('#profit_margin').val())/100;
+                $('#customer_price').val(sellingPrice);
+            })
+            
+            $('#ddBatch').change(function(){
+                $.post( baseUrl+'/admin/batch/batch-shop.json/'+$(this).val(), {}, function( response ) {
+                        if (response.length > 0) {
+                            var shopDDHtml = '';
+                            $.each(response, function (key, shop){
+                                shopDDHtml+= "<option value='"+shop.batch_shop_id+"'>"+shop.shop+"</option>";
+                            }) ;
+                            $('#ddBatchShop').html(shopDDHtml);
+                        }   
+                        
+                    }, "json");
+            })
         },
         initValidation: function(){
             var newPropertyValidator = $("#frmNewProduct").validate({

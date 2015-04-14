@@ -57,6 +57,7 @@ Route::group(array('before' => 'auth'), function()
     	Route::any('admin/batch', array( 'uses' => 'BatchController@index'));
         Route::any('admin/batch/batch.json', array( 'uses' => 'BatchController@getBatchJson'));
         Route::any('admin/batch/shops.json', array( 'uses' => 'BatchController@getShopJson'));
+        Route::any('admin/batch/batch-shop.json/{id}', array( 'uses' => 'BatchController@getBatchShopJson'));
         Route::any('admin/batch/new', array( 'uses' => 'BatchController@createNewBatch'));
         Route::any('admin/batch/edit/{id}', array( 'uses' => 'BatchController@editBatch'));
         Route::any('admin/batch/delete/{id}', array( 'uses' => 'BatchController@deleteBatch'));
@@ -73,7 +74,7 @@ Route::group(array('before' => 'auth'), function()
 
         #------------------------------BEGIN PRODUCT-----------------------------------#
         Route::any('admin/products', array( 'uses' => 'ProductController@index'));
-        Route::any('admin/products/category.json', array( 'uses' => 'ProductController@getCategoryJson'));
+        Route::any('admin/products/product.json', array( 'uses' => 'ProductController@getProductJson'));
         Route::any('admin/products/new', array( 'uses' => 'ProductController@newProduct'));
         Route::any('admin/products/edit/{id}', array( 'uses' => 'ProductController@editCategory'));
         Route::any('admin/products/delete/{id}', array( 'uses' => 'ProductController@deleteCategory'));

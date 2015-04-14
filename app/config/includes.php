@@ -41,8 +41,8 @@ return array(
                          'edit_category_js' =>
                                     array('file'=>base_url().'/scripts/category/editCategory.js'), 
 
-                         'category_js'   =>
-                                    array('file'=>base_url().'/scripts/category/category.js'),    
+                         'product_js'   =>
+                                    array('file'=>base_url().'/scripts/products/product.js'),    
                          'add_product_js' =>
                                     array('file'=>base_url().'/scripts/products/addProduct.js'),
                          'edit_category_js' =>
