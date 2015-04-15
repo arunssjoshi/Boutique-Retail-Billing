@@ -21,8 +21,9 @@ class Property extends Eloquent
         $query =    "SELECT SQL_CALC_FOUND_ROWS   p.id AS property_id, p.property, GROUP_CONCAT(po.option ORDER BY po.id SEPARATOR ', ') AS property_options
                     FROM property p 
                     LEFT JOIN property_option po ON p.id=po.property_id 
-                    WHERE p.status='Active' AND IF(po.id IS NOT NULL , po.status='Active',1) $subQuery
-                    GROUP BY p.id
+                    WHERE p.status='Active' AND IF(po.id IS NOT NULL , po.status='Active',1) 
+                    GROUP BY p.id 
+                    HAVING 1 $subQuery
                     ORDER BY $sortField  $sortDir " ;
                     //die($query);
         if (isset($filter['offset']) && is_numeric($filter['offset']) && isset($filter['limit']) && is_numeric($filter['limit'])) {

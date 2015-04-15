@@ -53,6 +53,7 @@ class CategoryController extends \BaseController {
 				exit;
 			}
 			
+			$categoryObj->category_short_code			=	Input::get('category_short_code');
 			$categoryObj->description	=	Input::get('description');
 			$categoryObj->tax			=	Input::get('tax');
 			$categoryObj->unit			=	Input::get('ddUnit');
@@ -114,6 +115,7 @@ class CategoryController extends \BaseController {
 				echo json_encode(array('status'=>false,'message'=>'Please enter the required fields.'));
 				exit;
 			}
+			$categoryData->category_short_code			=	Input::get('category_short_code');
 			$categoryData->description	=	Input::get('description');
 			$categoryData->tax			=	Input::get('tax');
 			$categoryData->unit			=	Input::get('ddUnit');

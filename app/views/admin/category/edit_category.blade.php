@@ -26,6 +26,12 @@
                 </div>
                 <label id="lbl-category" class="error softHide" style="" for="category"></label>
                 <br/>
+                
+                <div class="input-group">
+                    <span class="input-group-addon">Category Short Code</span>
+                    <input type="text" id="category_short_code" name="category_short_code" tabindex="1" value="<?php echo $category_info->category_short_code;?>"  class="form-control">
+                </div>
+                <br/>
                 <div class="input-group">
                     <span class="input-group-addon">Description&nbsp;&nbsp;&nbsp;</span>
                     <textarea id="description" tabindex="2"  name="description" class="form-control"><?php echo $category_info->description;?></textarea>

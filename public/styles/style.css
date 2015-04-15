@@ -47,3 +47,4 @@ label.error{color:red; font-weight: normal;}
 .chkVList{ margin-right: 10px; float: left; margin-top: 10px;}
 .marginLeft{margin-left: 5px;}
 #frmNewProduct .row{width: 99%;}
+.simpleChk{float:left !important;}

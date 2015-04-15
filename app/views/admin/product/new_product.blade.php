@@ -13,9 +13,13 @@
     </ol>
 </section>
 <?php 
+    $new = ($product_properties);
+    //var_dump($new);
+    //varDebug(((array)$product_properties));
     $last_batch_shop_id = ($last_product['total_rows'] > 0)?$last_product['products'][0]->batch_shop_id:0;
     $last_product_name = ($last_product['total_rows'] > 0)?$last_product['products'][0]->product:'';
     $last_company_id = ($last_product['total_rows'] > 0)?$last_product['products'][0]->company_id:0;
+    $last_category_id = ($last_product['total_rows'] > 0)?$last_product['products'][0]->category_id:0;
 
    //var_dump($last_product);
 ?>
@@ -93,7 +97,7 @@
                         <select id="ddCategory" name="ddCategory"    class="form-control"  tabindex="7" >
                             <?php if($categories['total_rows'] > 0):?>
                                   <?php foreach($categories['categories'] as $category):?>
-                                        <option value="<?php echo $category->category_id;?>"><?php echo $category->category;?></option>
+                                        <option <?php echo ($last_category_id == $category->category_id)?"selected='selected'":""; ?>  value="<?php echo $category->category_id;?>"><?php echo $category->category;?></option>
                                     <?php endforeach;?>
                                     <?php endif;?>
                         </select>
@@ -152,6 +156,39 @@
                     </div>
                 </div>
             </div>   
+            <div class="input-group">
+                <br/>
+                <h4>Product Properties</h4>
+                </div>
+                <?php if($product_properties){
+                    $i = 0 ;
+                    echo '<div class="row marginBottom10">';
+                    foreach($product_properties as $property){
+                        if($i % 2 == 0)
+                            echo '</div><div class="row marginBottom10">';
+                        ?>
+                            <div class="col-md-4">
+                                <div class="input-group-addon">
+                                    <strong><?php echo $property[0]['property'];?></strong> <br/>
+                                    <?php 
+                                    $k=1;
+                                    foreach($property as $property_option):?>
+                                          <input type="radio" value="<?php echo $property_option['option_id'];?>"  name="<?php echo $property_option['property_id'];?>"  class="form-control simpled simpleChk"><?php echo $property_option['option'];?>&nbsp;&nbsp;
+                                    <?php
+                                    if($k % 5 == 0)
+                                        echo '<br/><br/>';
+                                    $k++;
+                                    endforeach;?>
+                                    
+                                </div>
+                                <label id="lbl-product" class="error softHide" style="" for=""></label>
+                            </div>
+                        <?php
+                        $i++;
+                    }
+                    echo '</div>';
+                }?>
+
             <div class="row marginBottom10">
                 <div class="col-md-8  marginBottom10">
                     <div class="input-group pull-right  marginBottom10">

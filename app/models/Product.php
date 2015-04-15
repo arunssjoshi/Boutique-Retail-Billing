@@ -21,7 +21,7 @@ class Product extends Eloquent
             $sortDir = 'DESC';
 
         $query =    "SELECT SQL_CALC_FOUND_ROWS  p.id as product_id, p.product_code, p.name as product, p.quantity, p.selling_price, 
-                    p.group_id, c.category, c.unit, p.batch_shop_id , p.company_id
+                    p.group_id, c.category, c.unit, p.batch_shop_id , p.company_id, c.id category_id
                     FROM product p 
                     JOIN category c ON p.category_id=c.id 
                     WHERE p.status<>'Deleted' $subQuery 
@@ -120,4 +120,25 @@ class Product extends Eloquent
             return DB::table('company')->where('status','Active')->get();
         }
     }
+
+    public function getCategoryPropertiesForProduct($property_id='')
+    {
+        $subQuery = !empty($property_id)? " AND ppo.product_id=".$property_id:"";
+        $query = "SELECT c.id AS category_id, p.id AS property_id, p.property , po.id AS option_id, po.option, ppo.id AS property_option_id, PPO.property_option_id
+                    FROM category c
+                    LEFT JOIN category_property cp ON c.id=cp.category_id
+                    LEFT JOIN property p ON cp.property_id=p.id AND cp.category_id=11
+                    LEFT JOIN property_option po ON p.id=po.property_id 
+                    LEFT JOIN product_property_option ppo ON po.id=ppo.property_option_id  $subQuery  
+                    WHERE P.id IS NOT NULL 
+                    ORDER BY p.property";
+        return   DB::select(DB::raw($query ));
+    }
+
+    public function createProductPropertyOptions($productPropertyInput) 
+    {
+        DB::table('product_property_option')->insert( 
+            $productPropertyInput
+        );
+    } 
 }

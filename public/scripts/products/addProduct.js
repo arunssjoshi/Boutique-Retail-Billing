@@ -7,7 +7,10 @@ var addProduct = function () {
         },
         registerEvents: function(){
             $('#product').focus();
-
+            $("input[type='checkbox']:not(.simple), input[type='radio']:not(.simple)").iCheck({
+                checkboxClass: 'icheckbox_minimal',
+                radioClass: 'iradio_minimal'
+            });
             $('#purchase_price').keyup(function(){
                 sellingPrice = parseInt($(this).val()) + parseInt($(this).val()) * parseInt($('#profit_margin').val())/100;
                 $('#customer_price').val(sellingPrice);
@@ -66,7 +69,7 @@ var addProduct = function () {
                 },
                 submitHandler: function(form) {
                     $('#btnPropertySave-error').html('').hide()
-                    var checkedValues = $('input:checkbox:checked').map(function() {
+                    var checkedValues = $('input:radio:checked').map(function() {
                             return this.value;
                         }).get();
                     $.post( baseUrl+'/admin/products/new', $("#frmNewProduct").serialize()+'&properties='+checkedValues, function( response ) {

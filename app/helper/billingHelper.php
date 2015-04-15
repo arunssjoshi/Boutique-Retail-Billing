@@ -3,7 +3,7 @@
  * @Author: Arun S S <arunssjoshi@gmail.com>
  * @Date:   2015-01-12 08:39:00
  * @Last Modified by:   Arun S S <arunssjoshi@gmail.com>
- * @Last Modified time: 2015-01-28 10:47:04
+ * @Last Modified time: 2015-04-15 11:46:08
  */
 
 function base_url()
@@ -61,4 +61,15 @@ function varDebug($var, $echo = true)
             return $dump;
         }
     }
+
+function changeArrayIndex($array=array(),$new_index_key){
+    $new_array  =   array();
+    if(sizeof($array)   >   0)
+        foreach($array as $key =>$element) {
+            if(!isset($new_array[$element[$new_index_key]]))
+                $new_array[$element[$new_index_key]] = array();
+            $new_array[$element[$new_index_key]][] = $element;
+        }
+    return $new_array;
+}
 ?>

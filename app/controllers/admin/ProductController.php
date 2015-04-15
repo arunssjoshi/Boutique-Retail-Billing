@@ -49,8 +49,11 @@ class ProductController extends BaseController {
 		$batchObj 		= 	new Batch();
 		$productObj 		= 	new Product();
 
+		if ($productObj->getCategoryPropertiesForProduct()) {
+			$this->data['product_properties'] = changeArrayIndex(json_decode(json_encode($productObj->getCategoryPropertiesForProduct()), true),'property_id');
+		}
 		
-		
+			
 		$this->data['categories']	= 	$categoryObj->getCategoryDetails();
 		$this->data['properties']  	= 	$propertyObj->getPropertiesDetails();
 		$this->data['batches']      =   $batchObj->getBatchDetails(array('sortField'=>3, 'sortDir'=>'DESC'));
@@ -102,20 +105,24 @@ class ProductController extends BaseController {
 			}
 
 			echo json_encode(array('status'=>true,'message'=>''));
-			exit;
-			$categoryProperties =	Input::get('properties');
+			
+			$productPropertyOptions =	Input::get('properties');
 
-			if($newCategoryId > 0) {
-				if(!empty($categoryProperties)) {
-					$categoryPropertyInput = array();
-					$categoryProperties = explode(',', $categoryProperties);
-					foreach ($categoryProperties as $key => $property_id) {
-						$categoryPropertyInput[] = array('category_id'=>$newCategoryId, 'property_id'=>$property_id);
+			if($newProductId > 0) {
+
+				$product_category_info				= 	$categoryObj->getCategoryDetails(array('categoryId'=>$newProductObj->category_id));
+				$newProductObj->product_code 		= 	$product_category_info['categories']['0']->category_short_code.$newProductId;
+				$newProductObj->save();
+				
+
+				if(!empty($productPropertyOptions)) {
+					$productPropertyInput = array();
+					$productPropertyOptions = explode(',', $productPropertyOptions);
+					foreach ($productPropertyOptions as $key => $option_id) {
+						$productPropertyInput[] = array('product_id'=>$newProductId, 'property_option_id'=>$option_id);
 					}
-					$categoryObj->createCategoryProperties($categoryPropertyInput);
+					$productObj->createProductPropertyOptions($productPropertyInput);
 				}
-				echo json_encode(array('status'=>true,'message'=>''));
-				exit;
 			}	else {
 				echo json_encode(array('status'=>false,'message'=>'Cannot save your data now.'));
 				exit;
