@@ -71,9 +71,9 @@ class ProductController extends BaseController {
 
 			$duplicates = (is_numeric(Input::get('duplicate')) && Input::get('duplicate') > 1) ?Input::get('duplicate'):1;
 			$group_id		=	substr(strtoupper(md5(uniqid(rand(), true))),16,16);
-			$productPropertyOptions =	Input::get('properties');
+			
 			for($i=1; $i<=$duplicates; $i++){
-
+				$productPropertyOptions =	Input::get('properties');
 				$newProductObj 	= 	new Product();
 
 				$newProductObj->name	=	Input::get('product');
