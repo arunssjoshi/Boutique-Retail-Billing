@@ -49,11 +49,6 @@ class ProductController extends BaseController {
 		$batchObj 		= 	new Batch();
 		$productObj 		= 	new Product();
 
-		if ($productObj->getCategoryPropertiesForProduct()) {
-			$this->data['product_properties'] = changeArrayIndex(json_decode(json_encode($productObj->getCategoryPropertiesForProduct()), true),'property_id');
-		}
-		
-			
 		$this->data['categories']	= 	$categoryObj->getCategoryDetails();
 		$this->data['properties']  	= 	$propertyObj->getPropertiesDetails();
 		$this->data['batches']      =   $batchObj->getBatchDetails(array('sortField'=>3, 'sortDir'=>'DESC'));
@@ -76,7 +71,7 @@ class ProductController extends BaseController {
 
 			$duplicates = (is_numeric(Input::get('duplicate')) && Input::get('duplicate') > 1) ?Input::get('duplicate'):1;
 			$group_id		=	substr(strtoupper(md5(uniqid(rand(), true))),16,16);
-
+			$productPropertyOptions =	Input::get('properties');
 			for($i=1; $i<=$duplicates; $i++){
 
 				$newProductObj 	= 	new Product();
@@ -101,14 +96,7 @@ class ProductController extends BaseController {
 				$newProductObj->save();
 				$newProductId =  $newProductObj->id;
 
-				
-			}
-
-			echo json_encode(array('status'=>true,'message'=>''));
-			
-			$productPropertyOptions =	Input::get('properties');
-
-			if($newProductId > 0) {
+				if($newProductId > 0) {
 
 				$product_category_info				= 	$categoryObj->getCategoryDetails(array('categoryId'=>$newProductObj->category_id));
 				$newProductObj->product_code 		= 	$product_category_info['categories']['0']->category_short_code.$newProductId;
@@ -123,10 +111,11 @@ class ProductController extends BaseController {
 					}
 					$productObj->createProductPropertyOptions($productPropertyInput);
 				}
-			}	else {
-				echo json_encode(array('status'=>false,'message'=>'Cannot save your data now.'));
-				exit;
 			}
+			}
+
+			echo json_encode(array('status'=>true,'message'=>''));
+			
 			exit;
 		}
 
@@ -135,5 +124,132 @@ class ProductController extends BaseController {
 		return View::make('admin.product.new_product',$this->data);
 	}
 
+	public function editProduct($productId)
+	{
+		$propertyObj 	= 	new Property();
+		$categoryObj 	= 	new Category();
+		$batchObj 		= 	new Batch();
+		$productObj 		= 	new Product();
+
+		if (empty($productId))
+			return formatMessage('Invalid Request', 'danger');
+
+		$product_info  	= 	$productObj->getProductDetails(array('productId'=>$productId));
+		if($product_info['total_rows']==0)
+			return formatMessage('Product not found', 'danger', array('resize_popup'=>true));
+
+		$this->data['product_info'] = $product_info['products'][0];
+
+		$this->data['categories']	= 	$categoryObj->getCategoryDetails();
+		$this->data['properties']  	= 	$propertyObj->getPropertiesDetails();
+		$this->data['batches']      =   $batchObj->getBatchDetails(array('sortField'=>3, 'sortDir'=>'DESC'));
+		$this->data['product_batch']      =   $batchObj->getBatchDetails(array('batchShopId'=>$this->data['product_info']->batch_shop_id))['batches'][0];
+		$this->data['companies']	=   $productObj->getCompanies();
+		if ($this->data['batches']['total_rows'] > 0) {
+			$this->data['shops']  		= 	$batchObj->getBatchShopDetails($this->data['product_batch']->id);
+		}
+		
+		$productData = Product::find($productId);
+
+		if (Request::ajax() && Request::isMethod('post'))
+		{
+			
+			if (Input::get('product') == ''  ) {
+				echo json_encode(array('status'=>false,'message'=>'Please enter the required fields.'));
+				exit;
+			}	
+			
+
+			$productData->name	=	Input::get('product');
+			$productData->group_id		=	Input::get('group_id');
+			
+			$productData->description	=	Input::get('description');
+			$productData->company_id	=	Input::get('ddCompany');
+			$productData->category_id	=	Input::get('ddCategory');
+			$productData->model	=	Input::get('brand');
+			$productData->model_no	=	Input::get('brand_no');
+			$productData->batch_shop_id	=	Input::get('ddBatchShop');
+			$productData->margin	=	Input::get('profit_margin');
+			$productData->purchase_price	=	Input::get('purchase_price');
+			$productData->quantity	=	Input::get('quantity');
+			$productData->selling_price	=	Input::get('customer_price');
+			$productData->status		=	'Active';
+			$productData->updated_by	=	Auth::user()->id;
+			$productData->updated_at	=	getNow();
+
+			$productData->save();
+				
+
+				
+
+			
+			
+			$productPropertyOptions =	Input::get('properties');
+
+			if($productData->id > 0) {
+
+				$formProductProperties =	Input::get('properties');
+				$dbProductProperites   =   array();
+
+				$dbProps = DB::table('product_property_option')->where('product_id', $productId )->get();
+				
+
+				if($dbProps) {
+					foreach ($dbProps as $prop) {
+							$dbProductProperites[] = $prop->property_option_id;
+					}
+				}
+
+				
+				$formProductProperties = (!$formProductProperties)?array():explode(',',$formProductProperties);
+
+
+				$productPropertyOptionsToInsert = array_diff($formProductProperties, $dbProductProperites);
+				$productPropertyOptionsToDelete = array_diff($dbProductProperites, $formProductProperties);
+
+				
+				if (sizeof($productPropertyOptionsToInsert) > 0) {
+					$productPropertyOptionsInput = array();
+					foreach ($productPropertyOptionsToInsert as $key => $option_id) {
+						$productPropertyOptionsInput[] = array('product_id'=>$productId, 'property_option_id'=>$option_id);
+					}
+					$productObj->createProductPropertyOptions($productPropertyOptionsInput);
+				}
+				
+
+				if (sizeof($productPropertyOptionsToDelete) > 0) {
+					$productObj->deleteProductPropertyOptions($productId, $productPropertyOptionsToDelete);
+				}
+
+				echo json_encode(array('status'=>true,'message'=>''));
+
+			}	else {
+				echo json_encode(array('status'=>false,'message'=>'Cannot save your data now.'));
+				exit;
+			}
+			exit;
+		}
+
+		$this->data['title'] = 'Edit Product';
+		$this->data['scriptIncludes'] = array('validator','edit_product_js');
+		return View::make('admin.product.edit_product',$this->data);
+	}
+
+	public function getProductProperties()
+	{
+		$productId = Input::get('productId');
+		$categoryId = Input::get('categoryId');
+		$productObj 		= 	new Product();
+
+		$this->data = array();
+		$this->data['product_id'] = $productId;
+		$properties = $productObj->getCategoryPropertiesForProduct($categoryId, $productId);
+		if ($properties) {
+			$this->data['product_properties'] = changeArrayIndex(json_decode(json_encode($properties), true),'property_id');
+		}
+
+		return View::make('admin.product.property_list',$this->data);
+
+	}
 
 }

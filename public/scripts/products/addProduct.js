@@ -26,6 +26,10 @@ var addProduct = function () {
                 sellingPrice = parseInt($('#purchase_price').val()) + parseInt($('#purchase_price').val()) * parseInt($('#profit_margin').val())/100;
                 $('#customer_price').val(sellingPrice);
             })
+
+            $('#ddCategory').change(function(){
+                addProduct.loadProductProperties();
+            });
             
             $('#ddBatch').change(function(){
                 $.post( baseUrl+'/admin/batch/batch-shop.json/'+$(this).val(), {}, function( response ) {
@@ -39,6 +43,21 @@ var addProduct = function () {
                         
                     }, "json");
             })
+
+            addProduct.loadProductProperties();
+        },
+        loadProductProperties: function(){
+            $.post( baseUrl+'/admin/products/property_list', 
+               {categoryId:$('#ddCategory').val()}, function( shops ) {
+               $('#wrapProductProperties').html(shops);
+
+               $("input[type='checkbox']:not(.simple), input[type='radio']:not(.simple)").iCheck({
+                checkboxClass: 'icheckbox_minimal',
+                radioClass: 'iradio_minimal'
+            });
+            }, "html");
+
+
         },
         initValidation: function(){
             var newPropertyValidator = $("#frmNewProduct").validate({

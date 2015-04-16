@@ -45,8 +45,8 @@ return array(
                                     array('file'=>base_url().'/scripts/products/product.js'),    
                          'add_product_js' =>
                                     array('file'=>base_url().'/scripts/products/addProduct.js'),
-                         'edit_category_js' =>
-                                    array('file'=>base_url().'/scripts/category/editCategory.js'), 
+                         'edit_product_js' =>
+                                    array('file'=>base_url().'/scripts/products/editProduct.js'), 
         				 ),
         'styles'=>array('colorbox'		=>
         							array('file'=>base_url().'/assets/colorbox/colorbox.css','type'=>'media'),

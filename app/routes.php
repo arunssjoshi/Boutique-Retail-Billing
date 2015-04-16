@@ -76,8 +76,9 @@ Route::group(array('before' => 'auth'), function()
         Route::any('admin/products', array( 'uses' => 'ProductController@index'));
         Route::any('admin/products/product.json', array( 'uses' => 'ProductController@getProductJson'));
         Route::any('admin/products/new', array( 'uses' => 'ProductController@newProduct'));
-        Route::any('admin/products/edit/{id}', array( 'uses' => 'ProductController@editCategory'));
+        Route::any('admin/products/edit/{id}', array( 'uses' => 'ProductController@editProduct'));
         Route::any('admin/products/delete/{id}', array( 'uses' => 'ProductController@deleteCategory'));
+        Route::any('admin/products/property_list', array( 'uses' => 'ProductController@getProductProperties'));
         #------------------------------END PRODUCT-----------------------------------#
 
     	Route::any('admin/reports', array( 'uses' => 'ReportsController@index'));

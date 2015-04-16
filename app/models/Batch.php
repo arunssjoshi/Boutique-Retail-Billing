@@ -10,6 +10,7 @@ class Batch extends Eloquent
         $sortColumns =   array('0'=>'b.batch','1'=>'s.shop', '2'=>'s.city', '3'=>'b.purchased_on');
 
         $subQuery    =   (isset($filter['batchId'] ) && $filter['batchId'] > 0)? " AND b.id = ".$filter['batchId']:"";
+        $subQuery    =   (isset($filter['batchShopId'] ) && $filter['batchShopId'] > 0)? " AND bs.id = ".$filter['batchShopId']:$subQuery;
         $subQuery    .=   ((isset($filter['search']) && $filter['search']!='' ))? " AND (b.batch LIKE '".$filter['search']."%' OR 
                                                             s.city LIKE '".$filter['search']."%' OR s.shop LIKE '".$filter['search']."%')":"";
 

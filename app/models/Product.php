@@ -9,7 +9,7 @@ class Product extends Eloquent
         //var_dump($filter); exit;
         $sortColumns =   array('0'=>'p.id','1'=>'c.tax', '2'=>'c.category', '3'=>'c.category');
 
-        $subQuery    =   (isset($filter['categoryId'] ) && $filter['categoryId'] > 0)? " AND c.id = ".$filter['categoryId']:"";
+        $subQuery    =   (isset($filter['productId'] ) && $filter['productId'] > 0)? " AND p.id = ".$filter['productId']:"";
         $subQuery    .=   ((isset($filter['search']) && $filter['search']!='' ))? " AND (c.category LIKE '".$filter['search']."%' )":"";
 
         $filter['sortField']    =   isset($filter['sortField'])?$filter['sortField']:0;
@@ -20,7 +20,8 @@ class Product extends Eloquent
         if($filter['sortField']==0)
             $sortDir = 'DESC';
 
-        $query =    "SELECT SQL_CALC_FOUND_ROWS  p.id as product_id, p.product_code, p.name as product, p.quantity, p.selling_price, 
+        $query =    "SELECT SQL_CALC_FOUND_ROWS  p.id as product_id, p.product_code, p.group_id, p.name as product, p.quantity, 
+                    p.model, p.model_no, p.purchase_price, p.margin, p.selling_price, p.description, 
                     p.group_id, c.category, c.unit, p.batch_shop_id , p.company_id, c.id category_id
                     FROM product p 
                     JOIN category c ON p.category_id=c.id 
@@ -121,17 +122,30 @@ class Product extends Eloquent
         }
     }
 
-    public function getCategoryPropertiesForProduct($property_id='')
+    public function getCategoryPropertiesForProduct($categoryId, $productId='')
     {
-        $subQuery = !empty($property_id)? " AND ppo.product_id=".$property_id:"";
-        $query = "SELECT c.id AS category_id, p.id AS property_id, p.property , po.id AS option_id, po.option, ppo.id AS property_option_id, PPO.property_option_id
+        $subQuery = !empty($productId)? " AND ppo.product_id=".$productId:"";
+       
+        if ($productId > 0 ) {
+               $query = "SELECT c.id AS category_id, p.id AS property_id, p.property , po.id AS option_id, po.option, ppo.id AS property_option_id, PPO.property_option_id
                     FROM category c
                     LEFT JOIN category_property cp ON c.id=cp.category_id
-                    LEFT JOIN property p ON cp.property_id=p.id AND cp.category_id=11
+                    LEFT JOIN property p ON cp.property_id=p.id AND cp.category_id='$categoryId'
                     LEFT JOIN property_option po ON p.id=po.property_id 
-                    LEFT JOIN product_property_option ppo ON po.id=ppo.property_option_id  $subQuery  
+                    LEFT JOIN product_property_option ppo ON po.id=ppo.property_option_id  AND ppo.product_id=".$productId."  
                     WHERE P.id IS NOT NULL 
-                    ORDER BY p.property";
+                    ORDER BY p.property, po.option";
+        } else {
+               $query = "SELECT c.id AS category_id, p.id AS property_id, p.property , po.id AS option_id, po.option 
+
+                    FROM category c
+                    LEFT JOIN category_property cp ON c.id=cp.category_id
+                    LEFT JOIN property p ON cp.property_id=p.id AND cp.category_id='$categoryId'
+                    LEFT JOIN property_option po ON p.id=po.property_id 
+                    WHERE P.id IS NOT NULL 
+                    ORDER BY p.property, po.option";
+        }
+       
         return   DB::select(DB::raw($query ));
     }
 
@@ -141,4 +155,12 @@ class Product extends Eloquent
             $productPropertyInput
         );
     } 
+
+    public function deleteProductPropertyOptions($productId, $propertiesToDelete)
+    {
+        foreach($propertiesToDelete as $propertyOptionID) {
+            $query = "DELETE FROM product_property_option WHERE product_id=$productId AND property_option_id=$propertyOptionID";
+            DB::select(DB::raw($query ));
+        }
+    }
 }

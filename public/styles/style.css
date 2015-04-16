@@ -46,5 +46,7 @@ label.error{color:red; font-weight: normal;}
 .fullWidth{width: 100% !important;}
 .chkVList{ margin-right: 10px; float: left; margin-top: 10px;}
 .marginLeft{margin-left: 5px;}
-#frmNewProduct .row{width: 99%;}
-.simpleChk{float:left !important;}
+#frmNewProduct .row, #frmEditProduct .row{width: 99%;}
+/*#frmNewProduct .input-group-addon{background-color: #fff !important;border:none;}*/
+.productPropertyWrap {text-align: left;}
+.boxProperty{border:1px solid #ccc; padding: 10px; border-radius:4px; background-color: #fff !important;}
