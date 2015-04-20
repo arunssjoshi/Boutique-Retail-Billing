@@ -9,7 +9,10 @@ class ProductController extends BaseController {
 	 */
 	public function index()
 	{
+		$categoryObj 	= 	new Category();
+
 		$this->data['title'] = 'Products';
+		$this->data['categories']	= 	$categoryObj->getCategoryDetails();
 		$this->data['scriptIncludes'] = array('colorbox','product_js');
 		$this->data['cssIncludes'] = array('colorbox');
 		return View::make('admin.product.product',$this->data);
@@ -17,16 +20,19 @@ class ProductController extends BaseController {
 
 	public function getProductJson()
 	{
-		
-		$dtFilter		=	getdataTableFilter();
-		
+		//var_dump($_POST['name']);
+		$dtFilter		=	getdataTableFilter('product');
+		$dtFilter['categoryId'] = Input::get('categoryId');
 		$productObj 		= 	new Product();
 		$products  	= 	$productObj->getProductDetails($dtFilter);
 		$dtData 		= 	array( 'recordsTotal'=>$products['total_rows'], 'recordsFiltered'=>$products['total_rows'], 'data'=>array());
 		
 		if($products['total_rows'] > 0){
 			foreach($products['products'] as $product){
-				$dtData['data'][] = array($product->product_id,
+				$dtData['data'][] = array(
+										'&nbsp;&nbsp;&nbsp;<input type="checkbox">',
+										$product->product_id,
+										$product->product_code,
 										$product->product,
 										$product->group_id,
 										

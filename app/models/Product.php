@@ -7,14 +7,20 @@ class Product extends Eloquent
     public function getProductDetails($filter=array())
     {
         //var_dump($filter); exit;
-        $sortColumns =   array('0'=>'p.id','1'=>'c.tax', '2'=>'c.category', '3'=>'c.category');
+        $sortColumns =   array('1'=>'p.id', '2'=>'p.product_code','3'=>'p.name', '4'=>'p.group_id', '5'=>'c.category', '6'=>'p.quantity', '7'=>'p.selling_price');
 
         $subQuery    =   (isset($filter['productId'] ) && $filter['productId'] > 0)? " AND p.id = ".$filter['productId']:"";
-        $subQuery    .=   ((isset($filter['search']) && $filter['search']!='' ))? " AND (c.category LIKE '".$filter['search']."%' )":"";
+        $subQuery    .=   (isset($filter['categoryId'] ) && $filter['categoryId'] > 0)? " AND c.id = ".$filter['categoryId']:$subQuery;
+        $subQuery    .=   ((isset($filter['search']) && $filter['search']!='' ))? " AND (p.id LIKE '".$filter['search']."%' OR 
+                                                            p.product_code LIKE '".$filter['search']."%' OR 
+                                                            p.name LIKE '".$filter['search']."%' OR 
+                                                            p.group_id LIKE '".$filter['search']."%' OR 
+                                                            c.category LIKE '".$filter['search']."%' OR 
+                                                            p.selling_price LIKE '".$filter['search']."%')":"";
 
         $filter['sortField']    =   isset($filter['sortField'])?$filter['sortField']:0;
 
-        $sortField   =   $sortColumns[$filter['sortField']];
+        $sortField   =   isset($sortColumns[$filter['sortField']])?$sortColumns[$filter['sortField']]:'p.created_at';
         $sortDir     =   isset($filter['sortDir'])?$filter['sortDir']:' DESC';
 
         if($filter['sortField']==0)
@@ -28,7 +34,7 @@ class Product extends Eloquent
                     WHERE p.status<>'Deleted' $subQuery 
                     ORDER BY $sortField  $sortDir " ;
 
-                    //die($query);
+                   
         if (isset($filter['offset']) && is_numeric($filter['offset']) && isset($filter['limit']) && is_numeric($filter['limit'])) {
             $query .= " LIMIT ".$filter['offset']." , ".$filter['limit'];
         }

@@ -3,7 +3,7 @@
  * @Author: Arun S S <arunssjoshi@gmail.com>
  * @Date:   2015-01-12 08:39:00
  * @Last Modified by:   Arun S S <arunssjoshi@gmail.com>
- * @Last Modified time: 2015-04-15 11:46:08
+ * @Last Modified time: 2015-04-20 10:36:07
  */
 
 function base_url()
@@ -21,10 +21,16 @@ function admin_dashboard_url()
 	return URL::to('/').'/admin/dashboard';
 }
 
-function getdataTableFilter()
+function getdataTableFilter($type='')
 {
 	$post = $_POST;
-	$dtInput['sortField'] 		= 	isset($post['order'][0]['column'])?$post['order'][0]['column']:0;
+    $sortColumn = 0;
+    //var_dump($post['order'][0]['column']);
+    if($type=='product'){
+        //$sortColumn = 1;
+    }
+
+	$dtInput['sortField'] 		= 	!empty($post['order'][0]['column'])?$post['order'][0]['column']:$sortColumn;
 	$dtInput['sortDir']			= 	isset($post['order'][0]['dir'])?$post['order'][0]['dir']:' ASC';	
 	$dtInput['offset']			= 	isset($post['start'])?$post['start']:0;
 	$dtInput['limit']			= 	isset($post['length'])?$post['length']:Config::get('billing.page_limit');
