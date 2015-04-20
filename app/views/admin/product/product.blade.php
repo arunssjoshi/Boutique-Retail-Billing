@@ -37,13 +37,14 @@
                         </div>         
                         <div class="box-body table-responsive">
                             <h3>
-                                <a href="<?php echo base_url();?>/admin/products/new" class="btn btn-primary btn-sm" id="btnNewProduct"> + New Product</a>
+                                <a href="<?php echo base_url();?>/admin/products/new" class="btn btn-primary btn-sm" id="btnNewProduct"> + New Product</a> 
+                                 <a href="javascript:;" class="btn btn-primary btn-sm " id="btnGenerateBarcode"> ^ Generate Barcode</a>
                             </h3>
                             <div class="clear"></div>
                             <table id="tblProducts" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th width="20"><input type="checkbox"></th>
+                                        <th width="20"><input type="checkbox" id="chkAllProduct"></th>
                                         <th width="60">Product&nbsp;ID</th>
                                         <th>Product Code</th>
                                         <th>Product</th>

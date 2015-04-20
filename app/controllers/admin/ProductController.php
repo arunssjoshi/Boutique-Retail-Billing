@@ -30,7 +30,7 @@ class ProductController extends BaseController {
 		if($products['total_rows'] > 0){
 			foreach($products['products'] as $product){
 				$dtData['data'][] = array(
-										'&nbsp;&nbsp;&nbsp;<input type="checkbox">',
+										'&nbsp;&nbsp;&nbsp;<input type="checkbox" class="chkProduct" value="'.$product->product_id.'">',
 										$product->product_id,
 										$product->product_code,
 										$product->product,

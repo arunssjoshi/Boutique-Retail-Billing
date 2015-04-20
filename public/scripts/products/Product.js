@@ -18,12 +18,19 @@ var products = function () {
                 },
                 "order": [[ 1, "desc" ]],
                 "fnDrawCallback":this.registerDtLoadedEvents,
-                "columnDefs": [    { "orderable": false, "targets": [0,8] }  ]
+                "columnDefs": [    { "orderable": false, "targets": [0,8] }  ],
+                "iDisplayLength": 30,
+                "aLengthMenu": [[25, 50, 100, -1], [25, 50, 100, "All"]]
 
             });
         },
         registerEvents: function(){
-
+            $('#btnGenerateBarcode').click(function(){
+                var checkedValues = $('.chkProduct:checked').map(function() {
+                            return this.value;
+                        }).get();
+                alert(checkedValues);
+            });
         },
         registerDtLoadedEvents: function(){
             $("input[type='checkbox']:not(.simple), input[type='radio']:not(.simple)").iCheck({
@@ -34,9 +41,17 @@ var products = function () {
                 $('#tblProducts_wrapper').append($('#categoryHolder').html());
                 $('#categoryHolder').remove();
                 $('#ddCategory').change(function(){
-                    //ddProducts.fnReloadAjax();
                     $('#tblProducts').dataTable().fnDraw();
-                })
+                });
+
+                $('#chkAllProduct').on('ifChecked', function(event){
+                  $('.chkProduct').iCheck('check'); 
+                });
+
+                $('#chkAllProduct').on('ifUnchecked', function(event){
+                  $('.chkProduct').iCheck('uncheck'); 
+                });
+               
             }
         }
     };
