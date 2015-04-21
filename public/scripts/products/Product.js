@@ -29,7 +29,11 @@ var products = function () {
                 var checkedValues = $('.chkProduct:checked').map(function() {
                             return this.value;
                         }).get();
-                alert(checkedValues);
+                window.open(
+                  baseUrl+'/admin/products/generate-barcode/'+checkedValues,
+                  '_blank' // <- This is what makes it open in a new window.
+                );
+                //alert(checkedValues);
             });
         },
         registerDtLoadedEvents: function(){

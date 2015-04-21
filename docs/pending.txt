@@ -24,4 +24,14 @@
 
 
 
+ALTER TABLE `property`     ADD COLUMN `printable` ENUM('Yes','No') DEFAULT 'No' NULL AFTER `sort_order`;
 
+SELECT p.id, p.product_code, c.category, p.selling_price, GROUP_CONCAT(pr.property,': ',po.option SEPARATOR ', ') AS property
+FROM product p 
+LEFT JOIN category c ON p.category_id=c.id
+LEFT JOIN product_property_option ppo ON ppo.product_id=p.id
+LEFT JOIN property_option po ON ppo.property_option_id=po.id
+LEFT JOIN property pr ON po.property_id=pr.id AND pr.printable='Yes'
+WHERE p.id IN (253,252,251,250,249,248,247,246,245,244,243,242,241,240,239,238,237,236,235,234,233,232,231,230,229,224,223,222,221,220) AND 
+p.status<>'Deleted' 
+GROUP BY p.id

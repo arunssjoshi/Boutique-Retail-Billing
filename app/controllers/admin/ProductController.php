@@ -258,4 +258,13 @@ class ProductController extends BaseController {
 
 	}
 
+	public function generateBarcode($productIds)
+	{
+		$this->data = array();
+		//echo $productIds;
+		//echo \DNS1D::getBarcodeHTML("4445645656", "C128");
+		//$generator = new BarcodeGenerator();
+		return View::make('admin.product.barcode',$this->data);
+
+	}
 }

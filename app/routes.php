@@ -79,6 +79,7 @@ Route::group(array('before' => 'auth'), function()
         Route::any('admin/products/edit/{id}', array( 'uses' => 'ProductController@editProduct'));
         Route::any('admin/products/delete/{id}', array( 'uses' => 'ProductController@deleteCategory'));
         Route::any('admin/products/property_list', array( 'uses' => 'ProductController@getProductProperties'));
+        Route::any('admin/products/generate-barcode/{id}', array( 'uses' => 'ProductController@generateBarcode'));
         #------------------------------END PRODUCT-----------------------------------#
 
     	Route::any('admin/reports', array( 'uses' => 'ReportsController@index'));
