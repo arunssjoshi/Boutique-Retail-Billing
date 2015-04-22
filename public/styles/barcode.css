@@ -1,20 +1,24 @@
 body{font-family: Trebuchet MS; margin: 0; padding: 0;}
 	#barcodePageWrap{border: 1px solid;
     height: 743px;
-    margin: 11px 10px 7px 4px;
+    margin: 16px 10px 7px 4px;
     width: 1083px;
 border:none;}
-	#barcodePageWrap .barcode-box{ float: left; height: 142px; margin-left: 4px; margin-top: 4px; width: 173px;border: 1px solid #FFF; border-radius: 4px; }
-	#barcodePageWrap .header{margin:0 9px; }
-	.subHeader{font-size: 10px;margin:0 10px;}
+	.barcode-box{ float: left; height: 142px; margin-left: 4px; margin-top: 4px; width: 173px;border: 1px solid #fff; border-radius: 4px; overflow: hidden; }
+	.header{margin: 0 0px 0 39px; position: relative;}
+	.header span{font-size: 12px;}
+	.subHeader{font-size: 10px;}
 	.properties{font-size: 11px;margin:0 10px 2px;}
 	.mrpWrap{ margin: 1px 0 0px; }
-	.mrp{margin:4px 0 1px 0px; font-family: Arial; font-weight: bold; font-size: 19px}
+	.mrp{margin:2px 0 1px 0px; font-family: Arial; font-weight: normal; font-size: 19px}
 	.clear{clear: both;}
 	.barcodeWrap{margin: 0 auto;}
 	.category{font-size: 12px;margin:0 10px; }
-	.row{border-top: 1px solid; margin: 1px 0;}
+	.row{border-top: 1px solid #BEBEBE; margin: 1px 0;}
 	.barcode{}
 	.hide{display: none;}
-	.mrpBarcode{text-align: center; border-top:1px solid;}
+	.mrpBarcode{text-align: center; border-top:1px solid #BEBEBE;}
 	.mrpWrap, .barcodeWrap {text-align: left; display: inline-block;}
+	.marginLeft39{margin-left: 39px;}
+	.barcode-logo{position: absolute; top: 1px; margin-left: -38px;}
+	.barcode-logo img{height: 58px;}

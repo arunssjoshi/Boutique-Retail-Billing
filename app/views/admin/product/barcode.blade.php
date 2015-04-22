@@ -16,23 +16,23 @@
 		<div id="barcodePageWrap">
 		<?php foreach($products as $key => $product):?>
 				<div class='barcode-box'>
-				<?php if(in_array(7+1, $excludes)):?>
-						<div class="header">Daavani Ladies Point</div>
-						<div class="subHeader hide"> Attingal Road. Venjaramoodu</div>
-						<div class="subHeader">Ph: 09048614877, 09446127327</div>
-						<div class="row"></div>
-						<div class="category"><?php echo $product->category;?>&nbsp;</div>
-						<div class="properties"><?php echo $product->property;?>&nbsp;</div>
-						<div class="mrpBarcode">
-							<div class="mrpWrap">
-								<div class="mrp">MRP  ₹. <?php echo ceil($product->selling_price / 5) * 5; ?>/-</div>
-							</div>
-							<div class="barcodeWrap">
-								<img class="barcode" src='http://billing.lh/barcode/core/image.php?filetype=PNG&dpi=72&scale=1.9&rotation=0&font_family=Arial.ttf&font_size=8&text=<?php echo $product->product_code;?>
-								&thickness=30&start=NULL&code=BCGcode128' />
-							</div>
+					<div class="header">Daavani <span>Ladies Point</span>
+						<div class="subHeader "> Attingal Road. Venjaramoodu</div>
+						<div class="barcode-logo"><img src="<?php echo base_url();?>/images/barcode-logo.png" alt=""></div>
+					</div>
+					
+					<div class="row marginLeft39"></div>
+					<div class="category marginLeft39"><?php echo $product->category;?>&nbsp;</div>
+					<div class="properties marginLeft39"><i><?php echo $product->property;?>&nbsp;</i></div>
+					<div class="mrpBarcode ">
+						<div class="mrpWrap">
+							<div class="mrp">MRP. ₹ <strong> <?php echo ceil($product->selling_price / 5) * 5; ?>/-</strong></div>
 						</div>
-					<?php endif;?>
+						<div class="barcodeWrap">
+							<img class="barcode" src='<?php echo base_url();?>/barcode/core/image.php?filetype=PNG&dpi=72&scale=1.9&rotation=0&font_family=Arial.ttf&font_size=10&text=<?php echo $product->product_code;?>
+							&thickness=32&start=NULL&code=BCGcode128' />
+						</div>
+					</div>
 				</div>
 		<?php endforeach;?>
 		</div>

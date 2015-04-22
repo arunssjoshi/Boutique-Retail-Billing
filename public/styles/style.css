@@ -46,6 +46,7 @@ label.error{color:red; font-weight: normal;}
 .fullWidth{width: 100% !important;}
 .chkVList{ margin-right: 10px; float: left; margin-top: 10px;}
 .marginLeft{margin-left: 5px;}
+
 #frmNewProduct .row, #frmEditProduct .row, #tblProducts_wrapper .row{width: 99%;}
 /*#frmNewProduct .input-group-addon{background-color: #fff !important;border:none;}*/
 .productPropertyWrap {text-align: left;}
