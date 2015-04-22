@@ -260,7 +260,9 @@ class ProductController extends BaseController {
 
 	public function generateBarcode($productIds)
 	{
-		$this->data = array();
+		$productObj 		= 	new Product();
+		$this->data['products'] = $productObj->getProductsForBarcode($productIds);
+		
 		//echo $productIds;
 		//echo \DNS1D::getBarcodeHTML("4445645656", "C128");
 		//$generator = new BarcodeGenerator();

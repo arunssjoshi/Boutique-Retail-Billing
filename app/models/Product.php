@@ -169,4 +169,19 @@ class Product extends Eloquent
             DB::select(DB::raw($query ));
         }
     }
+
+    public function getProductsForBarcode($productIds)
+    {
+        $query = "SELECT p.id, p.product_code, c.category, p.selling_price, GROUP_CONCAT(pr.property,': ',po.option SEPARATOR ', ') AS property
+                FROM product p 
+                LEFT JOIN category c ON p.category_id=c.id
+                LEFT JOIN product_property_option ppo ON ppo.product_id=p.id
+                LEFT JOIN property_option po ON ppo.property_option_id=po.id
+                LEFT JOIN property pr ON po.property_id=pr.id AND pr.printable='Yes'
+                WHERE p.id IN ($productIds) AND 
+                p.status<>'Deleted' 
+                GROUP BY p.id";
+        return   DB::select(DB::raw($query ));
+
+    }
 }

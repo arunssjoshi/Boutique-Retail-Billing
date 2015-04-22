@@ -1,0 +1,16 @@
+body{font-family: Trebuchet MS; margin: 0; padding: 0;}
+	#barcodePageWrap{height: 793px; width: 1121px; border: 1px solid}
+	#barcodePageWrap .barcode-box{display: none;border: 1px solid; border-radius: 4px; float: left; height: 144px; margin-left: 4px; margin-top: 7px; width: 176px; }
+	#barcodePageWrap .header{margin:0 9px; }
+	.subHeader{font-size: 11px;margin:0 10px;}
+	.properties{font-size: 11px;margin:0 10px 2px;}
+	.mrpWrap{ margin: 1px 0 0px; }
+	.mrp{margin:4px 0 1px 0px; font-family: Arial; font-weight: bold; font-size: 19px}
+	.clear{clear: both;}
+	.barcodeWrap{margin: 0 auto;}
+	.category{font-size: 12px;margin:0 10px; }
+	.row{border-top: 1px solid; margin: 1px 0;}
+	.barcode{}
+	.hide{display: none;}
+	.mrpBarcode{text-align: center; border-top:1px solid;}
+	.mrpWrap, .barcodeWrap {text-align: left; display: inline-block;}
