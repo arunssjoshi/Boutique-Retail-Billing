@@ -1,8 +1,12 @@
 body{font-family: Trebuchet MS; margin: 0; padding: 0;}
-	#barcodePageWrap{height: 790px; width: 1118px; border: 1px solid}
-	#barcodePageWrap .barcode-box{border: 1px solid; border-radius: 4px; float: left; height: 145px; margin-left: 4px; margin-top: 7px; width: 179px; }
+	#barcodePageWrap{border: 1px solid;
+    height: 743px;
+    margin: 11px 10px 7px 4px;
+    width: 1083px;
+border:none;}
+	#barcodePageWrap .barcode-box{ float: left; height: 142px; margin-left: 4px; margin-top: 4px; width: 173px;border: 1px solid #FFF; border-radius: 4px; }
 	#barcodePageWrap .header{margin:0 9px; }
-	.subHeader{font-size: 11px;margin:0 10px;}
+	.subHeader{font-size: 10px;margin:0 10px;}
 	.properties{font-size: 11px;margin:0 10px 2px;}
 	.mrpWrap{ margin: 1px 0 0px; }
 	.mrp{margin:4px 0 1px 0px; font-family: Arial; font-weight: bold; font-size: 19px}
