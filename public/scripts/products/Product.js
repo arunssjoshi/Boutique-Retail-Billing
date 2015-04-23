@@ -14,6 +14,7 @@ var products = function () {
                     type:'POST',
                     "data": function ( d ) {
                         d.categoryId = $('#tblProducts_wrapper #ddCategory').val();
+                        d.listType = $('#productListType').val();
                     }
                 },
                 "order": [[ 1, "desc" ]],
@@ -33,13 +34,41 @@ var products = function () {
                   baseUrl+'/admin/products/generate-barcode/'+checkedValues,
                   '_blank' // <- This is what makes it open in a new window.
                 );
-                //alert(checkedValues);
             });
+
+            $('#btnAddQueue').click(function(){
+                var checkedValues = $('.chkProduct:checked').map(function() {
+                            return this.value;
+                        }).get();
+                $.post( baseUrl+'/admin/products/addqueue', {products:checkedValues}, function( response ) {
+                    $('#queueCount').html(response.count);
+                    $('#chkAllProduct, .chkProduct').iCheck('uncheck'); 
+                }, "json");
+            });
+
+            $('#productListType').change(function(){
+                listType = $('#productListType').val();
+                if(listType == 'product') {
+                    $('#btnAddQueue').removeClass('hide');
+                    $('#btnGenerateBarcode').addClass('hide');
+                } else {
+                    $('#btnAddQueue').addClass('hide');
+                    $('#btnGenerateBarcode').removeClass('hide');
+                }
+                $('#tblProducts').dataTable().fnDraw();
+            })
         },
         registerDtLoadedEvents: function(){
             $("input[type='checkbox']:not(.simple), input[type='radio']:not(.simple)").iCheck({
                 checkboxClass: 'icheckbox_minimal',
                 radioClass: 'iradio_minimal'
+            });
+            $('#chkAllProduct').on('ifChecked', function(event){
+              $('.chkProduct').iCheck('check'); 
+            });
+
+            $('#chkAllProduct').on('ifUnchecked', function(event){
+              $('.chkProduct').iCheck('uncheck'); 
             });
             if ($('#tblProducts_wrapper #ddCategory').length == 0){
                 $('#tblProducts_wrapper').append($('#categoryHolder').html());
@@ -48,13 +77,7 @@ var products = function () {
                     $('#tblProducts').dataTable().fnDraw();
                 });
 
-                $('#chkAllProduct').on('ifChecked', function(event){
-                  $('.chkProduct').iCheck('check'); 
-                });
-
-                $('#chkAllProduct').on('ifUnchecked', function(event){
-                  $('.chkProduct').iCheck('uncheck'); 
-                });
+                
                
             }
         }

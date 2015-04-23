@@ -23,6 +23,7 @@ class ProductController extends BaseController {
 		//var_dump($_POST['name']);
 		$dtFilter		=	getdataTableFilter('product');
 		$dtFilter['categoryId'] = Input::get('categoryId');
+		$dtFilter['listType'] = Input::get('listType');
 		$productObj 		= 	new Product();
 		$products  	= 	$productObj->getProductDetails($dtFilter);
 		$dtData 		= 	array( 'recordsTotal'=>$products['total_rows'], 'recordsFiltered'=>$products['total_rows'], 'data'=>array());
@@ -179,7 +180,7 @@ class ProductController extends BaseController {
 			$productData->purchase_price	=	Input::get('purchase_price');
 			$productData->quantity	=	Input::get('quantity');
 			$productData->selling_price	=	Input::get('customer_price');
-			$productData->status		=	'Active';
+			$productData->status		=	Input::get('ddStatus');
 			$productData->updated_by	=	Auth::user()->id;
 			$productData->updated_at	=	getNow();
 
@@ -263,10 +264,32 @@ class ProductController extends BaseController {
 		$productObj 		= 	new Product();
 		$this->data['products'] = $productObj->getProductsForBarcode($productIds);
 		
-		//echo $productIds;
-		//echo \DNS1D::getBarcodeHTML("4445645656", "C128");
-		//$generator = new BarcodeGenerator();
 		return View::make('admin.product.barcode',$this->data);
+	}
 
+
+	public function addQueue()
+	{
+		$products = Input::get('products');
+		$product_queue = array();
+		$productObj 		= 	new Product();
+		if(sizeof($products) > 0) {
+			foreach($products as $productId){
+				$product_info  	= 	$productObj->getProductDetails(array('productId'=>$productId));
+				if($product_info['total_rows'] > 0){
+					$product_info = $product_info['products'][0];
+					for($i=1; $i<=$product_info->quantity; $i++) {
+						$product_queue[]['product_id'] = $productId;
+					}
+				}
+
+				
+			}
+			$productObj->addToBarcodeQueue($product_queue);
+
+			$count =  DB::table('barcode_queue')->where('status', '=', 'Queue')->count();
+			echo json_encode(array('count'=>$count));
+			exit;
+		}
 	}
 }

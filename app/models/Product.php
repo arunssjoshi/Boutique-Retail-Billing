@@ -26,10 +26,16 @@ class Product extends Eloquent
         if($filter['sortField']==0)
             $sortDir = 'DESC';
 
+        if(isset($filter['listType']) && $filter['listType'] == 'queue') {
+            $fromQuery = "barcode_queue bq JOIN  product p ON bq.product_id=p.id";
+        } else {
+            $fromQuery = "product p";
+        }
+        
         $query =    "SELECT SQL_CALC_FOUND_ROWS  p.id as product_id, p.product_code, p.group_id, p.name as product, p.quantity, 
                     p.model, p.model_no, p.purchase_price, p.margin, p.selling_price, p.description, 
-                    p.group_id, c.category, c.unit, p.batch_shop_id , p.company_id, c.id category_id
-                    FROM product p 
+                    p.group_id, c.category, c.unit, p.batch_shop_id , p.company_id, p.status as product_status, c.id category_id
+                    FROM  $fromQuery 
                     JOIN category c ON p.category_id=c.id 
                     WHERE p.status<>'Deleted' $subQuery 
                     ORDER BY $sortField  $sortDir " ;
@@ -173,15 +179,23 @@ class Product extends Eloquent
     public function getProductsForBarcode($productIds)
     {
         $query = "SELECT p.id, p.product_code, c.category, p.selling_price, GROUP_CONCAT(pr.property,': ',po.option SEPARATOR ', ') AS property
-                FROM product p 
+                FROM barcode_queue bq JOIN  product p ON bq.product_id=p.id
                 LEFT JOIN category c ON p.category_id=c.id
                 LEFT JOIN product_property_option ppo ON ppo.product_id=p.id
                 LEFT JOIN property_option po ON ppo.property_option_id=po.id
                 LEFT JOIN property pr ON po.property_id=pr.id AND pr.printable='Yes'
                 WHERE p.id IN ($productIds) AND 
-                p.status<>'Deleted' 
-                GROUP BY p.id";
+                p.status<>'Deleted' AND bq.status='Queue' 
+                GROUP BY bq.id 
+                LIMIT 0, 30";
         return   DB::select(DB::raw($query ));
 
+    }
+
+    public function addToBarcodeQueue($products)
+    {
+        DB::table('barcode_queue')->insert(
+            $products
+        );
     }
 }

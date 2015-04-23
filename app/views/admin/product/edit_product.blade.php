@@ -143,6 +143,18 @@
                     </div>
                     <label id="lbl-product" class="error softHide" style="" for="customer_price"></label>
                 </div>
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon">Status&nbsp;&nbsp;&nbsp;</span>
+                        <select id="ddStatus" name="ddStatus"    class="form-control"  tabindex="5" >
+                            <?php 
+                            $status_list = explode(',', 'Active,Hold,Damaged,Deleted,Owned,Soldout');
+                            foreach($status_list as $status):?>
+                                <option <?php echo ($product_info->product_status == $status)?"selected='selected'":""; ?> value="<?php echo $status;?>"><?php echo $status;?></option>
+                            <?php endforeach;?>
+                         </select>
+                    </div>
+                </div>
             </div>
 
            <div class="row marginBottom10">
