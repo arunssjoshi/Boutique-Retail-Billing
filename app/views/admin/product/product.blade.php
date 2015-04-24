@@ -39,13 +39,15 @@
                             <h3>
                                 <a href="<?php echo base_url();?>/admin/products/new" class="btn btn-primary btn-sm" id="btnNewProduct"> + New Product</a>
                                 <a href="javascript:;" class="btn btn-primary btn-sm " id="btnAddQueue"> + Add to Queue (<span id="queueCount"><?php echo DB::table('barcode_queue')->where('status', '=', 'Queue')->count();?></span>)</a> 
-                                <a href="javascript:;" class="btn btn-primary btn-sm hide" id="btnGenerateBarcode"> ^ Generate Barcode</a>
+                                <a href="javascript:;" class="btn btn-primary btn-sm queueLink hide" id="btnGenerateBarcode"> ^ Generate Barcode</a>
+                                <a href="javascript:;" class="btn btn-primary btn-sm queueLink hide" id="btnMarkAsPrinted"> Mark Printed</a>
                                 
                             </h3>
                             <div>
                                 <select id="productListType" class="">
                                     <option value="product">Product</option>
                                     <option value="queue">Queue</option>
+                                    <option value="printed">Printed</option>
                                 </select>
                                 
                             </div><br/>

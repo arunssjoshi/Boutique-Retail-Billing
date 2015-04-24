@@ -26,12 +26,38 @@
 
 ALTER TABLE `property`     ADD COLUMN `printable` ENUM('Yes','No') DEFAULT 'No' NULL AFTER `sort_order`;
 
-SELECT p.id, p.product_code, c.category, p.selling_price, GROUP_CONCAT(pr.property,': ',po.option SEPARATOR ', ') AS property
-FROM product p 
-LEFT JOIN category c ON p.category_id=c.id
-LEFT JOIN product_property_option ppo ON ppo.product_id=p.id
-LEFT JOIN property_option po ON ppo.property_option_id=po.id
-LEFT JOIN property pr ON po.property_id=pr.id AND pr.printable='Yes'
-WHERE p.id IN (253,252,251,250,249,248,247,246,245,244,243,242,241,240,239,238,237,236,235,234,233,232,231,230,229,224,223,222,221,220) AND 
-p.status<>'Deleted' 
-GROUP BY p.id
+CREATE TABLE `barcode_queue` (
+   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+   `product_id` int(10) unsigned DEFAULT NULL,
+   `status` enum('Printed','Queue') DEFAULT 'Queue',
+   PRIMARY KEY (`id`)
+ ) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=latin1
+
+
+ CREATE TABLE `bill` (
+   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+   `customer_name` varchar(128) DEFAULT NULL,
+   `address` varchar(512) DEFAULT NULL,
+   `description` varchar(512) DEFAULT NULL,
+   `mobile` varchar(16) DEFAULT NULL,
+   `phone` varchar(16) DEFAULT NULL,
+   `tax_bill` enum('No','Yes') DEFAULT 'No',
+   `created_by` int(10) unsigned DEFAULT NULL,
+   `created_date` datetime DEFAULT NULL,
+   `updated_by` int(10) unsigned DEFAULT NULL,
+   `updated_date` datetime DEFAULT NULL,
+   PRIMARY KEY (`id`)
+ ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1
+
+
+ CREATE TABLE `bill_product` (
+   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+   `bill_id` int(10) unsigned DEFAULT NULL,
+   `product_id` int(10) unsigned DEFAULT NULL,
+   `quantity` int(10) DEFAULT NULL,
+   `mrp` float DEFAULT NULL,
+   `customer_price` float DEFAULT NULL,
+   `discount_id` int(10) unsigned DEFAULT NULL,
+   `tax` float DEFAULT NULL,
+   PRIMARY KEY (`id`)
+ ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1

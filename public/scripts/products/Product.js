@@ -21,7 +21,7 @@ var products = function () {
                 "fnDrawCallback":this.registerDtLoadedEvents,
                 "columnDefs": [    { "orderable": false, "targets": [0,8] }  ],
                 "iDisplayLength": 30,
-                "aLengthMenu": [[25, 50, 100, -1], [25, 50, 100, "All"]]
+                "aLengthMenu": [[30, 50, 100, -1], [30, 50, 100, "All"]]
 
             });
         },
@@ -46,14 +46,27 @@ var products = function () {
                 }, "json");
             });
 
+            $('#btnMarkAsPrinted').click(function(){
+                var checkedValues = $('.chkProduct:checked').map(function() {
+                            return this.value;
+                        }).get();
+                $.post( baseUrl+'/admin/products/mark-printed', {barcodeQueueIds:checkedValues}, function( response ) {
+                    $('#queueCount').html(response.count);
+                    $('#chkAllProduct, .chkProduct').iCheck('uncheck'); 
+                }, "json");
+
+                $('#tblProducts').dataTable().fnDraw();
+            });
+
+
             $('#productListType').change(function(){
                 listType = $('#productListType').val();
                 if(listType == 'product') {
                     $('#btnAddQueue').removeClass('hide');
-                    $('#btnGenerateBarcode').addClass('hide');
+                    $('.queueLink').addClass('hide');
                 } else {
                     $('#btnAddQueue').addClass('hide');
-                    $('#btnGenerateBarcode').removeClass('hide');
+                    $('.queueLink').removeClass('hide');
                 }
                 $('#tblProducts').dataTable().fnDraw();
             })
@@ -76,10 +89,16 @@ var products = function () {
                 $('#ddCategory').change(function(){
                     $('#tblProducts').dataTable().fnDraw();
                 });
-
-                
-               
             }
+
+            $('.lnkBarcodeQueueDelete').click(function(){
+                if($(this).attr('rel')=='')
+                    return
+                $.post( baseUrl+'/admin/products/delete-barcode-queue', {barcodeQueueId:$(this).attr('rel')}, function( response ) {
+                    $('#queueCount').html(response.count);
+                    $('#tblProducts').dataTable().fnDraw();
+                }, "json");
+            });
         }
     };
 }();

@@ -30,9 +30,19 @@ class ProductController extends BaseController {
 		
 		if($products['total_rows'] > 0){
 			foreach($products['products'] as $product){
+				$checkBoxValue = ($dtFilter['listType']=='queue' || $dtFilter['listType']=='printed')?$product->barcode_queue_id:$product->product_id;
+				
+				if ($dtFilter['listType']=='product') {
+					$barcode_queue_id_str = '';
+					$manageLinks = '<a  class="lnkBatchEdit" href="'.admin_url().'/products/edit/'.$product->product_id.'"><small class="badge  bg-aqua"><i class="fa fa-pencil"></i> Edit</small></a>';
+				} else {
+					$barcode_queue_id_str = " (".$product->barcode_queue_id.")";
+					$manageLinks = '<a href="javascript:void(0);" class="lnkBarcodeQueueDelete" rel="'.$product->barcode_queue_id.'"><small class="badge  bg-aqua"><i class="fa fa-trash"></i> Delete</small></a>';
+				}
+
 				$dtData['data'][] = array(
-										'&nbsp;&nbsp;&nbsp;<input type="checkbox" class="chkProduct" value="'.$product->product_id.'">',
-										$product->product_id,
+										'&nbsp;&nbsp;&nbsp;<input type="checkbox" class="chkProduct" data-product-id="'.$product->product_id.'" value="'.$checkBoxValue.'">',
+										$product->product_id.$barcode_queue_id_str,
 										$product->product_code,
 										$product->product,
 										$product->group_id,
@@ -40,8 +50,8 @@ class ProductController extends BaseController {
 										$product->category,
 										$product->quantity. ' '.$product->unit.'.',
 										$product->selling_price,
-										'<a  class="lnkBatchEdit" href="'.admin_url().'/products/edit/'.$product->product_id.'"><small class="badge  bg-aqua"><i class="fa fa-pencil"></i> Edit</small></a> 
-										 <a href="javascript:void(0);" class="lnkCategoryDelete" rel="'.admin_url().'/products/delete/'.$product->product_id.'"><small class="badge  bg-aqua"><i class="fa fa-trash"></i> Delete</small></a>');
+										$manageLinks
+										);
 			}
 		}
 		
@@ -262,7 +272,9 @@ class ProductController extends BaseController {
 	public function generateBarcode($productIds)
 	{
 		$productObj 		= 	new Product();
-		$this->data['products'] = $productObj->getProductsForBarcode($productIds);
+
+		$productIds = array_unique(explode(',',$productIds));
+		$this->data['products'] = $productObj->getProductsForBarcode(implode(',', $productIds));
 		
 		return View::make('admin.product.barcode',$this->data);
 	}
@@ -292,4 +304,59 @@ class ProductController extends BaseController {
 			exit;
 		}
 	}
+
+
+	public function markPrinted()
+	{
+		$productObj 		= 	new Product();
+		$barcode_queue_ids = Input::get('barcodeQueueIds');
+		if($barcode_queue_ids) {
+			$productObj->markAsPrinted(implode(',',$barcode_queue_ids));
+			$count =  DB::table('barcode_queue')->where('status', '=', 'Queue')->count();
+			echo json_encode(array('count'=>$count));
+			exit;
+		}
+	}
+
+	public function deleteBarcodeQueue()
+	{
+		$productObj 		= 	new Product();
+		$barcodeQueueId = Input::get('barcodeQueueId');
+		if (is_numeric($barcodeQueueId) && $barcodeQueueId > 0){
+			$productObj->deleteBarcodeQueueItem($barcodeQueueId);
+			$count =  DB::table('barcode_queue')->where('status', '=', 'Queue')->count();
+			echo json_encode(array('count'=>$count));
+			exit;
+		}
+	}
+
+	public function tempProductSoldMark()
+	{
+		$productObj 	= 	new Product();
+
+		$date = '2015-04-20';
+		$productIds = "358,361,359,361";
+
+
+		$productIds = explode(',', $productIds);
+
+		$bill_id = DB::table('bill')->insertGetId(
+            array('customer_name'=>'A good Customer', 'created_by'=>2, 'created_date'=>$date)
+        );
+        echo $bill_id;
+
+        foreach ($productIds as $key => $product_id) {
+        	$product_info  	= 	$productObj->getProductDetails(array('productId'=>$product_id));
+			
+			$product_info = $product_info['products'][0];
+			$bill_product_id = DB::table('bill_product')->insertGetId(
+	            array('bill_id'=>$bill_id, 'bill_id'=>$bill_id, 'product_id'=>$product_id, 'quantity'=>1, 
+	            	  'mrp'=>$product_info->selling_price, 'customer_price'=>$product_info->selling_price)
+	        );
+			
+			var_dump($product_info);
+			echo $bill_product_id;
+        }
+	}
+
 }

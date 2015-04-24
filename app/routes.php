@@ -81,6 +81,9 @@ Route::group(array('before' => 'auth'), function()
         Route::any('admin/products/property_list', array( 'uses' => 'ProductController@getProductProperties'));
         Route::any('admin/products/generate-barcode/{id}', array( 'uses' => 'ProductController@generateBarcode'));
         Route::any('admin/products/addqueue', array( 'uses' => 'ProductController@addQueue'));
+        Route::any('admin/products/mark-printed', array( 'uses' => 'ProductController@markPrinted'));
+        Route::any('admin/products/delete-barcode-queue', array( 'uses' => 'ProductController@deleteBarcodeQueue'));
+        Route::any('admin/products/temp-sold-mark', array( 'uses' => 'ProductController@tempProductSoldMark'));
         #------------------------------END PRODUCT-----------------------------------#
 
     	Route::any('admin/reports', array( 'uses' => 'ReportsController@index'));

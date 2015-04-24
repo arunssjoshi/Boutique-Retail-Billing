@@ -28,11 +28,22 @@ class Product extends Eloquent
 
         if(isset($filter['listType']) && $filter['listType'] == 'queue') {
             $fromQuery = "barcode_queue bq JOIN  product p ON bq.product_id=p.id";
+            $extraFields = ', bq.id as barcode_queue_id';
+            $subQuery    .= " AND bq.status='Queue'";
+            $sortField = 'bq.id';
+            $sortDir = 'DESC';
+        } else if(isset($filter['listType']) && $filter['listType'] == 'printed') {
+            $fromQuery = "barcode_queue bq JOIN  product p ON bq.product_id=p.id";
+            $extraFields = ', bq.id as barcode_queue_id';
+            $subQuery    .= " AND bq.status='Printed'";
+            $sortField = 'bq.id';
+            $sortDir = 'DESC';
         } else {
             $fromQuery = "product p";
+            $extraFields = '';
         }
         
-        $query =    "SELECT SQL_CALC_FOUND_ROWS  p.id as product_id, p.product_code, p.group_id, p.name as product, p.quantity, 
+        $query =    "SELECT SQL_CALC_FOUND_ROWS  p.id as product_id $extraFields, p.product_code, p.group_id, p.name as product, p.quantity, 
                     p.model, p.model_no, p.purchase_price, p.margin, p.selling_price, p.description, 
                     p.group_id, c.category, c.unit, p.batch_shop_id , p.company_id, p.status as product_status, c.id category_id
                     FROM  $fromQuery 
@@ -184,7 +195,7 @@ class Product extends Eloquent
                 LEFT JOIN product_property_option ppo ON ppo.product_id=p.id
                 LEFT JOIN property_option po ON ppo.property_option_id=po.id
                 LEFT JOIN property pr ON po.property_id=pr.id AND pr.printable='Yes'
-                WHERE p.id IN ($productIds) AND 
+                WHERE bq.id IN ($productIds) AND 
                 p.status<>'Deleted' AND bq.status='Queue' 
                 GROUP BY bq.id 
                 LIMIT 0, 30";
@@ -197,5 +208,16 @@ class Product extends Eloquent
         DB::table('barcode_queue')->insert(
             $products
         );
+    }
+
+    public function markAsPrinted($barcode_queue_ids)
+    {
+        $query = "UPDATE barcode_queue SET status='Printed' WHERE id IN ($barcode_queue_ids)";
+        DB::select(DB::raw($query ));
+    }
+    public function deleteBarcodeQueueItem($barcode_queue_id)
+    {
+        $query = "DELETE FROM barcode_queue  WHERE id = $barcode_queue_id";
+        DB::select(DB::raw($query ));
     }
 }
