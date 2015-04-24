@@ -343,7 +343,7 @@ class ProductController extends BaseController {
 		$bill_id = DB::table('bill')->insertGetId(
             array('customer_name'=>'A good Customer', 'created_by'=>2, 'created_date'=>$date)
         );
-        echo $bill_id;
+        
 
         foreach ($productIds as $key => $product_id) {
         	$product_info  	= 	$productObj->getProductDetails(array('productId'=>$product_id));
@@ -354,9 +354,9 @@ class ProductController extends BaseController {
 	            	  'mrp'=>$product_info->selling_price, 'customer_price'=>$product_info->selling_price)
 	        );
 			
-			var_dump($product_info);
-			echo $bill_product_id;
-        }
+			$query = "UPDATE product SET quantity=quantity-1 WHERE id = $product_id";
+	        	DB::select(DB::raw($query ));
+	        }
 	}
 
 }
