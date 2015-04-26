@@ -1,6 +1,6 @@
 <?php
 
-class DashboardController extends BaseController {
+class AdminDashboardController extends BaseController {
 	function __construct()
 	{
 		$this->data['menu'] = 'dashboard';

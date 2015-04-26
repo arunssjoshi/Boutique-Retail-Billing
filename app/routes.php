@@ -33,9 +33,10 @@ Route::any('logout', array( 'uses' => 'UserController@logout'));
 Route::group(array('before' => 'auth'), function()
 {
     if(Auth::check() && Auth::user()->role == 'Admin') {
-    	Route::any('admin/dashboard', array( 'uses' => 'DashboardController@dashboard'));
     	
+       
     	
+    	Route::any('admin/dashboard', array( 'uses' => 'AdminDashboardController@dashboard'));
         #------------------------------BEGIN PROPERTIES-----------------------------------#
     	Route::any('admin/properties', array( 'uses' => 'PropertiesController@index'));
     	Route::any('admin/properties/properties.json', array( 'uses' => 'PropertiesController@getPropertiesJson'));
@@ -87,7 +88,13 @@ Route::group(array('before' => 'auth'), function()
         #------------------------------END PRODUCT-----------------------------------#
 
     	Route::any('admin/reports', array( 'uses' => 'ReportsController@index'));
-    } else {
+    } else if(Auth::check() && Auth::user()->role == 'User') { 
+         ####################### UI SIDE ####################################
+        Route::any('dashboard', array( 'uses' => 'DashboardController@dashboard'));
+        Route::any('new-bill', array( 'uses' => 'BillingController@newBill'));
+        ####################### END UI SIDE ################################
+    }
+    else {
    		return Redirect::to('login');
     }
 });

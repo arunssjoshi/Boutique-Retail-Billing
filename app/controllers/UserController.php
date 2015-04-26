@@ -22,7 +22,7 @@ class UserController extends BaseController {
 		    if (Auth::user()->role == 'Admin' ) {
 			    return Redirect::to('admin/dashboard');
 			} else {
-			    return Redirect::to('dashboard');
+			    return Redirect::to('new-bill');
 			}
 
 		} else {
@@ -34,7 +34,7 @@ class UserController extends BaseController {
 			    if (Auth::user()->role == 'Admin' ) {
 			    	return Redirect::to('admin/dashboard');
 			    } else {
-			    	return Redirect::to('dashboard');
+			    	return Redirect::to('new-bill');
 			    }
 			} else {
 
@@ -50,4 +50,8 @@ class UserController extends BaseController {
 	}
 
 
+	public function test()
+	{
+		echo 'testing';
+	}
 }

@@ -33,7 +33,7 @@
                 <div class="col-md-4">
                     <div class="input-group">
                         <span class="input-group-addon">Product Group</span>
-                        <input type="text" id="brand_no" name="brand_no" tabindex="1"  value="<?php echo $product_info->group_id;?>"   class="form-control">
+                        <input type="text" id="group_id" name="group_id" tabindex="1"  value="<?php echo $product_info->group_id;?>"   class="form-control">
                     </div>
                 </div>
             </div>

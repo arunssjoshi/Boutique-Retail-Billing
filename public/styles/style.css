@@ -51,3 +51,10 @@ label.error{color:red; font-weight: normal;}
 /*#frmNewProduct .input-group-addon{background-color: #fff !important;border:none;}*/
 .productPropertyWrap {text-align: left;}
 .boxProperty{border:1px solid #ccc; padding: 10px; border-radius:4px; background-color: #fff !important;}
+#itemWrap{border: 1px solid } 
+#itemWrap .colNo{width: 20px !important;}
+#tblBill th, #tblBill td{text-align: center; border: 1px solid #ccc;}
+#tblBill th{background-color: #f4f4f4; padding: 3px}
+#tblBill td{padding: 5px; }
+.txtBillTBox{width: 100%;}
+#tblBill input{text-align: center;}
