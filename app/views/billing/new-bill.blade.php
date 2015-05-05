@@ -9,6 +9,9 @@
                 </section>
 
                 <section class="content">
+<?php
+echo abs('SREE16');
+?>
 <!-- box start -->
     <div class="box">
         <form method="POST" id="frmNewProduct">  
@@ -23,14 +26,14 @@
                         <div class="row marginBottom10">
                             <div class="col-md-4">
                                 <div class="input-group">
-                                    <span class="input-group-addon">Brand</span>
-                                    <input type="text" id="brand" name="brand" tabindex="3"   class="form-control">
+                                    <span class="input-group-addon">Name</span>
+                                    <input type="text" id="customer" name="customer" tabindex="3"   class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="input-group">
-                                    <span class="input-group-addon">Brand No</span>
-                                    <input type="text" id="brand_no" name="brand_no" tabindex="4"   class="form-control">
+                                    <span class="input-group-addon">Phone</span>
+                                    <input type="text" id="phone" name="phone" tabindex="4"   class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -38,7 +41,7 @@
                        <div class="row marginBottom10">
                             <div class="col-md-8">
                                 <div class="input-group">
-                                    <span class="input-group-addon">Description&nbsp;&nbsp;&nbsp;</span>
+                                    <span class="input-group-addon">Description/Address&nbsp;&nbsp;&nbsp;</span>
                                     <textarea id="description" tabindex="12"  name="description" class="form-control"></textarea>
                                 </div>
                             </div>
@@ -63,21 +66,10 @@
                                         <th width="5%">Total</th>
                                         <th width="5%">Manage</th>
                                     </tr>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>CHUR9854</td>
-                                            <td>Churidar</td>
-                                            <td>2</td>
-                                            <td>375</td>
-                                            <td>Rs. 75 (10%)</td>
-                                            <td>33.75</td>
-                                            <td>675</td>
-                                            <td><a href="javascript:;">Remove</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td>
-                                            <td><input type="text" class="txtBillProductCode txtBillTBox"></td>
+                                    <tbody id="newBillBody">
+                                        <tr id="newProductEntry">
+                                            <td>&nbsp;</td>
+                                            <td><input type="text" id="txtNewProductEntry" class="txtBillProductCode txtBillTBox" value=""></td>
                                             <td></td>
                                             <td><input type="text" class="txtBillProductQuantity txtBillTBox"></td>
                                             <td></td>
@@ -104,7 +96,6 @@
                                     </div>      
                                 </div>
                         </div>
-
                         <div class="clear"></div>
                      </div>
                     <!-- item ends -->

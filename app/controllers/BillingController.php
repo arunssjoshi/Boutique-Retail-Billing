@@ -25,4 +25,15 @@ class BillingController extends BaseController {
 		return View::make('billing.new-bill',$this->data);
 	}
 
+	public function getProduct($productId)
+	{
+		
+		$productObj 		= 	new Product();
+		$product_info = $productObj->getBillProductDetails(trim($productId));
+		if ($product_info) {
+			echo json_encode(array('status'=>true, 'product_info'=>$product_info));
+		} else {
+			echo json_encode(array('status'=>false, 'product_info'=>$product_info));
+		}
+	}
 }

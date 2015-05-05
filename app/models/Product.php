@@ -220,4 +220,19 @@ class Product extends Eloquent
         $query = "DELETE FROM barcode_queue  WHERE id = $barcode_queue_id";
         DB::select(DB::raw($query ));
     }
+
+
+    /*BEGIN BILLING FUNCTIONS*/
+    public function getBillProductDetails($product_id)
+    {
+        $query = "
+                SELECT p.id AS product_id, p.product_code, p.selling_price , p.quantity AS available_quantity, c.category, d.discount_unit, IFNULL(d.discount,'') AS discount, c.tax
+                FROM product p 
+                JOIN category c ON p.category_id=c.id 
+                LEFT JOIN discount_product dp ON p.id=dp.product_id
+                LEFT JOIN discount d ON dp.discount_id=d.id AND (CURRENT_DATE() >= DATE(d.start_date)   AND CURRENT_DATE() <= DATE(d.end_date))
+                WHERE p.product_code = ? ";
+        return   DB::select($query, [$product_id]);
+    }
+    /*END BILLING FUNCTIONS*/
 }

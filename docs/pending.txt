@@ -61,3 +61,15 @@ CREATE TABLE `barcode_queue` (
    `tax` float DEFAULT NULL,
    PRIMARY KEY (`id`)
  ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1
+
+
+ 
+SELECT p.id, p.product_code, p.selling_price , p.quantity, c.category, d.discount_unit, d.discount,CURRENT_DATE()
+FROM product p 
+JOIN category c ON p.category_id=c.id 
+LEFT JOIN discount_product dp ON p.id=dp.product_id
+LEFT JOIN discount d ON dp.discount_id=d.id AND (CURRENT_DATE() >= DATE(d.start_date)   AND CURRENT_DATE() <= DATE(d.end_date))
+WHERE p.id IN (1,2,3,4,5,6,7,8,9) 
+ORDER BY FIELD(p.id,1,2,3,4,5,6,7,8,9)
+
+#SREE4
