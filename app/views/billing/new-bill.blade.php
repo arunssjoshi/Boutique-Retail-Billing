@@ -10,7 +10,7 @@
 
                 <section class="content">
 <?php
-echo abs('SREE16');
+
 ?>
 <!-- box start -->
     <div class="box">
@@ -71,22 +71,24 @@ echo abs('SREE16');
                                             <td>&nbsp;</td>
                                             <td><input type="text" id="txtNewProductEntry" class="txtBillProductCode txtBillTBox" value=""></td>
                                             <td></td>
-                                            <td><input type="text" class="txtBillProductQuantity txtBillTBox"></td>
+                                            <td id=""><input type="text"  id="txtNewProductQuanity"  class="txtBillProductQuantity txtBillTBox"></td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
-                                            <td><a href="javascript:;">Remove</a></td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr><td colspan="9">&nbsp;</td></tr>
+                                        <tr id="rowProductSummary">
+                                            <td colspan="3">&nbsp;</td>
+                                            <td colspan="2">Total Items: <label id="lblTotalProducts">0</label></td>
+                                            <td colspan="2">Discount: <label id="lblTotalDiscount">0</label></td>
+                                            <td colspan="2">Total Amount: <label id="lblTotalAmount">0</label></td>
                                         </tr>
                                     </tbody>
-                                    
-                                    
                                 </table>
-                                
-
-                               
-
                             </div>
+                            <br/><br/>
                         <div class="row marginBottom10">
                             <div class="col-md-8  marginBottom10">
                                 <div class="input-group pull-right  marginBottom10">

@@ -9,52 +9,18 @@ var bill = function () {
             $('#txtNewProductEntry').focus();
             
             $(document).on("keypress", ".txtBillProductCode", function(e) {
-                 if (e.which == 13) {
-                     productCode = $(this).val();
-                     $.post( baseUrl+'/new-bill/product.json/'+productCode, {}, function( response ) {
-                        
-                        if(response.status) {
-                            
-                            var product = response.product_info[0];
-                            var productCode = product.product_code;
+                if (e.which == 13) {
+                    $(this).closest('tr').find('.txtBillProductQuantity').focus();
+                    //bill.getProductDetails(this);
+                }
+            });
 
-                            var productExists = false;
-                            $('.colCode').each(function(){
-                                if($(this).html() == productCode) {
-                                    productExists = true;
-                                }
-                            })
-
-
-                            if (productExists) {
-                                $('#col-'+productCode+'-quantity .txtBillProductQuantity').val(parseInt($('#col-'+productCode+'-quantity .txtBillProductQuantity').val())+1);
-                                bill.updateProductPrice(productCode);
-                            } else {
-                                newProductRow = ''+
-                                        '<tr id="tr-'+productCode+'">'+
-                                            '<td>'+$('#newBillBody tr').length+'</td>'+
-                                            '<td id="col-'+productCode+'-code" class="colCode">'+product.product_code+'</td>'+
-                                            '<td id="col-'+productCode+'-category" class="colCategory">'+product.category+'</td>'+
-                                            '<td id="col-'+productCode+'-quantity" class="colQuantity"><input type="text" value="1" class="txtBillProductQuantity txtBillTBox"></td>'+
-                                            '<td id="col-'+productCode+'-mrp" class="colMRP">'+product.selling_price+'</td>'+
-                                            '<td id="col-'+productCode+'-discount" class="colDiscount"><label id="discount-amount-'+productCode+'"></label><label class="hide" id="discount-'+productCode+'">'+product.discount+'</label></td>'+
-                                            '<td id="col-'+productCode+'-tax" class="colTax"><label id="tax-amount-'+productCode+'"></label> <label id="tax-'+productCode+'"  class="hide" >'+product.tax+'</label></td>'+
-                                            '<td id="col-'+productCode+'-total" class="colTotal">675</td>'+
-                                            '<td><a href="javascript:;">Remove</a></td>'+
-                                        '</tr>';
-
-                                $(newProductRow).insertBefore('#newProductEntry');
-                                bill.updateProductPrice(productCode);
-                            }
-
-                            $('#newProductEntry .txtBillProductCode').val('');
-
-                            
-
-                        }
-                        
-                    }, "json");
-                 }
+            $(document).on("blur", ".txtBillProductCode", function(e) {
+                if($(this).val()!=''){
+                    bill.getProductDetails(this);
+                } else {
+                    $('#newProductEntry #txtNewProductEntry').removeClass('txtProductError');
+                }
             });
 
             $(document).on('keyup','.txtBillProductQuantity',function(){
@@ -74,22 +40,114 @@ var bill = function () {
                     }, "json");
             })
 
+            $('#txtNewProductQuanity').focus(function(){
+                if ($('#txtNewProductEntry').hasClass('txtProductError') || $('#txtNewProductEntry').val()==''){
+                    $('#txtNewProductEntry').focus();
+                }
+            })
             
+            $(document).on("click", ".lnkRemoveBillProduct", function(e) {
+                $(this).closest('tr').remove();
+                var i = 1;
+                $('.colNo').each(function(){
+                    $(this).html(i++);
+                })
+            });
+        },
+        getProductDetails: function(element) {
+            productCode = $(element).val();
+            $.post( baseUrl+'/new-bill/product.json/'+productCode, {}, function( response ) {
+                
+                if(response.status) {
+                    
+                    var product = response.product_info[0];
+                    var productCode = product.product_code;
+
+                    var productExists = false;
+                    $('.colCode').each(function(){
+                        if($(this).html() == productCode) {
+                            productExists = true;
+                        }
+                    })
+
+
+                    if (productExists) {
+                        $('#col-'+productCode+'-quantity .txtBillProductQuantity').val(parseInt($('#col-'+productCode+'-quantity .txtBillProductQuantity').val())+1);
+                        bill.updateProductPrice(productCode);
+                    } else {
+                        newProductRow = ''+
+                                '<tr id="tr-'+productCode+'" class="rowProduct">'+
+                                    '<td class="colNo">'+$('#newBillBody tr').length+'</td>'+
+                                    '<td id="col-'+productCode+'-code" class="colCode">'+product.product_code+'</td>'+
+                                    '<td id="col-'+productCode+'-category" class="colCategory">'+product.category+'</td>'+
+                                    '<td id="col-'+productCode+'-quantity" class="colQuantity"><input type="text" value="1" class="txtBillProductQuantity txtBillTBox"></td>'+
+                                    '<td id="col-'+productCode+'-mrp" class="colMRP">'+product.selling_price+'</td>'+
+                                    '<td id="col-'+productCode+'-discount" class="colDiscount"><label class="discount-amount" id="discount-amount-'+productCode+'"></label><label class="hide" id="discount-'+productCode+'">'+product.discount+'</label></td>'+
+                                    '<td id="col-'+productCode+'-tax" class="colTax"><label id="tax-amount-'+productCode+'"></label> <label id="tax-'+productCode+'"  class="hide" >'+product.tax+'</label></td>'+
+                                    '<td id="col-'+productCode+'-total" class="colTotal">675</td>'+
+                                    '<td><a href="javascript:;" class="lnkRemoveBillProduct">Remove</a></td>'+
+                                '</tr>';
+
+                        $(newProductRow).insertBefore('#newProductEntry');
+                        bill.updateProductPrice(productCode);
+                    }
+
+                    $('#newProductEntry #txtNewProductEntry, #newProductEntry #txtNewProductQuanity').val('');
+                    $('#newProductEntry #txtNewProductEntry').focus();
+                    $('#newProductEntry #txtNewProductEntry').removeClass('txtProductError');
+
+                } else {
+                    $('#newProductEntry #txtNewProductEntry').addClass('txtProductError');
+                    $('#txtNewProductEntry').focus();
+                    
+                }
+                
+            }, "json");
         },
         updateProductPrice: function(productCode) {
+            if(productCode == '')
+                return ;
+
             discount = parseInt($('#discount-'+productCode).html());
             quantity = parseInt($('#col-'+productCode+'-quantity .txtBillProductQuantity').val());
             mrp = parseFloat($('#col-'+productCode+'-mrp').html());
             discountAmount = 0;
             if(discount) {
                 discountAmount = (mrp * quantity) * discount/100;
-                $('#discount-amount-'+productCode).html(discountAmount+ ' ('+discount+'%)');
+                $('#discount-amount-'+productCode).html(discountAmount);
             } else {
                 $('#discount-amount-'+productCode).html(' - ')
             }
 
             $('#col-'+productCode+'-total').html((mrp*quantity)-discountAmount);
             $('#tax-amount-'+productCode).html((mrp*quantity- discountAmount) *  ( parseFloat($('#tax-'+productCode).html()) )/100 );
+
+            var totalItems = 0;
+            $('.txtBillProductQuantity').each(function(){
+                if($(this).val()!='') {
+                    totalItems = totalItems + parseInt($(this).val());
+                }
+            })
+            $('#lblTotalProducts').html(totalItems);
+
+
+            var totalDiscount = 0;
+            $('.discount-amount').each(function(){
+                if($(this).html()!=' - ') {
+                    totalDiscount = totalDiscount + parseFloat($(this).html());
+                }
+            })
+            $('#lblTotalDiscount').html(totalDiscount);
+
+            var totalProductPrice = 0;
+            $('.colTotal').each(function(){
+                if($(this).html()!=' - ') {
+                    totalProductPrice = totalProductPrice + parseFloat($(this).html());
+                }
+            })
+            $('#lblTotalAmount').html(totalProductPrice);
+            
+
         },
         initValidation: function(){
             var newPropertyValidator = $("#frmNewProduct").validate({
