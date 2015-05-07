@@ -18,7 +18,7 @@
 
 
 
-
+ALTER TABLE `product`     ADD COLUMN `initial_quantity` INT(10) NULL AFTER `quantity`;
 
 
 

@@ -334,10 +334,10 @@ class ProductController extends BaseController {
 	{
 		$productObj 	= 	new Product();
 
-		$date = '2015-04-20';
-		$productIds = "358,361,359,361";
+		$date = '2015-05-2';
+		$productIds = "329,355,355,352,348,349,350";
 
-
+		exit;
 		$productIds = explode(',', $productIds);
 
 		$bill_id = DB::table('bill')->insertGetId(

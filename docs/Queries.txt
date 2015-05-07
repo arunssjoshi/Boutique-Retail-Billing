@@ -1,0 +1,23 @@
+Queries
+-------
+Get sales of a batch
+
+SELECT  c.category, COUNT(bp.product_id) AS total_item, SUM(p.purchase_price) AS purchase_price
+FROM bill_product bp
+JOIN product p ON p.id=bp.product_id
+JOIN batch_shops bs ON p.batch_shop_id=bs.id
+JOIN batch b ON bs.batch_id=b.id
+JOIN category c ON p.category_id=c.id
+WHERE b.id=2 
+GROUP BY p.category_id
+
+
+Get Purchase summary of a branch
+
+
+SELECT  c.category, SUM(p.initial_quantity) AS total_item, SUM(p.initial_quantity*p.purchase_price) AS purchase_price
+FROM  product p 
+JOIN batch_shops bs ON p.batch_shop_id=bs.id
+JOIN category c ON p.category_id=c.id
+WHERE bs.batch_id=2 
+GROUP BY p.category_id
