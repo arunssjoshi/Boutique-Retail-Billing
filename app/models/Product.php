@@ -221,6 +221,18 @@ class Product extends Eloquent
         DB::select(DB::raw($query ));
     }
 
+    public function getTobeQueuedCount($batch_id)
+    {
+        $query = "
+                SELECT p.id, p.product_code,bq.id , SUM(p.quantity) AS to_be_queued
+                FROM product p 
+                JOIN batch_shops bs ON p.batch_shop_id=bs.id
+                LEFT JOIN barcode_queue bq ON p.id=bq.product_id 
+                WHERE bs.batch_id= ?  AND bq.id IS NULL
+                  ";
+        return   DB::select($query, [$batch_id]);
+    }
+
 
     /*BEGIN BILLING FUNCTIONS*/
     public function getBillProductDetails($product_id)

@@ -43,6 +43,7 @@
                                 <a href="javascript:;" class="btn btn-primary btn-sm queueLink hide" id="btnMarkAsPrinted"> Mark Printed</a>
                                 
                             </h3>
+                            To be Queued: <?php echo $tobe_queued[0]->to_be_queued ;?>
                             <div>
                                 <select id="productListType" class="">
                                     <option value="product">Product</option>

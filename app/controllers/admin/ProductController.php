@@ -10,11 +10,13 @@ class ProductController extends BaseController {
 	public function index()
 	{
 		$categoryObj 	= 	new Category();
+		$productObj 		= 	new Product();
 
 		$this->data['title'] = 'Products';
 		$this->data['categories']	= 	$categoryObj->getCategoryDetails();
 		$this->data['scriptIncludes'] = array('colorbox','product_js');
 		$this->data['cssIncludes'] = array('colorbox');
+		$this->data['tobe_queued'] = $productObj->getTobeQueuedCount(3);	
 		return View::make('admin.product.product',$this->data);
 	}
 
