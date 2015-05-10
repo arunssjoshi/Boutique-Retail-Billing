@@ -49,6 +49,7 @@
                                     <option value="product">Product</option>
                                     <option value="queue">Queue</option>
                                     <option value="printed">Printed</option>
+                                    <option value="tobe_queued">To Be queued</option>
                                 </select>
                                 
                             </div><br/>

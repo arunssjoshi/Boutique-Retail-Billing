@@ -64,6 +64,9 @@ var products = function () {
                 if(listType == 'product') {
                     $('#btnAddQueue').removeClass('hide');
                     $('.queueLink').addClass('hide');
+                }if(listType == 'tobe_queued') {
+                    $('#btnAddQueue').removeClass('hide');
+                    $('.queueLink').addClass('hide');
                 } else {
                     $('#btnAddQueue').addClass('hide');
                     $('.queueLink').removeClass('hide');

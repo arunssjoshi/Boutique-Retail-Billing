@@ -37,6 +37,9 @@ class ProductController extends BaseController {
 				if ($dtFilter['listType']=='product') {
 					$barcode_queue_id_str = '';
 					$manageLinks = '<a  class="lnkBatchEdit" href="'.admin_url().'/products/edit/'.$product->product_id.'"><small class="badge  bg-aqua"><i class="fa fa-pencil"></i> Edit</small></a>';
+				} else if ($dtFilter['listType']=='tobe_queued') {
+					$barcode_queue_id_str = '';
+					$manageLinks = '<a  class="lnkBatchEdit" href="'.admin_url().'/products/edit/'.$product->product_id.'"><small class="badge  bg-aqua"><i class="fa fa-pencil"></i> Edit</small></a>';
 				} else {
 					$barcode_queue_id_str = " (".$product->barcode_queue_id.")";
 					$manageLinks = '<a href="javascript:void(0);" class="lnkBarcodeQueueDelete" rel="'.$product->barcode_queue_id.'"><small class="badge  bg-aqua"><i class="fa fa-trash"></i> Delete</small></a>';
