@@ -53,6 +53,10 @@ var bill = function () {
                     $(this).html(i++);
                 })
             });
+
+            $('#btnBillPreviewAndSave').click(function(){
+                 window.open(baseUrl+'/print-bill', "printBill", "width=800, height=600");
+            })
         },
         getProductDetails: function(element) {
             productCode = $(element).val();
@@ -75,9 +79,10 @@ var bill = function () {
                         $('#col-'+productCode+'-quantity .txtBillProductQuantity').val(parseInt($('#col-'+productCode+'-quantity .txtBillProductQuantity').val())+1);
                         bill.updateProductPrice(productCode);
                     } else {
+                        var colNo = parseInt($('#newBillBody tr').length)-2;
                         newProductRow = ''+
                                 '<tr id="tr-'+productCode+'" class="rowProduct">'+
-                                    '<td class="colNo">'+$('#newBillBody tr').length+'</td>'+
+                                    '<td class="colNo">'+colNo+'</td>'+
                                     '<td id="col-'+productCode+'-code" class="colCode">'+product.product_code+'</td>'+
                                     '<td id="col-'+productCode+'-category" class="colCategory">'+product.category+'</td>'+
                                     '<td id="col-'+productCode+'-quantity" class="colQuantity"><input type="text" value="1" class="txtBillProductQuantity txtBillTBox"></td>'+
@@ -146,6 +151,8 @@ var bill = function () {
                 }
             })
             $('#lblTotalAmount').html(totalProductPrice);
+            $('#lblPaidAmount').val(totalProductPrice);
+            
             
 
         },

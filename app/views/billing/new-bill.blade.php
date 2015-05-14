@@ -80,10 +80,11 @@
                                         </tr>
                                         <tr><td colspan="9">&nbsp;</td></tr>
                                         <tr id="rowProductSummary">
-                                            <td colspan="3">&nbsp;</td>
+                                            <td >&nbsp;</td>
                                             <td colspan="2">Total Items: <label id="lblTotalProducts">0</label></td>
                                             <td colspan="2">Discount: <label id="lblTotalDiscount">0</label></td>
                                             <td colspan="2">Total Amount: <label id="lblTotalAmount">0</label></td>
+                                            <td colspan="2">Paid Amount: <input id="lblPaidAmount" value="0"></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -92,8 +93,9 @@
                         <div class="row marginBottom10">
                             <div class="col-md-8  marginBottom10">
                                 <div class="input-group pull-right  marginBottom10">
-                                         <button id="btnProductSave" tabindex="14" class="btn btn-primary  pull-right marginLeft" type="button">Save</button>
-                                         <a href="<?php echo admin_url();?>/categories" class="btn btn-primary  pull-right" type="submit">Cancel</a>
+                                        <button id="btnBillPreviewAndSave" tabindex="14" class="btn btn-primary  pull-right marginLeft" type="button">Preview & Print</button>
+                                        <button id="btnProductSave" tabindex="14" class="btn btn-primary  pull-right marginLeft" type="button">Draft</button>
+                                        <a href="<?php echo admin_url();?>/categories" class="btn btn-primary  pull-right" type="submit">Cancel</a>
                                          <label for="btnProductSave" class="error" id="btnProductSave-error"></label>
                                     </div>      
                                 </div>

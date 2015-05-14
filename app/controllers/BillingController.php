@@ -36,4 +36,9 @@ class BillingController extends BaseController {
 			echo json_encode(array('status'=>false, 'product_info'=>$product_info));
 		}
 	}
+
+	public function printBill()
+	{
+		die('hello');
+	}
 }

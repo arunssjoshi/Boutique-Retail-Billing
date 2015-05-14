@@ -93,6 +93,7 @@ Route::group(array('before' => 'auth'), function()
         Route::any('dashboard', array( 'uses' => 'DashboardController@dashboard'));
         Route::any('new-bill', array( 'uses' => 'BillingController@newBill'));
         Route::any('new-bill/product.json/{id}', array( 'uses' => 'BillingController@getProduct'));
+        Route::any('print-bill', array( 'uses' => 'BillingController@printBill'));
         ####################### END UI SIDE ################################
     }
     else {
