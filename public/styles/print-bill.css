@@ -1,0 +1,22 @@
+body{font-family: Trebuchet MS; margin: 0; padding: 0;}
+
+#bill-print-wrap{border: 1px solid #fff; margin:10px;}
+#shop-info{width: 350px; float: left;}
+#bill-info{width: 180px; float: right;}
+.clear{clear: both;}
+#logo-wrap,#shop-text{float: left;}
+#BillitemWrap{margin-top:35px;}
+#tblPrintBill{font-family: "Source Sans Pro",sans-serif; color: #333; font-size: 13px;}
+#tblPrintBill th {
+    background-color: #f4f4f4;
+    font-weight: 600;
+    padding: 3px;
+}
+#tblPrintBill th, #tblPrintBill td {
+    border-right: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-left: none;
+    border-top: none; 
+    text-align: center;
+    padding: 5px;
+}

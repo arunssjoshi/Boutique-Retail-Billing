@@ -39,6 +39,6 @@ class BillingController extends BaseController {
 
 	public function printBill()
 	{
-		die('hello');
+		return View::make('billing.print-bill',$this->data);
 	}
 }

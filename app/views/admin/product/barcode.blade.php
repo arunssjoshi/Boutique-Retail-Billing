@@ -10,7 +10,6 @@
 	
 </style>
 </head>
-<?php $excludes = explode(',','8,9,10,11,14,15,16,17,20,21,22,23') ;?>
 <body id="index" class="home">
 	<?php if($products):?>
 		<div id="barcodePageWrap">
