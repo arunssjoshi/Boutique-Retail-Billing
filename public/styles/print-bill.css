@@ -1,5 +1,5 @@
 body{font-family: Trebuchet MS; margin: 0; padding: 0;}
-
+#bill-header{font-size: 14px;}
 #bill-print-wrap{border: 1px solid #fff; margin:10px;}
 #shop-info{width: 350px; float: left;}
 #bill-info{width: 180px; float: right;}
@@ -20,3 +20,8 @@ body{font-family: Trebuchet MS; margin: 0; padding: 0;}
     text-align: center;
     padding: 5px;
 }
+#tblBillSummary tr{ padding:0px; margin:0px; height: 5px}
+#tblBillSummary td{border: none;}
+#tblBillSummary #trGrantTotal{font-weight: bold; border-top: 1px solid}
+td.colTotalItems{text-align: left !important;}
+#rowProductSummary td{border: none;}

@@ -39,6 +39,31 @@ class BillingController extends BaseController {
 
 	public function printBill()
 	{
+		$products = Input::get('products');
+		if (empty($products)) {
+			die('Invalid Products');
+		}
+
+		$productObj 		= 	new Product();
+
+		$products = explode('||', $products);
+		$product_list = array();
+
+		$in_products= "'";
+		foreach ($products as $key => $product) {
+			$product_chunks = explode('*', $product);
+			if(!isset($product_list[$product_chunks[0]])) {
+				$product_list[$product_chunks[0]] = $product_chunks[1];
+				$in_products.=$product_chunks[0]."','";
+			}
+		}
+		//$product_list = implode("'", $product_list);
+		
+		$in_products =  substr($in_products,0,strlen($in_products)-2);
+
+		$this->data['product_quantity'] = $product_list;
+		$this->data['bill_products'] = $productObj->getBillProductDetailsByProductCodes($in_products);
+		
 		return View::make('billing.print-bill',$this->data);
 	}
 }

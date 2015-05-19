@@ -52,17 +52,18 @@ var bill = function () {
                 $('.colNo').each(function(){
                     $(this).html(i++);
                 })
+                bill.updateProductPrice(productCode);
             });
 
             $('#btnBillPreviewAndSave').click(function(){
                 var product_quantity = '';
                 $('.rowProduct').each(function(){
-                    product_quantity = (product_quantity!='')?product_quantity+'||'+$(this).find('.colCode').html()+'#'+$(this).find('.txtBillProductQuantity').val():$(this).find('.colCode').html()+'#'+$(this).find('.txtBillProductQuantity').val();
+                    product_quantity = (product_quantity!='')?product_quantity+'||'+$(this).find('.colCode').html()+'*'+$(this).find('.txtBillProductQuantity').val():$(this).find('.colCode').html()+'*'+$(this).find('.txtBillProductQuantity').val();
                     //alert($(this).find('.colCode').html()+'#'+$(this).find('.txtBillProductQuantity').val());
                 })
 
-                alert(product_quantity);
-                 window.open(baseUrl+'/print-bill', "printBill", "width=559, height=793");
+                //alert(product_quantity);
+                 window.open(baseUrl+'/print-bill?products='+product_quantity, "printBill", "width=559, height=793");
             })
         },
         getProductDetails: function(element) {
