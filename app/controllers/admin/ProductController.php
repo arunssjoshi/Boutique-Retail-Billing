@@ -74,7 +74,7 @@ class ProductController extends BaseController {
 		$this->data['categories']	= 	$categoryObj->getCategoryDetails();
 		$this->data['properties']  	= 	$propertyObj->getPropertiesDetails();
 		$this->data['batches']      =   $batchObj->getBatchDetails(array('sortField'=>3, 'sortDir'=>'DESC'));
-		$this->data['last_product']	=	$productObj->getProductDetails(array('offset'=>0, 'limit'=>1, 'sortField'=>0, 'sortDir'=>'DESC' ));
+		$this->data['last_product']	=	$productObj->getProductDetails(array('offset'=>0, 'limit'=>1, 'sortField'=>1, 'sortDir'=>'DESC' ));
 		$this->data['companies']	=   $productObj->getCompanies();
 		if ($this->data['batches']['total_rows'] > 0) {
 			$this->data['shops']  		= 	$batchObj->getBatchShopDetails($this->data['batches']['batches'][0]->id);
@@ -102,7 +102,7 @@ class ProductController extends BaseController {
 				$newProductObj->group_id		=	$group_id;
 				
 				$newProductObj->description	=	Input::get('description');
-				$newProductObj->company_id	=	Input::get('ddCompany');
+				$newProductObj->company_id	=	(Input::get('ddCompany'))?Input::get('ddCompany'):null;
 				$newProductObj->category_id	=	Input::get('ddCategory');
 				$newProductObj->model	=	Input::get('brand');
 				$newProductObj->model_no	=	Input::get('brand_no');
@@ -110,6 +110,7 @@ class ProductController extends BaseController {
 				$newProductObj->margin	=	Input::get('profit_margin');
 				$newProductObj->purchase_price	=	Input::get('purchase_price');
 				$newProductObj->quantity	=	Input::get('quantity');
+				$newProductObj->initial_quantity	=	Input::get('quantity');
 				$newProductObj->selling_price	=	Input::get('customer_price');
 				$newProductObj->status		=	'Active';
 				$newProductObj->created_by	=	Auth::user()->id;
@@ -186,7 +187,7 @@ class ProductController extends BaseController {
 			$productData->group_id		=	Input::get('group_id');
 			
 			$productData->description	=	Input::get('description');
-			$productData->company_id	=	Input::get('ddCompany');
+			$productData->company_id	=	(Input::get('ddCompany'))?Input::get('ddCompany'):null;
 			$productData->category_id	=	Input::get('ddCategory');
 			$productData->model	=	Input::get('brand');
 			$productData->model_no	=	Input::get('brand_no');

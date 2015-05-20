@@ -204,6 +204,7 @@ class Product extends Eloquent
                 WHERE bq.id IN ($productIds) AND 
                 p.status<>'Deleted' AND bq.status='Queue' 
                 GROUP BY bq.id 
+                ORDER BY p.id
                 LIMIT 0, 30";
         return   DB::select(DB::raw($query ));
 
