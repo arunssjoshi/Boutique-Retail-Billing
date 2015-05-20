@@ -257,7 +257,7 @@ class Product extends Eloquent
     public function getBillProductDetailsByProductCodes($product_codes)
     {
         $query = "
-                SELECT p.id AS product_id, p.product_code, p.selling_price , p.quantity AS available_quantity, c.category, d.discount_unit, IFNULL(d.discount,'') AS discount, c.tax
+                SELECT p.id AS product_id, p.product_code, p.selling_price , p.quantity AS available_quantity, c.category, d.id AS discount_id, d.discount_unit, IFNULL(d.discount,'') AS discount, c.tax
                 FROM product p 
                 JOIN category c ON p.category_id=c.id 
                 LEFT JOIN discount_product dp ON p.id=dp.product_id

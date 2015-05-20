@@ -13,19 +13,30 @@
 <body id="index" class="home">
 	<div id="bill-print-wrap">
 		<div id="bill-header"> 
-			<div id="shop-info">
-				<div id="logo-wrap"><img src="/images/barcode-logo.png"></div>
-				<div id="shop-text">
-					Daavani Ladies Point<br/>
-					Attingal Road, Venjaramoodu<br/>
-					Ph: 09048614877, 09446127327
-				</div>
-				<div class="clear"></div>
-			</div>
-			<div id="bill-info">
-				Bill No: 91985<br/>
-				Date: 18/5/2015 3:15PM
-			</div>
+			<table>
+				<tr>
+					<td>
+						<div id="shop-info">
+							<div id="logo-wrap"><img src="/images/barcode-logo.png"></div>
+							<div id="shop-text">
+								Daavani Ladies Point<br/>
+								Attingal Road, Venjaramoodu<br/>
+								Ph: 09048614877, 09446127327
+							</div>
+							<div class="clear"></div>
+						</div>
+					</td>
+					<td>
+						<div id="bill-info">
+							Bill No: 91985<br/>
+							Date: 18/5/2015 3:15PM
+						</div>
+						
+					</td>
+				</tr>
+			</table>
+			
+			
 			<div class="clear"></div>
 		</div>
 		<div id="BillitemWrap">

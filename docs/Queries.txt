@@ -1,3 +1,16 @@
+ALTER Queries
+-----------------
+
+ALTER TABLE `bill` ADD CONSTRAINT `FK_bill_created_by` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`);
+ALTER TABLE `bill` ADD CONSTRAINT `FK_bill_updated_by` FOREIGN KEY (`updated_by`) REFERENCES `users` (`id`);
+ALTER TABLE `bill_product` ADD CONSTRAINT `FK_bill_product_id` FOREIGN KEY (`bill_id`) REFERENCES `bill` (`id`);
+ALTER TABLE `bill_product` ADD CONSTRAINT `FK_bill_product_product_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
+ALTER TABLE `bill_product` ADD CONSTRAINT `FK_bill_product_discount_id` FOREIGN KEY (`discount_id`) REFERENCES `discount` (`id`);
+LTER TABLE `discount_product` ADD CONSTRAINT `FK_discount_product_discount_id` FOREIGN KEY (`discount_id`) REFERENCES `discount` (`id`);
+ALTER TABLE `discount_product` ADD CONSTRAINT `FK_discount_product_product_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
+
+
+
 Queries
 -------
 Get sales of a batch
@@ -21,3 +34,27 @@ JOIN batch_shops bs ON p.batch_shop_id=bs.id
 JOIN category c ON p.category_id=c.id
 WHERE bs.batch_id=2 
 GROUP BY p.category_id
+
+
+category and shop split up
+--------------------------
+SELECT  c.category, SUM(p.initial_quantity) AS total_item,bs.shop_id,s.shop, SUM(p.initial_quantity*p.purchase_price) AS purchase_price
+FROM  product p 
+JOIN batch_shops bs ON p.batch_shop_id=bs.id
+JOIN category c ON p.category_id=c.id
+JOIN shop s ON bs.shop_id=s.id
+WHERE bs.batch_id=3 AND p.category_id=2
+GROUP BY p.batch_shop_id
+
+
+buy and sold shop wise split up
+-------------------------------
+SELECT  c.category, SUM(p.initial_quantity) AS total_item_purchased,bs.shop_id,s.shop, SUM(p.initial_quantity*p.purchase_price) AS purchase_price,
+COUNT(bp.id) total_item_sold,SUM(bp.customer_price) AS sold_price
+FROM  product p 
+JOIN batch_shops bs ON p.batch_shop_id=bs.id
+JOIN category c ON p.category_id=c.id
+JOIN shop s ON bs.shop_id=s.id
+LEFT JOIN bill_product bp ON p.id=bp.product_id
+WHERE bs.batch_id=3 AND p.category_id=2
+GROUP BY p.batch_shop_id

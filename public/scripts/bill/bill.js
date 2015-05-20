@@ -63,7 +63,7 @@ var bill = function () {
                 })
 
                 //alert(product_quantity);
-                 window.open(baseUrl+'/print-bill?products='+product_quantity, "printBill", "width=559, height=793");
+                 window.open(baseUrl+'/process-bill?products='+product_quantity, "printBill", "width=559, height=793");
             })
         },
         getProductDetails: function(element) {
