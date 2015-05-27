@@ -70,6 +70,19 @@ class BillingController extends BaseController {
     	$grant_total =0;
 
     	$bill_product_input = array();
+
+    	$billObj = new Bill();
+
+    	$billObj->customer_name	=	Input::get('customer');
+		$billObj->address	=	Input::get('customer_price');
+		$billObj->description	=	Input::get('description');
+		$billObj->phone	=	Input::get('phone');
+		$billObj->tax_bill = 'No';
+		$billObj->status		=	'Active';
+		$billObj->created_by	=	Auth::user()->id;
+		$billObj->created_at	=	getNow();
+		$billObj->save();
+		echo $billObj->id;
     	//var_dump($bill_products);exit;
     	foreach($bill_products as $key=> $product){
 
@@ -89,14 +102,16 @@ class BillingController extends BaseController {
         	$total = $quantity * $mrp - $discountAmount;
 
 
-        	array_push($bill_product_input, array('bill_id'=>19, 'product_id'=>$product->product_id, 'quantity'=>$quantity,
-        										  'mrp'=>$mrp, 'customer_price'=>$total, 'discount_id'=>$product->discount_id, 'tax'=>$tax));
+        	array_push($bill_product_input, array('bill_id'=>$billObj->id, 'product_id'=>$product->product_id, 'quantity'=>$quantity,
+        										  'mrp'=>$mrp, 'customer_price'=>$total, 'discount_id'=>$product->discount_id, 'tax'=>$tax, 'status'=>'Active'));
 
 
         	$grant_total = $grant_total + $total;
         	$total_discount = $total_discount + $discountAmount;
         	$sub_total = $sub_total+ ($mrp * $quantity);
         }
+
+        $billObj->saveBillProducts($bill_product_input);
         var_dump($bill_product_input);
 		var_dump($bill_products);
 	}
