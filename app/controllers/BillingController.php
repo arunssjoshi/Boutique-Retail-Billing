@@ -44,6 +44,14 @@ class BillingController extends BaseController {
 			die('Invalid Products');
 		}
 
+		if (Input::get('action') == 'Hold') {
+			$status = 'Hold';
+		} else if (Input::get('action') == 'Sold') {
+			$status = 'Sold';
+		} else {
+			die('Invalid action');
+		}
+
 		$productObj 		= 	new Product();
 
 		$products = explode('||', $products);
@@ -78,7 +86,7 @@ class BillingController extends BaseController {
 		$billObj->description	=	Input::get('description');
 		$billObj->phone	=	Input::get('phone');
 		$billObj->tax_bill = 'No';
-		$billObj->status		=	'Active';
+		$billObj->status		=	$status;
 		$billObj->created_by	=	Auth::user()->id;
 		$billObj->created_at	=	getNow();
 		$billObj->save();
@@ -103,7 +111,7 @@ class BillingController extends BaseController {
 
 
         	array_push($bill_product_input, array('bill_id'=>$billObj->id, 'product_id'=>$product->product_id, 'quantity'=>$quantity,
-        										  'mrp'=>$mrp, 'customer_price'=>$total, 'discount_id'=>$product->discount_id, 'tax'=>$tax, 'status'=>'Active'));
+        										  'mrp'=>$mrp, 'customer_price'=>$total, 'discount_id'=>$product->discount_id, 'tax'=>$tax, 'status'=>$status));
 
 
         	$grant_total = $grant_total + $total;

@@ -55,15 +55,14 @@ var bill = function () {
                 bill.updateProductPrice(productCode);
             });
 
-            $('#btnBillPreviewAndSave').click(function(){
+            $('#btnGenerateBill, #btnHold').click(function(){
                 var product_quantity = '';
                 $('.rowProduct').each(function(){
                     product_quantity = (product_quantity!='')?product_quantity+'||'+$(this).find('.colCode').html()+'*'+$(this).find('.txtBillProductQuantity').val():$(this).find('.colCode').html()+'*'+$(this).find('.txtBillProductQuantity').val();
-                    //alert($(this).find('.colCode').html()+'#'+$(this).find('.txtBillProductQuantity').val());
                 })
                 product_quantity = 'SREE1*2||SREE2*1||SREE3*1||SREE4*3||NGTY352*2||JENS339*1||TOP359*1';
                 $.post( baseUrl+'/process-bill', 
-                    {products:product_quantity, customer:$('#customer').val(), phone:$('#phone').val(), description:$('#description').val()}, 
+                    {products:product_quantity, customer:$('#customer').val(), phone:$('#phone').val(), description:$('#description').val(),action:$(this).attr('rel')}, 
                     function( response ) {
                       
                         

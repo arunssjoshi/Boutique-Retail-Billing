@@ -93,8 +93,8 @@
                         <div class="row marginBottom10">
                             <div class="col-md-8  marginBottom10">
                                 <div class="input-group pull-right  marginBottom10">
-                                        <button id="btnBillPreviewAndSave" tabindex="14" class="btn btn-primary  pull-right marginLeft" type="button">Preview & Print</button>
-                                        <button id="btnProductSave" tabindex="14" class="btn btn-primary  pull-right marginLeft" type="button">Draft</button>
+                                        <button id="btnGenerateBill" rel="Sold" tabindex="14" class="btn btn-primary  pull-right marginLeft" type="button">Generate Bill</button>
+                                        <button id="btnHold" rel="Hold" tabindex="14" class="btn btn-primary  pull-right marginLeft" type="button">Hold</button>
                                         <a href="<?php echo admin_url();?>/categories" class="btn btn-primary  pull-right" type="submit">Cancel</a>
                                          <label for="btnProductSave" class="error" id="btnProductSave-error"></label>
                                     </div>      

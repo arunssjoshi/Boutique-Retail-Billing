@@ -9,8 +9,9 @@ ALTER TABLE `bill_product` ADD CONSTRAINT `FK_bill_product_discount_id` FOREIGN 
 LTER TABLE `discount_product` ADD CONSTRAINT `FK_discount_product_discount_id` FOREIGN KEY (`discount_id`) REFERENCES `discount` (`id`);
 ALTER TABLE `discount_product` ADD CONSTRAINT `FK_discount_product_product_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
 
-ALTER TABLE `bill`     ADD COLUMN `status` ENUM('Active','Draft','Deleted','Paid','Pending') NULL AFTER `tax_bill`;
-ALTER TABLE `bill_product`     ADD COLUMN `status` ENUM('Active','Pending','Deleted') NULL AFTER `tax`;
+ALTER TABLE `bill`     ADD COLUMN `status` ENUM('Hold','Sold','Pending','Deleted','Cancelled') NULL AFTER `tax_bill`;
+ALTER TABLE `bill_product`     ADD COLUMN `status` ENUM('Hold','Sold','Pending','Cancelled','Returned') NULL AFTER `tax`;
+
 
 Queries
 -------
