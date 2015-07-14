@@ -6,7 +6,7 @@ ALTER TABLE `bill` ADD CONSTRAINT `FK_bill_updated_by` FOREIGN KEY (`updated_by`
 ALTER TABLE `bill_product` ADD CONSTRAINT `FK_bill_product_id` FOREIGN KEY (`bill_id`) REFERENCES `bill` (`id`);
 ALTER TABLE `bill_product` ADD CONSTRAINT `FK_bill_product_product_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
 ALTER TABLE `bill_product` ADD CONSTRAINT `FK_bill_product_discount_id` FOREIGN KEY (`discount_id`) REFERENCES `discount` (`id`);
-LTER TABLE `discount_product` ADD CONSTRAINT `FK_discount_product_discount_id` FOREIGN KEY (`discount_id`) REFERENCES `discount` (`id`);
+ALTER TABLE `discount_product` ADD CONSTRAINT `FK_discount_product_discount_id` FOREIGN KEY (`discount_id`) REFERENCES `discount` (`id`);
 ALTER TABLE `discount_product` ADD CONSTRAINT `FK_discount_product_product_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
 
 ALTER TABLE `bill`     ADD COLUMN `status` ENUM('Hold','Sold','Pending','Deleted','Cancelled') NULL AFTER `tax_bill`;

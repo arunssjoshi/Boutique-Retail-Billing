@@ -92,4 +92,37 @@ class Batch extends Eloquent
             DB::select(DB::raw($query ));
         }
     }
+
+    public function getBatchPurchaseDetails($batchId)
+    {
+        $query =    "SELECT SQL_CALC_FOUND_ROWS  p.category_id,  c.category, p.batch_shop_id, s.id AS shop_id, s.shop, SUM(p.initial_quantity) AS total_item_purchased, SUM(p.initial_quantity*p.purchase_price) AS purchase_price
+                    FROM  product p 
+                    JOIN batch_shops bs ON p.batch_shop_id=bs.id
+                    JOIN shop s ON bs.shop_id=s.id
+                    JOIN category c ON p.category_id=c.id
+                    WHERE bs.batch_id=$batchId 
+                    GROUP BY p.category_id,bs.shop_id" ;
+
+                    //die($query);
+
+        $result['items']    =   DB::select(DB::raw($query ));
+        $result['total_rows']   =    DB::select(DB::raw("SELECT FOUND_ROWS()  as total_rows"));
+        $result['total_rows']   =  $result['total_rows'][0]->total_rows;
+
+        return $result;
+    }
+
+    public function getBatchSalesDetailsSummary($batchShopId, $categoryId)
+    {
+        $query =    "SELECT SUM(bp.quantity) AS total_item_sold,  SUM(bp.customer_price) AS total_sold_price
+                    FROM bill_product bp
+                    JOIN product p ON bp.product_id=p.id
+                    WHERE p.status='Active' AND p.batch_shop_id=$batchShopId AND p.category_id=$categoryId" ;
+
+                    //die($query);
+
+        return  DB::select(DB::raw($query ));
+
+    }
+    
 }

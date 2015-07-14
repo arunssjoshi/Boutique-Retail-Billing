@@ -37,7 +37,8 @@ class BatchController extends \BaseController {
 										$batch->shops,
 										$batch->city,
 										date('l, jS F Y',strtotime($batch->purchased_on)),
-										'<a href="javascript:void(0);" class="lnkBatchEdit" rel="'.admin_url().'/batch/edit/'.$batch->id.'"><small class="badge  bg-aqua"><i class="fa fa-pencil"></i> Edit</small></a> 
+										'<a href="'.admin_url().'/batch/details/'.$batch->id.'"><small class="badge  bg-aqua"><i class="fa fa-pencil"></i> Details</small></a>
+										<a href="javascript:void(0);" class="lnkBatchEdit" rel="'.admin_url().'/batch/edit/'.$batch->id.'"><small class="badge  bg-aqua"><i class="fa fa-pencil"></i> Edit</small></a> 
 										 <a href="javascript:void(0);" class="lnkBatchDelete" rel="'.admin_url().'/batch/delete/'.$batch->id.'"><small class="badge  bg-aqua"><i class="fa fa-trash"></i> Delete</small></a>');
 			}
 		}
@@ -94,6 +95,32 @@ class BatchController extends \BaseController {
 		$this->data['cssIncludes'] = array('datepicker_css');
 		return View::make('admin.batch.new_batch',$this->data);
 	}
+
+	public function batchDetails($batchId=0) {
+		$batchObj =	new Batch();
+		
+		
+		if (empty($batchId))
+			return formatMessage('Invalid Request', 'danger', array('resize_popup'=>true));
+
+		$batches  	= 	$batchObj->getBatchDetails(array('batchId'=>$batchId));
+		if($batches['total_rows']==0)
+			return formatMessage('Batch not found', 'danger', array('resize_popup'=>true));
+		$this->data['batch_info'] = $batches['batches'][0];
+		$batch_details = $batchObj->getBatchPurchaseDetails($batchId);
+		$total_purchase_amount = 0;
+		$total_sold_amount = 0;
+		foreach ($batch_details['items'] as $key => $item) {
+			$total_purchase_amount = $total_purchase_amount + $item->purchase_price;
+			$batch_details['items'][$key]->sales = $batchObj->getBatchSalesDetailsSummary($item->batch_shop_id, $item->category_id)[0];
+			$total_sold_amount = $total_sold_amount + $batch_details['items'][$key]->sales->total_sold_price;
+		}
+		$this->data['batch_details'] = $batch_details;
+		$this->data['batch_total_purchase_amount'] = $total_purchase_amount;
+		$this->data['total_sold_amount'] = $total_sold_amount;
+		return View::make('admin.batch.batch_details',$this->data);
+	}
+
 
 	/**
 	 * Editing a shop. This page will be called through ajax on edit submit.

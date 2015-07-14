@@ -66,4 +66,7 @@ label.error{color:red; font-weight: normal;}
 }
 #rowProductSummary{font-weight: bold; }
 #rowProductSummary td{text-align: left;}
-#
+.width90pc{ width: 90% !important;}
+.darkRow{background-color: #000; color: #FFF; font-size: 1.2em;}
+#tblBatchDetails tr.trDetails td{background-color: #f3f4f5 !important; font-weight: bold;}
+#tblBatchDetails td{background-color: #fff;}

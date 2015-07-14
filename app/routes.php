@@ -60,6 +60,7 @@ Route::group(array('before' => 'auth'), function()
         Route::any('admin/batch/shops.json', array( 'uses' => 'BatchController@getShopJson'));
         Route::any('admin/batch/batch-shop.json/{id}', array( 'uses' => 'BatchController@getBatchShopJson'));
         Route::any('admin/batch/new', array( 'uses' => 'BatchController@createNewBatch'));
+        Route::any('admin/batch/details/{id}', array( 'uses' => 'BatchController@batchDetails'));
         Route::any('admin/batch/edit/{id}', array( 'uses' => 'BatchController@editBatch'));
         Route::any('admin/batch/delete/{id}', array( 'uses' => 'BatchController@deleteBatch'));
         Route::any('admin/batch/citysuggestions/{query}', array( 'uses' => 'BatchController@getCitySuggestions'));
