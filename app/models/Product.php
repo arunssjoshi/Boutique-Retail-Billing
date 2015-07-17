@@ -30,8 +30,8 @@ class Product extends Eloquent
             $fromQuery = "barcode_queue bq JOIN  product p ON bq.product_id=p.id";
             $extraFields = ', bq.id as barcode_queue_id';
             $subQuery    .= " AND bq.status='Queue'";
-            $sortField = 'bq.id';
-            $sortDir = 'DESC';
+            $sortField = 'p.id';
+            $sortDir = 'ASC';
         } else if(isset($filter['listType']) && $filter['listType'] == 'printed') {
             $fromQuery = "barcode_queue bq JOIN  product p ON bq.product_id=p.id";
             $extraFields = ', bq.id as barcode_queue_id';
@@ -41,7 +41,7 @@ class Product extends Eloquent
         }  else if(isset($filter['listType']) && $filter['listType'] == 'tobe_queued') {
             $fromQuery = " product p LEFT  JOIN barcode_queue bq ON bq.product_id=p.id JOIN batch_shops bs ON p.batch_shop_id=bs.id";
             $extraFields = ', bq.id as barcode_queue_id';
-            $subQuery    .= " AND bs.batch_id=3  AND bq.id IS NULL";
+            $subQuery    .= " AND bs.batch_id=8  AND bq.id IS NULL";
             $sortField = 'bq.id';
             $sortDir = 'DESC';
         }else {

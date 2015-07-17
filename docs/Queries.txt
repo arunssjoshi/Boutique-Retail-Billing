@@ -37,16 +37,9 @@ JOIN category c ON p.category_id=c.id
 WHERE bs.batch_id=2 
 GROUP BY p.category_id
 
-
 category and shop split up
 --------------------------
 SELECT  c.category, SUM(p.initial_quantity) AS total_item,bs.shop_id,s.shop, SUM(p.initial_quantity*p.purchase_price) AS purchase_price
-FROM  product p 
-JOIN batch_shops bs ON p.batch_shop_id=bs.id
-JOIN category c ON p.category_id=c.id
-JOIN shop s ON bs.shop_id=s.id
-WHERE bs.batch_id=3 AND p.category_id=2
-GROUP BY p.batch_shop_id
 
 
 buy and sold shop wise split up
